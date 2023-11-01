@@ -16,6 +16,8 @@ const {
 } = require("../controllers/authController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
+//baho ni gerard
+
 // router.post('/register', upload.single("avatar"), registerUser);
 router.post('/register', registerUser);
 router.post('/login', loginUser);
