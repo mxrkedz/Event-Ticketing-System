@@ -9,7 +9,7 @@ router.post('/event/new', newEvent)
 router.get('/events',  getEvents)
 router.get('/event/:id', getSingleEvent);
 
-router.get('/admin/events',  getAdminEvents)
+router.get('/admin/events', isAuthenticatedUser, authorizeRoles('admin'), getAdminEvents)
 router.route('/admin/event/:id', isAuthenticatedUser, authorizeRoles('admin',)).put(updateEvent).delete(deleteEvent);
 
 module.exports = router;

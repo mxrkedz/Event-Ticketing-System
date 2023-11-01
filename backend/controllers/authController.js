@@ -4,8 +4,6 @@ const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
 // const cloudinary = require('cloudinary')
 
-//trylangehehehehehe
-
 exports.registerUser = async (req, res, next) => {
     // const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
     //     folder: 'avatars',
