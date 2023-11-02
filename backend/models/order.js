@@ -1,28 +1,6 @@
 const mongoose = require('mongoose')
 
 const orderSchema = mongoose.Schema({
-    shippingInfo: {
-        address: {
-            type: String,
-            required: true
-        },
-        city: {
-            type: String,
-            required: true
-        },
-        phoneNo: {
-            type: String,
-            required: true
-        },
-        postalCode: {
-            type: String,
-            required: true
-        },
-        country: {
-            type: String,
-            required: true
-        }
-    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -46,10 +24,10 @@ const orderSchema = mongoose.Schema({
                 type: Number,
                 required: true
             },
-            product: {
+            event: {
                 type: mongoose.Schema.Types.ObjectId,
                 required: true,
-                ref: 'Product'
+                ref: 'Event'
             }
         }
     ],
@@ -64,18 +42,12 @@ const orderSchema = mongoose.Schema({
     paidAt: {
         type: Date
     },
-
     itemsPrice: {
         type: Number,
         required: true,
         default: 0.0
     },
     taxPrice: {
-        type: Number,
-        required: true,
-        default: 0.0
-    },
-    shippingPrice: {
         type: Number,
         required: true,
         default: 0.0

@@ -1,86 +1,141 @@
 const Event = require('../models/event')
 const APIFeatures = require('../utils/apiFeatures')
+const cloudinary = require('cloudinary')
+
 exports.newEvent = async (req, res, next) => {
-    const eventData = req.body;
-
-    try {
-        // Insert the event data into the database
-        const event = await Event.create(eventData);
-
-        res.status(201).json({
-            success: true,
-            event,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message,
-        });
-    }
-}
-exports.getEvents = async (req, res, next) => {
-    try {
-        const resPerPage = 4;
-		const eventsCount = await Event.countDocuments();
-		const apiFeatures = new APIFeatures(Event.find(),req.query).search().filter(); 
-
-		// const products = await Product.find();
-		apiFeatures.pagination(resPerPage);
-		const events = await apiFeatures.query;
-		let filteredEventsCount = events.length;
-		res.status(200).json({
+	try {
+	  if (!req.body.images) {
+		return res.status(400).json({
+		  success: false,
+		  message: 'Images are required for creating a new event',
+		});
+	  }
+  
+	  let images = Array.isArray(req.body.images) ? req.body.images : [req.body.images];
+	  let imagesLinks = [];
+  
+	  for (let i = 0; i < images.length; i++) {
+		let imageDataUri = images[i];
+		try {
+		  const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
+			folder: 'eventTickets/products',
+			width: 150,
+			crop: 'scale',
+		  });
+  
+		  imagesLinks.push({
+			public_id: result.public_id,
+			url: result.secure_url,
+		  });
+		} catch (error) {
+		  console.error(`Error uploading image to Cloudinary: ${error.message}`);
+		}
+	  }
+  
+	  req.body.images = imagesLinks;
+	  req.body.user = req.user.id;
+  
+	  const event = await Event.create(req.body);
+	  if (!event) {
+		return res.status(400).json({
+		  success: false,
+		  message: 'Event not created',
+		});
+	  }
+  
+	  res.status(201).json({
+		success: true,
+		event,
+	  });
+	} catch (error) {
+	  console.error(`Error creating a new event: ${error.message}`);
+	  // You can choose to handle the error in a more detailed manner or send a specific error response.
+	  res.status(500).json({
+		success: false,
+		error: `Error creating a new event: ${error.message}`,
+	  });
+	}
+  };
+  exports.getEvents = async (req, res, next) => {
+	try {
+	  const resPerPage = 4;
+	  const eventsCount = await Event.countDocuments();
+	  const apiFeatures = new APIFeatures(Event.find(), req.query).search().filter();
+  
+	  apiFeatures.pagination(resPerPage);
+	  const events = await apiFeatures.query;
+	  const filteredEventsCount = events.length;
+  
+	  res.status(200).json({
 		success: true,
 		filteredEventsCount,
 		eventsCount,
 		events,
 		resPerPage,
-	});
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message,
-        });
-    }
-}
+	  });
+	} catch (error) {
+	  console.error(`Error fetching events: ${error.message}`);
+	  // You can choose to handle the error in a more detailed manner or send a specific error response.
+	  res.status(500).json({
+		success: false,
+		error: `Error fetching events: ${error.message}`,
+	  });
+	}
+};
 exports.getSingleEvent = async (req, res, next) => {
-	const event = await Event.findById(req.params.id);
-	if (!event) {
+	try {
+	  const event = await Event.findById(req.params.id);
+  
+	  if (!event) {
 		return res.status(404).json({
-			success: false,
-			message: 'Event not found'
-		})
-	}
-	res.status(200).json({
+		  success: false,
+		  message: 'Event not found'
+		});
+	  }
+  
+	  res.status(200).json({
 		success: true,
 		event
-	})
-}
+	  });
+	} catch (error) {
+	  console.error(`Error fetching single event: ${error.message}`);
+	  // You can choose to handle the error in a more detailed manner or send a specific error response.
+	  res.status(500).json({ error: `Error fetching single event: ${error.message}` });
+	}
+};
 exports.updateEvent = async (req, res, next) => {
-	let event = await Event.findById(req.params.id);
-	console.log(req.body)
-	if (!event) {
+	try {
+	  let event = await Event.findById(req.params.id);
+  
+	  if (!event) {
 		return res.status(404).json({
-			success: false,
-			message: 'Event not found'
-		})
-	}
-	event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+		  success: false,
+		  message: 'Event not found'
+		});
+	  }
+  
+	  event = await Event.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
-	})
-	if (!event) {
+	  });
+  
+	  if (!event) {
 		return res.status(404).json({
-			success: false,
-			message: 'Event not updated'
-		})
-	}
-	res.status(200).json({
+		  success: false,
+		  message: 'Event not updated'
+		});
+	  }
+  
+	  res.status(200).json({
 		success: true,
 		event
-	})
-}
+	  });
+	} catch (error) {
+	  console.error(`Error updating event: ${error.message}`);
+	  res.status(500).json({ error: `Error updating event: ${error.message}` });
+	}
+};
 exports.getAdminEvents = async (req, res, next) => {
     try {
-        // Query the database to get all events
         const events = await Event.find();
 
         res.status(200).json({
@@ -95,115 +150,74 @@ exports.getAdminEvents = async (req, res, next) => {
     }
 };
 exports.deleteEvent = async (req, res, next) => {
-	const event = await Event.findByIdAndDelete(req.params.id);
-	if (!event) {
+	try {
+	  const event = await Event.findByIdAndDelete(req.params.id);
+  
+	  if (!event) {
+		return res.status(404).json({
+		  success: false,
+		  message: 'Event not found'
+		});
+	  }
+  
+	  res.status(200).json({
+		success: true,
+		message: 'Event deleted'
+	  });
+	} catch (error) {
+	  console.error(`Error deleting event: ${error.message}`);
+	  res.status(500).json({ error: `Error deleting event: ${error.message}` });
+	}
+};
+  
+
+exports.updateProduct = async (req, res, next) => {
+	let product = await Product.findById(req.params.id);
+	// console.log(req.body)
+	if (!product) {
 		return res.status(404).json({
 			success: false,
-			message: 'Event not found'
+			message: 'Product not found'
 		})
 	}
-	// await event.remove();
-	res.status(200).json({
+	let images = []
+
+	if (typeof req.body.images === 'string') {
+		images.push(req.body.images)
+	} else {
+		images = req.body.images
+	}
+	if (images !== undefined) {
+		// Deleting images associated with the product
+		for (let i = 0; i < product.images.length; i++) {
+			const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+		}
+	}
+	let imagesLinks = [];
+	for (let i = 0; i < images.length; i++) {
+		const result = await cloudinary.v2.uploader.upload(images[i], {
+			folder: 'products'
+		});
+		imagesLinks.push({
+			public_id: result.public_id,
+			url: result.secure_url
+		})
+
+	}
+	req.body.images = imagesLinks
+	product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+		useFindandModify: false
+	})
+	if (!product)
+		return res.status(400).json({
+			success: false,
+			message: 'Product not updated'
+		})
+	// console.log(product)
+	return res.status(200).json({
 		success: true,
-		message: 'Product deleted'
+		product
 	})
 }
-
-// exports.newProduct = async (req, res, next) => {
-
-// 	let images = []
-// 	if (typeof req.body.images === 'string') {
-// 		images.push(req.body.images)
-// 	} else {
-// 		images = req.body.images
-// 	}
-
-// 	let imagesLinks = [];
-
-// 	for (let i = 0; i < images.length; i++) {
-// 		let imageDataUri = images[i]
-// 		// console.log(imageDataUri)
-// 		try {
-// 			const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
-// 				folder: 'products',
-// 				width: 150,
-// 				crop: "scale",
-// 			});
-
-// 			imagesLinks.push({
-// 				public_id: result.public_id,
-// 				url: result.secure_url
-// 			})
-
-// 		} catch (error) {
-// 			console.log(error)
-// 		}
-
-// 	}
-
-// 	req.body.images = imagesLinks
-// 	req.body.user = req.user.id;
-
-// 	const product = await Product.create(req.body);
-// 	if (!product)
-// 		return res.status(400).json({
-// 			success: false,
-// 			message: 'Product not created'
-// 		})
-// 	res.status(201).json({
-// 		success: true,
-// 		product
-// 	})
-// }
-
-
-// exports.updateProduct = async (req, res, next) => {
-// 	let product = await Product.findById(req.params.id);
-// 	// console.log(req.body)
-// 	if (!product) {
-// 		return res.status(404).json({
-// 			success: false,
-// 			message: 'Product not found'
-// 		})
-// 	}
-// 	let images = []
-
-// 	if (typeof req.body.images === 'string') {
-// 		images.push(req.body.images)
-// 	} else {
-// 		images = req.body.images
-// 	}
-// 	if (images !== undefined) {
-// 		// Deleting images associated with the product
-// 		for (let i = 0; i < product.images.length; i++) {
-// 			const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
-// 		}
-// 	}
-// 	let imagesLinks = [];
-// 	for (let i = 0; i < images.length; i++) {
-// 		const result = await cloudinary.v2.uploader.upload(images[i], {
-// 			folder: 'products'
-// 		});
-// 		imagesLinks.push({
-// 			public_id: result.public_id,
-// 			url: result.secure_url
-// 		})
-
-// 	}
-// 	req.body.images = imagesLinks
-// 	product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-// 		new: true,
-// 		runValidators: true,
-// 		useFindandModify: false
-// 	})
-// 	if (!product)
-// 		return res.status(400).json({
-// 			success: false,
-// 			message: 'Product not updated'
-// 		})
-// 	// console.log(product)
-// 	return res.status(200).json({
-// 		success: true,
-// 		product
-// 	})
-// }
