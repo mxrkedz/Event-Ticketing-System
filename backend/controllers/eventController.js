@@ -3,7 +3,11 @@ const APIFeatures = require('../utils/apiFeatures')
 const cloudinary = require('cloudinary')
 
 exports.newEvent = async (req, res, next) => {
+	// console.log(req.body);
 	try {
+		if(req.files){
+			req.body.images = req.files
+		}
 	  if (!req.body.images) {
 		return res.status(400).json({
 		  success: false,
@@ -11,11 +15,10 @@ exports.newEvent = async (req, res, next) => {
 		});
 	  }
   
-	  let images = Array.isArray(req.body.images) ? req.body.images : [req.body.images];
 	  let imagesLinks = [];
   
-	  for (let i = 0; i < images.length; i++) {
-		let imageDataUri = images[i];
+	  for (let i = 0; i < req.body.images.length; i++) {
+		let imageDataUri = req.body.images[i].path; //tanggalin yung .path pag front end na
 		try {
 		  const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
 			folder: 'eventTickets/products',
@@ -28,14 +31,34 @@ exports.newEvent = async (req, res, next) => {
 			url: result.secure_url,
 		  });
 		} catch (error) {
-		  console.error(`Error uploading image to Cloudinary: ${error.message}`);
+		  console.error(`Error uploading image to Cloudinary: ${error}`);
 		}
 	  }
   
 	  req.body.images = imagesLinks;
 	  req.body.user = req.user.id;
   
-	  const event = await Event.create(req.body);
+	//   const event = await Event.create(req.body);
+	const { name, 
+		startDate, 
+		endDate, 
+		location, 
+		category, 
+		description, 
+		organizer, 
+		tickets} = req.body;
+
+		const event = await Event.create({
+			name,
+			startDate,
+			endDate,
+			location,
+			category,
+			description,
+			organizer,
+			tickets: JSON.parse(tickets), //pag front end, tanggalin parse
+			images: imagesLinks
+		})
 	  if (!event) {
 		return res.status(400).json({
 		  success: false,
@@ -48,11 +71,11 @@ exports.newEvent = async (req, res, next) => {
 		event,
 	  });
 	} catch (error) {
-	  console.error(`Error creating a new event: ${error.message}`);
+	  console.error(`Error creating a new event: ${error}`);
 	  // You can choose to handle the error in a more detailed manner or send a specific error response.
 	  res.status(500).json({
 		success: false,
-		error: `Error creating a new event: ${error.message}`,
+		error: `Error creating a new event: ${error}`,
 	  });
 	}
   };
