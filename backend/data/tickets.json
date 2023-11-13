@@ -1,10 +1,8 @@
 [
     {
         "name": "Esports and Gaming Summit 2023",
-        "date": {
-            "startDate": "2023-11-03T08:00:00Z",
-            "endDate": "2023-11-05T22:00:00Z"
-        },
+        "startDate": "2023-11-03T08:00:00Z",
+        "endDate": "2023-11-05T22:00:00Z",
         "location": "World Trade Center",
         "category": "Convention",
         "description": "The biggest gaming event of the year!",
@@ -49,10 +47,8 @@
     },
     {
         "name": "Philippine GameDev Expo",
-        "date": {
-            "startDate": "2023-11-03T08:00:00Z",
-            "endDate": "2023-11-05T22:00:00Z"
-        },
+        "startDate": "2023-11-03T08:00:00Z",
+        "endDate": "2023-11-05T22:00:00Z",
         "location": "SMX Convention Center",
         "category": "Expo",
         "description": "Explore the world of game development!",
@@ -80,10 +76,8 @@
     },
     {
         "name": "G Music Fest 2023",
-        "date": {
-            "startDate": "2023-11-03T08:00:00Z",
-            "endDate": "2023-11-05T22:00:00Z"
-        },
+        "startDate": "2023-11-03T08:00:00Z",
+        "endDate": "2023-11-05T22:00:00Z",
         "location": "Circuit Makati",
         "category": "Music",
         "description": "Jam with OPM legends and rising artists at the G Music Fest!",
