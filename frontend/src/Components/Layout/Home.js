@@ -1,29 +1,10 @@
+import '../../App.css'
 import React from 'react';
 
-function Body(){
+function Home(){
     return(
         <div>
-            <body id="page-top">
-     
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-            <div className="container">
-                <a className="navbar-brand" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i className="fas fa-bars ms-1"></i>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarResponsive">
-                    <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li className="nav-item"><a className="nav-link" href="#services">Services</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#portfolio">Portfolio</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#about">About</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#team">Team</a></li>
-                        <li className="nav-item"><a className="nav-link" href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-      
+        <body id="page-top">
         <header className="masthead">
             <div className="container">
                 <div className="masthead-subheading">Welcome To Our Studio!</div>
@@ -345,23 +326,6 @@ function Body(){
             </div>
         </section>
         
-        <footer className="footer py-4">
-            <div className="container">
-                <div className="row align-items-center">
-                    <div className="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
-                    <div className="col-lg-4 my-3 my-lg-0">
-                        <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-                        <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-                        <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-                    </div>
-                    <div className="col-lg-4 text-lg-end">
-                        <a className="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                        <a className="link-dark text-decoration-none" href="#!">Terms of Use</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        
         <div className="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
@@ -572,14 +536,10 @@ function Body(){
             </div>
         </div>
         
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         
-        <script src="js/scripts.js"></script>
-        
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
         </div>
     )
 }
 
-export default Body;
+export default Home;
