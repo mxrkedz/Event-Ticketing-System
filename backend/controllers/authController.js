@@ -139,7 +139,6 @@ exports.updatePassword = async (req, res, next) => {
     user.password = req.body.password;
     await user.save();
     sendToken(user, 200, res)
-
 }
 
 exports.updateProfile = async (req, res, next) => {
