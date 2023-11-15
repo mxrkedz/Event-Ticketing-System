@@ -9,7 +9,9 @@ import Dashboard from "./Components/Admin/Dashboard";
 function App() {
   return (
     <div className="App">
+      <Header/>
       <Home/>
+      <Footer/>
       <Router/>
 
     </div>
