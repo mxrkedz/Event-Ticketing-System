@@ -11,15 +11,15 @@ const Sidebar = () => {
                     </li>
 
                     <li>
-                        <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i
-                            className="fa fa-product-hunt"></i> Products</a>
-                        <ul className="collapse list-unstyled" id="productSubmenu">
+                        <a href="#eventSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i
+                            className="fa fa-event-hunt"></i> Events</a>
+                        <ul className="collapse list-unstyled" id="eventSubmenu">
                             <li>
-                                <Link to="/admin/products"><i className="fa fa-clipboard"></i> All</Link>
+                                <Link to="/admin/events"><i className="fa fa-clipboard"></i> All</Link>
                             </li>
 
                             <li>
-                                <Link to="/admin/product"><i className="fa fa-plus"></i> Create</Link>
+                                <Link to="/admin/event"><i className="fa fa-plus"></i> Create</Link>
                             </li>
                         </ul>
                     </li>

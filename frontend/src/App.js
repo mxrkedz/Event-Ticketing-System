@@ -10,8 +10,11 @@ function App() {
   return (
     <div className="App">
       <Home/>
-      <Router/>
-
+      <Router>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} /> 
+        </Routes>
+      </Router>
     </div>
   );
 }
