@@ -17,7 +17,9 @@ const Header = () => {
           {/* <Search /> */}
         </div>
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-            <span id="cart" className="ml-3"  style={{ color: 'yellow' }}>Cart</span>
+            <span id="cart" className="ml-3"  style={{ color: 'white' }}>Categories</span>
+            <span id="cart" className="ml-3"  style={{ color: 'white' }}>Profile</span>
+            <span id="cart" className="ml-3"  style={{ color: 'white' }}>Cart</span>
             <span className="ml-1" id="cart_count">1</span>        
         </div>
       </nav>

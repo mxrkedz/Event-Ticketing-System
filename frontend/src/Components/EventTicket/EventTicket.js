@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 const EventTicket = ({ event }) => {
@@ -9,10 +9,13 @@ const EventTicket = ({ event }) => {
           <img className="card-img-top mx-auto" src={event.images[0].url} alt={event.name} />
         )}
         <div className="card-body d-flex flex-column">
-          <h5 className="card-title">
-            <a href="">{event.name}</a>
-          </h5>
-          {/* Other card body content */}
+        <h5 className="card-title">
+          {event.name}
+        </h5>
+          {/* {`/product/${event._id}`} */}
+          <Link to={`/event/${event._id}`} id="view_btn" className="btn btn-block">
+            View Details
+          </Link>
         </div>
       </div>
     </div>
