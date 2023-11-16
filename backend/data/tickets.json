@@ -1,106 +1,107 @@
 [
-    {
-        "name": "Esports and Gaming Summit 2023",
-        "startDate": "2023-11-03T08:00:00Z",
-        "endDate": "2023-11-05T22:00:00Z",
-        "location": "World Trade Center",
-        "category": "Convention",
-        "description": "The biggest gaming event of the year!",
-        "organizer": "ESGS Official",
-        "images": [
-            {
-                "public_id": "products/dsvbpny402gelwugv2le",
-                "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"	
-            }
-        ],
-        "tickets": [
-            {
-                "type": "Iron",
-                "description": "1 Day Pass. Good for any day",
-                "price": 750,
-                "stock": 200
-            },
-            {
-                "type": "Bronze",
-                "description": "1 Day Pass + Event lanyard and sticker sheet",
-                "price": 1000,
-                "stock": 200
-            },
-            {
-                "type": "Silver",
-                "description": "2-Day Weekend Pass + T-Shirt, Lanyard, and Sticker Sheet",
-                "price": 2500,
-                "stock": 200
-            },
-            {
-                "type": "Gold",
-                "description": "3-Day Pass + T-Shirt, Deskmat, Lanyard, and Sticker Sheet",
-                "price": 4000,
-                "stock": 200
-            },
-            {
-                "type": "Platinum",
-                "description": "3-Day Pass + Windbreaker, T-Shirt, Lanyard, and Sticker Sheet",
-                "price": 6500,
-                "stock": 200
-            }]
-    },
-    {
-        "name": "Philippine GameDev Expo",
-        "startDate": "2023-11-03T08:00:00Z",
-        "endDate": "2023-11-05T22:00:00Z",
-        "location": "SMX Convention Center",
-        "category": "Expo",
-        "description": "Explore the world of game development!",
-        "organizer": "CBZN",
-        "images": [
-            {
-                "public_id": "products/dsvbpny402gelwugv2le",
-                "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
-            }
-        ],
-        "tickets": [
-            {
-                "type": "Expo",
-                "description": "2-Day Weekend Pass",
-                "price": 2500,
-                "stock": 200
-            },
-            {
-                "type": "VIP",
-                "description": "3-Day Pass",
-                "price": 5000,
-                "stock": 400
-            }]
-        
-    },
-    {
-        "name": "G Music Fest 2023",
-        "startDate": "2023-11-03T08:00:00Z",
-        "endDate": "2023-11-05T22:00:00Z",
-        "location": "Circuit Makati",
-        "category": "Music",
-        "description": "Jam with OPM legends and rising artists at the G Music Fest!",
-        "organizer": "Globe",
-        "images": [
-            {
-                "public_id": "products/dsvbpny402gelwugv2le",
-                "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
-            }
-        ],
-        "tickets": [
-            {
-                "type": "Festival Attendee",
-                "description": "General admission to the festival",
-                "price": 850,
-                "stock": 500
-            },
-            {
-                "type": "VIP",
-                "description": "VIP access with exclusive perks",
-                "price": 2000,
-                "stock": 300
-            }]
-        }
-    
+  {
+    "name": "Esports and Gaming Summit 2023",
+    "startDate": "2023-11-03T08:00:00Z",
+    "endDate": "2023-11-05T22:00:00Z",
+    "location": "World Trade Center",
+    "category": "Convention",
+    "description": "The biggest gaming event of the year!",
+    "organizer": "ESGS Official",
+    "images": [
+      {
+        "public_id": "products/dsvbpny402gelwugv2le",
+        "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
+      }
+    ],
+    "tickets": [
+      {
+        "type": "Iron",
+        "description": "1 Day Pass. Good for any day",
+        "price": 750,
+        "stock": 200
+      },
+      {
+        "type": "Bronze",
+        "description": "1 Day Pass + Event lanyard and sticker sheet",
+        "price": 1000,
+        "stock": 200
+      },
+      {
+        "type": "Silver",
+        "description": "2-Day Weekend Pass + T-Shirt, Lanyard, and Sticker Sheet",
+        "price": 2500,
+        "stock": 200
+      },
+      {
+        "type": "Gold",
+        "description": "3-Day Pass + T-Shirt, Deskmat, Lanyard, and Sticker Sheet",
+        "price": 4000,
+        "stock": 200
+      },
+      {
+        "type": "Platinum",
+        "description": "3-Day Pass + Windbreaker, T-Shirt, Lanyard, and Sticker Sheet",
+        "price": 6500,
+        "stock": 200
+      }
+    ]
+  },
+  {
+    "name": "Philippine GameDev Expo",
+    "startDate": "2023-11-03T08:00:00Z",
+    "endDate": "2023-11-05T22:00:00Z",
+    "location": "SMX Convention Center",
+    "category": "Expo",
+    "description": "Explore the world of game development!",
+    "organizer": "CBZN",
+    "images": [
+      {
+        "public_id": "products/dsvbpny402gelwugv2le",
+        "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
+      }
+    ],
+    "tickets": [
+      {
+        "type": "Expo",
+        "description": "2-Day Weekend Pass",
+        "price": 2500,
+        "stock": 200
+      },
+      {
+        "type": "VIP",
+        "description": "3-Day Pass",
+        "price": 5000,
+        "stock": 400
+      }
+    ]
+  },
+  {
+    "name": "G Music Fest 2023",
+    "startDate": "2023-11-03T08:00:00Z",
+    "endDate": "2023-11-05T22:00:00Z",
+    "location": "Circuit Makati",
+    "category": "Music",
+    "description": "Jam with OPM legends and rising artists at the G Music Fest!",
+    "organizer": "Globe",
+    "images": [
+      {
+        "public_id": "products/dsvbpny402gelwugv2le",
+        "url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
+      }
+    ],
+    "tickets": [
+      {
+        "type": "Festival Attendee",
+        "description": "General admission to the festival",
+        "price": 850,
+        "stock": 500
+      },
+      {
+        "type": "VIP",
+        "description": "VIP access with exclusive perks",
+        "price": 2000,
+        "stock": 300
+      }
+    ]
+  }
 ]
