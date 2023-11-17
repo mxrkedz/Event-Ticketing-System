@@ -13,7 +13,7 @@ const Sidebar = () => {
                     <li>
                         <a href="#eventSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i
                             className="fa fa-event-hunt"></i> Events</a>
-                        <ul className="collapse list-unstyled" id="eventSubmenu">
+                        <ul className="collapse list-unstyled" id="eventSubmenu"> 
                             <li>
                                 <Link to="/admin/events"><i className="fa fa-clipboard"></i> All</Link>
                             </li>

@@ -1,9 +1,35 @@
 // Header.js
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import '../../App.css'
+// import Search from './Search'
+import axios from 'axios'
+import { logout, getUser } from '../../utils/helpers'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Header = () => {
+  const [user, setUser] = useState({})
+    const navigate = useNavigate()
+    const logoutUser = async () => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API}/api/v1/logout`)
+            setUser({})
+            logout(() => navigate('/'))
+        } catch (error) {
+            toast.error(error.response.data.message)
+
+        }
+    }
+    const logoutHandler = () => {
+        logoutUser();
+        toast.success('log out', {
+            position: toast.POSITION.BOTTOM_RIGHT
+        });
+    }
+    useEffect(() => {
+        setUser(getUser())
+    }, [])
 
   return (
     <Fragment>
@@ -25,7 +51,10 @@ const Header = () => {
             <span id="categories" className="ml-3"  style={{ color: 'white' }}>Categories</span>
             <span id="profile" className="ml-3"  style={{ color: 'white' }}>Profile</span>
             <span id="cart" className="ml-3"  style={{ color: 'white' }}>Cart</span>
-            <span className="ml-1" id="cart_count">1</span>        
+            <span className="ml-1" id="cart_count">1</span>
+            <Link to="/login" className="btn ml-4" id="login_btn">Login</Link> 
+            <Link className="btn ml-4" id="profile_btn" to="/me">Profile</Link>
+            <Link className="dropdown-item text-danger" to="/" onClick={logoutHandler}>Logout</Link>       
         </div>
       </nav>
     </Fragment>

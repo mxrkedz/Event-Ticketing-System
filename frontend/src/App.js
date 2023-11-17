@@ -4,6 +4,9 @@ import Home from './Components/Home';
 import Footer from './Components/Layout/Footer';
 import Dashboard from './Components/Admin/Dashboard';
 import EventDetails from './Components/EventTicket/EventDetails';
+import Login from "./Components/User/Login";
+import Register from './Components/User/Register';
+import Profile from "./Components/User/Profile";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -68,6 +71,9 @@ function App() {
           <Route path="/" element={<Home />} exact="true" />
           <Route path="/dashboard" element={<Dashboard />} /> 
           <Route path="/event/:id" element={<EventDetails cartItems={state.cartItems} addItemToCart={addItemToCart} />} exact="true" />
+          <Route path="/login" element={<Login />} exact="true" />
+          <Route path="/register" element={<Register />} exact="true" />
+          <Route path="/me" element={<Profile />} exact="true" />
         </Routes>
         <Footer />
       </Router>
