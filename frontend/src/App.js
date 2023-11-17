@@ -178,7 +178,7 @@ function App() {
           <Route path="/me" element={<Profile />} exact="true" />
 
         </Routes>
-        <Footer />
+        <Footer/>
       </Router>
     </div>
   );

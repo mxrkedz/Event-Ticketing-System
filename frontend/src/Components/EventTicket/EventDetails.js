@@ -110,7 +110,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
             <b>Price: ₱</b>
             {event.price}
             <div className="mt-auto float-right">
-            <Button variant="success" onClick={addToCart}>
+            <Button className="btn addToCart_btn" onClick={addToCart}>
               <AddShoppingCartSharpIcon /> Add to Cart
             </Button>
           </div>
