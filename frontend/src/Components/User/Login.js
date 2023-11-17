@@ -3,11 +3,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import Loader from "../Layout/Loader";
 import Metadata from "../Layout/MetaData";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { authenticate } from "../../utils/helpers";
-import { getUser } from "../../utils/helpers";
+import { authenticate, getUser } from "../../utils/helpers";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +34,7 @@ const Login = () => {
         { email, password },
         config
       );
-      console.log(data);
+
       authenticate(data, () => {
         notify("Login successful");
         navigate(`/${redirect}`);
@@ -52,6 +51,13 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    // Validation checks
+    if (!email.trim() || !password.trim()) {
+      notify('Please enter both email and password');
+      return;
+    }
+
     login(email, password);
   };
 
@@ -113,6 +119,7 @@ const Login = () => {
               </form>
             </div>
           </div>
+          <ToastContainer/>
         </Fragment>
       )}
     </Fragment>
