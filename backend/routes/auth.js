@@ -13,6 +13,8 @@ const {
   updateProfile,
   allUsers,
   getUserDetails,
+  checkEmail,
+
 } = require("../controllers/authController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
@@ -20,6 +22,8 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 router.post('/register',upload.single("avatar"), registerUser);
 router.post('/login', loginUser);
 router.get('/logout', logout);
+
+router.get('/check-email', checkEmail);
 
 router.post('/password/forgot', forgotPassword);
 router.put('/password/reset/:token', resetPassword);

@@ -4,6 +4,22 @@ const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
 const cloudinary = require('cloudinary')
 
+exports.checkEmail = async (req, res, next) => {
+    try {
+      const { email } = req.query;
+      const existingUser = await User.findOne({ email });
+  
+      res.status(200).json({
+        exists: !!existingUser,
+      });
+    } catch (error) {
+      console.error('Error checking email:', error);
+      res.status(500).json({
+        error: 'Internal Server Error',
+      });
+    }
+  };
+  
 exports.registerUser = async (req, res, next) => {
     const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
         folder: 'avatars',
