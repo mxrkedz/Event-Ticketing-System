@@ -16,7 +16,7 @@ const Register = () => {
 
   const [avatar, setAvatar] = useState('');
   const [avatarPreview, setAvatarPreview] = useState(
-    '/images/default_avatar.jpg',
+    '/assets/img/default_avatar.jpg',
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
