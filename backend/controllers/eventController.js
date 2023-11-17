@@ -46,7 +46,8 @@ exports.newEvent = async (req, res, next) => {
 		category, 
 		description, 
 		organizer, 
-		tickets} = req.body;
+		price,
+		stock} = req.body;
 
 		const event = await Event.create({
 			name,
@@ -56,7 +57,8 @@ exports.newEvent = async (req, res, next) => {
 			category,
 			description,
 			organizer,
-			tickets: JSON.parse(tickets), //pag front end, tanggalin parse
+			price,
+			stock,
 			images: imagesLinks
 		})
 	  if (!event) {

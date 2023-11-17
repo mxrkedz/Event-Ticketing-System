@@ -2,9 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Carousel, Dropdown, Button, Card } from "react-bootstrap";
 import MetaData from "../Layout/MetaData";
-import { getUser, successMsg, errMsg } from "../../utils/helpers";
+import { getUser } from "../../utils/helpers";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
+import { useNavigate } from "react-router-dom";
+import AddShoppingCartSharpIcon from "@mui/icons-material/AddShoppingCartSharp";
 
 const EventDetails = ({ addItemToCart, cartItems }) => {
   const [loading, setLoading] = useState(true);
@@ -14,8 +16,8 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
   const [user, setUser] = useState(getUser());
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [selectedTicket, setSelectedTicket] = useState(null);
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -35,13 +37,6 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
 
   const addToCart = async () => {
     await addItemToCart(id, quantity);
-  };
-
-  const handleTicketSelect = (ticketType) => {
-    const selectedTicket = event.tickets.find(
-      (ticket) => ticket.type === ticketType
-    );
-    setSelectedTicket(selectedTicket);
   };
 
   useEffect(() => {
@@ -78,7 +73,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
                     className="d-block w-100"
                     src={image.url}
                     alt={event.title}
-                    style={{ objectFit: "fill", height: "100%" }}
+                    style={{ objectFit: "cover", height: "100%" }}
                   />
                 </Carousel.Item>
               ))}
@@ -93,10 +88,13 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           <p id="product_id">Event # {event._id}</p>
           <hr />
 
-          <h4 className="mt-2">
-            <b>About:</b>
-          </h4>
-          <h5>{event.description}</h5>
+          <div className="mt-2">
+            <h4>
+              <b>About:</b>
+            </h4>
+            <h5>{event.description}</h5>
+          </div>
+          <hr/>
           <h6 className="mt-2">
             <b>Date:</b> {formatDate(event.startDate)} to{" "}
             {formatDate(event.endDate)}
@@ -107,62 +105,21 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           <h6 className="mt-2">
             <b>Category:</b> {event.category}
           </h6>
-          <hr />
+          <hr/>
           <h4 className="mt-2">
-            <b>Tickets:</b>
-          </h4>
-          <div style={{ width: "160px" }}>
-            {" "}
-            <Dropdown onSelect={handleTicketSelect}>
-              <Dropdown.Toggle
-                id="dropdown-basic"
-                variant="light"
-                className="custom-dropdown"
-              >
-                {selectedTicket ? selectedTicket.type : "Select a Ticket"}
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                {event.tickets &&
-                  event.tickets.map((ticket) => (
-                    <Dropdown.Item key={ticket.type} eventKey={ticket.type}>
-                      {ticket.type}
-                    </Dropdown.Item>
-                  ))}
-              </Dropdown.Menu>
-            </Dropdown>
+            <b>Price: ₱</b>
+            {event.price}
+            <div className="mt-auto float-right">
+            <Button variant="success" onClick={addToCart}>
+              <AddShoppingCartSharpIcon /> Add to Cart
+            </Button>
           </div>
-          {selectedTicket && (
-            <div className="d-flex justify-content-center mt-3">
-              <Card style={{ width: "100rem" }}>
-                <Card.Body
-                  className="d-flex flex-column"
-                  style={{ paddingLeft: "20px" }}
-                >
-                  <Card.Title>
-                    <h4 className="mt-2">
-                      <b>{selectedTicket.type}</b>
-                    </h4>
-                  </Card.Title>
-                  <Card.Text>
-                    <h5 className="mt-2">{selectedTicket.description}</h5>
-                  </Card.Text>
-                  <Card.Text>
-                    <h4 className="mt-2">
-                      <b>Price:</b> ₱{selectedTicket.price}
-                    </h4>
-                  </Card.Text>
-                  <div className="mt-auto">
-                    <Button variant="success" onClick={addToCart}>
-                    <AddShoppingCartSharpIcon /> Add to Cart
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
-          )}
+          </h4>
+          <br/>
+          
         </div>
       </div>
+      <ToastContainer />
     </Fragment>
   );
 };
