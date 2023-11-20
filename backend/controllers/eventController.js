@@ -91,6 +91,13 @@ exports.newEvent = async (req, res, next) => {
 	  const events = await apiFeatures.query;
 	  const filteredEventsCount = events.length;
   
+	  if (!events) {
+		return res.status(404).json({
+			success: false,
+			message: 'Events not found'
+		})
+	}
+
 	  res.status(200).json({
 		success: true,
 		filteredEventsCount,

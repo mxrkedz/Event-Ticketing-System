@@ -12,10 +12,13 @@ import Shipping from "./Components/Cart/Shipping";
 import OrderSuccess from './Components/Cart/OrderSuccess';
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
 import Payment from './Components/Cart/Payment';
+import EventsList from "./Components/Admin/EventsList";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import OrdersList from "./Components/Admin/OrdersList";
+import UsersList from "./Components/Admin/UsersList";
 
 function App() {
   const [state, setState] = useState({
@@ -176,6 +179,10 @@ function App() {
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
+
+          <Route path="/admin/events" element={<EventsList />}/>
+          <Route path="/admin/orders" element={<OrdersList />}/>
+          <Route path="/admin/users" element={<UsersList />}/>
 
         </Routes>
         <Footer/>
