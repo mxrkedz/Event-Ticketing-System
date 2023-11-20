@@ -41,8 +41,10 @@ const Payment = ({ cartItems, shippingInfo }) => {
       toast.success("order created", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+      window.location.reload();
 
       navigate("/success");
+
     } catch (error) {
       toast.error(error.response.data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,

@@ -60,7 +60,10 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
   return (
     <Fragment>
       <MetaData title={event.name} />
-      <div className="row d-flex justify-content-around" style={{marginBottom: "10.2%"}}>
+      <div
+        className="row d-flex justify-content-around"
+        style={{ marginBottom: "10.2%" }}
+      >
         <div className="col-12 col-lg-5 img-fluid" id="product_image">
           <Carousel
             pause="hover"
@@ -94,7 +97,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
             </h4>
             <h5>{event.description}</h5>
           </div>
-          <hr/>
+          <hr />
           <h6 className="mt-2">
             <b>Date:</b> {formatDate(event.startDate)} to{" "}
             {formatDate(event.endDate)}
@@ -105,18 +108,19 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           <h6 className="mt-2">
             <b>Category:</b> {event.category}
           </h6>
-          <hr/>
-          <h4 className="mt-2">
-            <b>Price: ₱</b>
-            {event.price}
-            <div className="mt-auto float-right">
+          <hr />
+          <h4 className="mt-2" style={{ marginBottom: "2rem" }}>
+            <b>Buy Your Tickets Here:</b>
+          </h4>
+          <h1 style={{ marginBottom: "2rem" }} id="h1_ticket_price">
+            {event.name} Tickets: ₱{event.price}
+          </h1>
+          <div className="mt-auto">
             <Button className="btn addToCart_btn" onClick={addToCart}>
               <AddShoppingCartSharpIcon /> Add to Cart
             </Button>
           </div>
-          </h4>
-          <br/>
-          
+          <hr />
         </div>
       </div>
       <ToastContainer />
