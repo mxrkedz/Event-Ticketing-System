@@ -1,35 +1,59 @@
 const Order = require('../models/order');
 const Event = require('../models/event');
+const sendEmail = require('../utils/sendEmail')
+
+const sendOrderConfirmationEmail = async (userEmail, orderId) => {
+  const orderConfirmationUrl = `http://localhost:4001/api/v1/order/${orderId}`;
+
+  const message = `Hello,\n\nThank you for your order! Your order has been confirmed. You can view your order details by clicking on the following link:\n\n${orderConfirmationUrl}\n\nIf you have any questions or concerns, please feel free to contact us.\n\nThank you for choosing TicketTricky!\n\nSincerely,\nThe Team`;
+
+  try {
+    await sendEmail({
+      email: userEmail,
+      subject: 'Ticket Tekcit Order Confirmation',
+      message
+    });
+
+    console.log(`Order confirmation email sent to: ${userEmail}`);
+  } catch (error) {
+    console.error(`Error sending order confirmation email: ${error.message}`);
+    // Handle the error, you can choose to log it or send a response to the client.
+  }
+};
 
 exports.newOrder = async (req, res, next) => {
-    try {
-      const {
-        orderItems,
-        itemsPrice,
-        taxPrice,
-        totalPrice,
-        paymentInfo
-      } = req.body;
-  
-      const order = await Order.create({
-        orderItems,
-        itemsPrice,
-        taxPrice,
-        totalPrice,
-        paymentInfo,
-        paidAt: Date.now(),
-        user: req.user._id
-      });
-  
-      res.status(201).json({
-        success: true,
-        order
-      });
-    } catch (error) {
-      console.error(`Error creating new order: ${error.message}`);
-      res.status(500).json({ error: `Error creating new order: ${error.message}` });
-    }
-  };
+  try {
+    const {
+      orderItems,
+      itemsPrice,
+      taxPrice,
+      totalPrice,
+      paymentInfo
+    } = req.body;
+
+    const order = await Order.create({
+      orderItems,
+      itemsPrice,
+      taxPrice,
+      totalPrice,
+      paymentInfo,
+      paidAt: Date.now(),
+      user: req.user._id
+    });
+
+    // Send order confirmation email to the user
+    await sendOrderConfirmationEmail(req.user.email, order._id);
+
+    res.status(201).json({
+      success: true,
+      order
+    });
+  } catch (error) {
+    console.error(`Error creating new order: ${error.message}`);
+    res.status(500).json({ error: `Error creating new order: ${error.message}` });
+  }
+};
+
   
 exports.getSingleOrder = async (req, res, next) => {
     try {

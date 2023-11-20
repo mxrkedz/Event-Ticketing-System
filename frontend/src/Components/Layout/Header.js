@@ -44,7 +44,7 @@ const Header = ({ cartItems }) => {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div className="col-12 col-md-3">
             <div className="navbar-brand">
-              <img src="/mmdns2.png" alt="Logo" style={{ width: '200px', height: 'auto' }} />
+              <img src="/logo.png" alt="Logo" style={{ width: '200px', height: 'auto' }} />
             </div>
           </div>
         </Link>
@@ -54,6 +54,11 @@ const Header = ({ cartItems }) => {
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
+        <Link to="/" style={{ textDecoration: 'none' }}>
+            <span id="cart" className="ml-3">
+              Home
+            </span>
+          </Link>
           <Link to="/cart" style={{ textDecoration: 'none' }}>
             <span id="cart" className="ml-3">
               Cart

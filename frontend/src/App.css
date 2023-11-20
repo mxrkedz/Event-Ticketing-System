@@ -401,7 +401,8 @@ footer {
 }
 
 .incomplete {
-  background: #eeeeee;
+  background: #8C8B88;
+  color: white;
 }
 
 .active-step {
@@ -422,7 +423,7 @@ footer {
   width: 0;
   float: left;
   border-top: 20px solid #564E58;
-  border-left: 15px solid #fff;
+  border-left: 15px solid #F2EFE9;
   border-bottom: 20px solid #564E58;
   margin-right: -1px;
 }
@@ -431,7 +432,7 @@ footer {
   float: left;
   width: 0;
   border-top: 20px solid transparent;
-  border-left: 15px solid #eeeeee;
+  border-left: 15px solid #8C8B88;
   border-bottom: 20px solid transparent;
   margin-left: -1px;
 }
@@ -439,9 +440,9 @@ footer {
 .triangle2-incomplete {
   width: 0;
   float: left;
-  border-top: 20px solid #eeeeee;
-  border-left: 15px solid #fff;
-  border-bottom: 20px solid #eeeeee;
+  border-top: 20px solid #8C8B88;
+  border-left: 15px solid #F2EFE9;
+  border-bottom: 20px solid #8C8B88;
   margin-right: -1px;
 }
 

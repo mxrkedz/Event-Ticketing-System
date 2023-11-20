@@ -60,7 +60,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
   return (
     <Fragment>
       <MetaData title={event.name} />
-      <div className="row d-flex justify-content-around">
+      <div className="row d-flex justify-content-around" style={{marginBottom: "10.2%"}}>
         <div className="col-12 col-lg-5 img-fluid" id="product_image">
           <Carousel
             pause="hover"

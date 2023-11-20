@@ -28,7 +28,7 @@ const ConfirmOrder = ({cartItems, shippingInfo}) => {
         <Fragment>
             <MetaData title={'Confirm Order'} />
             <CheckoutSteps shipping confirmOrder />
-            <div className="row d-flex justify-content-between">
+            <div className="row d-flex justify-content-between" style={{marginBottom: "15.2%"}}>
                 <div className="col-12 col-lg-8 mt-5 order-confirm">
                     <h4 className="mb-3">Shipping Info</h4>
                     {getUser() && <p><b>Name:</b> {user && user.name}</p>}

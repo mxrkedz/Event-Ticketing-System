@@ -13,7 +13,7 @@ const OrderSuccess = () => {
 
             <MetaData title={'Order Success'} />
 
-            <div className="row justify-content-center">
+            <div className="row justify-content-center" style={{marginBottom: "20.2%"}}>
                 <div className="col-6 mt-5 text-center">
                     <img className="my-5 img-fluid d-block mx-auto" src="/images/order_success.png" alt="Order Success" width="200" height="200" />
 
