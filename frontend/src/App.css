@@ -280,6 +280,12 @@ footer {
   border: 1px solid #e3e3e3;
   border-radius: 1rem;
   padding: 2rem 1.5rem;
+  width: 30rem;
+}
+
+#order_items{
+  width: 100rem;
+
 }
 
 .order-summary-values {
@@ -649,7 +655,7 @@ ul.CTAs a {
   width: auto;
   padding: 5px 20px;
   border-radius: 3px;
-  background: #BFB48F;
+  background: #904E55;
   text-align: center;
   font-size: 14px;
   font-weight: 600;

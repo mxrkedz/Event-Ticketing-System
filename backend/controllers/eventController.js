@@ -83,7 +83,7 @@ exports.newEvent = async (req, res, next) => {
   };
   exports.getEvents = async (req, res, next) => {
 	try {
-	  const resPerPage = 4;
+	  const resPerPage = 6;
 	  const eventsCount = await Event.countDocuments();
 	  const apiFeatures = new APIFeatures(Event.find(), req.query).search().filter();
   

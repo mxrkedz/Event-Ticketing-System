@@ -42,7 +42,7 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart }) => {
 ) : (
   <Fragment>
   <MetaData title={"Your Cart"} />
-  <div className="container" style={{ marginBottom: '20%' }}>
+  <div className="container w-500" style={{ marginBottom: '20%' }}>
     {cartItems.length === 0 ? (
       <div className="text-center mt-5">
         <h2>Your Cart is Empty!</h2>
@@ -66,7 +66,7 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart }) => {
                 <div className="cart-item">
                   <div className="row">
                     <div className="col-4 col-lg-3">
-                      <img src={item.image} alt="Event" height="150" width="auto" />
+                      <img src={item.image} alt="Event" height="150" width="150" />
                     </div>
 
                     <div className="col-5 col-lg-3">

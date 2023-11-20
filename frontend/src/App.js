@@ -11,7 +11,7 @@ import Cart from "./Components/Cart/Cart";
 import Shipping from "./Components/Cart/Shipping";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
-import Payment from './Components/Cart/Payment';
+import Payment from "./Components/Cart/Payment";
 import EventsList from "./Components/Admin/EventsList";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
+import ProtectedRoute from "./Components/Route/ProtectedRoute";
 
 function App() {
   const [state, setState] = useState({
@@ -136,13 +137,21 @@ function App() {
       // navigate('/')
     }
   };
+
   return (
     <div className="App">
       <Router>
         <Header cartItems={state.cartItems} />
         <Routes>
           <Route path="/" element={<Home />} exact="true" />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/event/:id"
             element={
@@ -204,10 +213,9 @@ function App() {
           <Route path="/me" element={<Profile />} exact="true" />
           {/* Auth End*/}
 
-          <Route path="/admin/events" element={<EventsList />}/>
-          <Route path="/admin/orders" element={<OrdersList />}/>
-          <Route path="/admin/users" element={<UsersList />}/>
-
+          <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />
+          <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
         </Routes>
         <Footer />
       </Router>

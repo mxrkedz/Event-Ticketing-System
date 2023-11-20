@@ -7,10 +7,10 @@ const EventTicket = ({ event }) => {
       <div className="card p-3 rounded">
         {event.images && event.images.length > 0 && (
           <img
-            className="card-img-top mx-auto"
+            className="card-img-top"
             src={event.images[0].url}
             alt={event.name}
-            style={{ width: "auto", maxHeight: "200px" }}
+            style={{ width: "auto", height: "200px" }}
           />
         )}
         <div className="card-body d-flex flex-column">

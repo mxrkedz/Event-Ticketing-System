@@ -17,7 +17,6 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [resPerPage, setResPerPage] = useState(0);
   const [filteredEventsCount, setFilteredEventsCount] = useState(0);
-  const [price, setPrice] = useState([1, 1000]);
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -51,7 +50,7 @@ const Home = () => {
       ) : (
         <Fragment>
           <MetaData title={"Home"} />
-          <div className="container" style={{ marginBottom: '15%' }}>
+          <div className="container" style={{ marginBottom: "15%" }}>
             <h1 className="my-4 text-left">Latest Events</h1>
             <section id="events" className="mt-5">
               <div className="row">

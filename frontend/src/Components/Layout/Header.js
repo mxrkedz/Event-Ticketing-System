@@ -5,6 +5,7 @@ import axios from 'axios';
 import { logout, getUser } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -49,7 +50,7 @@ const Header = ({ cartItems }) => {
           </div>
         </Link>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
-          <h3>Search Area ..................</h3>
+          <h3 style={{color:"white"}}>Search Area @GERARD JAMES MENESES ..................</h3>
           {/* <Search /> */}
         </div>
 
@@ -61,7 +62,7 @@ const Header = ({ cartItems }) => {
           </Link>
           <Link to="/cart" style={{ textDecoration: 'none' }}>
             <span id="cart" className="ml-3">
-              Cart
+              <ShoppingCartIcon/>
             </span>
             <span className="ml-1" id="cart_count">
               {cartItemCount}
