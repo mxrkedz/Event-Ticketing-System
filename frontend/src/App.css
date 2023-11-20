@@ -124,6 +124,7 @@ footer {
   background-color: #252627;
   text-align: center;
   color: white;
+  overflow: hidden; /* or overflow: auto; */
 }
 
 

@@ -9,9 +9,9 @@ import Register from "./Components/User/Register";
 import Profile from "./Components/User/Profile";
 import Cart from "./Components/Cart/Cart";
 import Shipping from "./Components/Cart/Shipping";
-import OrderSuccess from './Components/Cart/OrderSuccess';
+import OrderSuccess from "./Components/Cart/OrderSuccess";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
-import Payment from './Components/Cart/Payment';
+import Payment from "./Components/Cart/Payment";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -83,10 +83,10 @@ function App() {
   const saveShippingInfo = async (data) => {
     setState({
       ...state,
-      shippingInfo: data
-    })
-    localStorage.setItem('shippingInfo', JSON.stringify(data))
-  }
+      shippingInfo: data,
+    });
+    localStorage.setItem("shippingInfo", JSON.stringify(data));
+  };
 
   const updateCart = async (id, quantity) => {
     console.log(id, quantity);
@@ -151,6 +151,7 @@ function App() {
             exact="true"
           />
 
+          {/* Transaction */}
           <Route
             path="/cart"
             element={
@@ -164,21 +165,44 @@ function App() {
             exact="true"
           />
 
-<Route path="/shipping" element={<Shipping
-            shipping={state.shippingInfo}
-            saveShippingInfo={saveShippingInfo}
-          />}
+          <Route
+            path="/shipping"
+            element={
+              <Shipping
+                shipping={state.shippingInfo}
+                saveShippingInfo={saveShippingInfo}
+              />
+            }
           />
-          <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
-          <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route
+            path="/confirm"
+            element={
+              <ConfirmOrder
+                cartItems={state.cartItems}
+                shippingInfo={state.shippingInfo}
+              />
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <Payment
+                cartItems={state.cartItems}
+                shippingInfo={state.shippingInfo}
+              />
+            }
+          />
           <Route path="/success" element={<OrderSuccess />} />
+          {/* Transaction End */}
 
+          {/* Auth */}
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
+          {/* Auth End*/}
 
         </Routes>
-        <Footer/>
+        <Footer />
       </Router>
     </div>
   );

@@ -54,7 +54,7 @@ const Profile = () => {
               </Link>
             </div>
 
-            <div className="col-12 col-md-5">
+            <div className="col-12 col-md-5" style={{marginBottom: "15%"}}>
               <h4>Full Name</h4>
               <p>{user.name}</p>
 
