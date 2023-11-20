@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EventsList = () => {
-    const [events, setEvents] = useState([])
+    const [allEvents, setallEvents] = useState([])
     const [error, setError] = useState('')
     const [deleteError, setDeleteError] = useState('')
     const [users, setUsers] = useState([])
@@ -26,13 +26,13 @@ const EventsList = () => {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    // 'Authorization': `Bearer ${getToken()}`
+                    'Authorization': `Bearer ${getToken()}`
                 }
             }
 
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/events`, config)
             console.log(data)
-            setEvents(data.events)
+            setallEvents(data.events)
             setLoading(false)
         } catch (error) {
 
@@ -73,7 +73,7 @@ const EventsList = () => {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    // 'Authorization': `Bearer ${getToken()}`
+                    'Authorization': `Bearer ${getToken()}`
                 }
             }
             const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/event/${id}`, config)
@@ -85,22 +85,17 @@ const EventsList = () => {
 
         }
     }
+    
 
 
 
-    const eventsList = () => {
+    const eventsList = (allEvents) => {
         const data = {
             columns: [
                 {
-                    label: 'ID',
-                    field: 'id',
-                    sort: 'asc'
-                },
-                {
                     label: 'Name',
                     field: 'name',
-                    sort: 'asc',
-                    
+                    sort: 'asc'
                 },
                 {
                     label: 'Price',
@@ -118,27 +113,31 @@ const EventsList = () => {
                 },
             ],
             rows: []
-        }
-
-        events.forEach(event => {
-            data.rows.push({
-                id: event._id,
-                name: event.name,
-                price: `$${event.price}`,
-                stock: event.stock,
-                actions: <Fragment>
-                    <Link to={`/admin/event/${event._id}`} className="btn btn-primary py-1 px-2">
-                        <i className="fa fa-pencil"></i>
-                    </Link>
-                    <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteEventHandler(event._id)}>
-                        <i className="fa fa-trash"></i>
-                    </button>
-                </Fragment>
-            })
-        })
-
+        };
+    
+        allEvents.forEach((event, index) => {
+            event.tickets.forEach(ticket => {
+                data.rows.push({
+                    id: event._id,
+                    name: event.name,
+                    price: `$${event.ticket.price}`,
+                    stock: event.ticket.stock,
+                    actions: (
+                        <Fragment>
+                            <Link to={`/admin/event/${event._id}`} className="btn btn-primary py-1 px-2">
+                                <i className="fa fa-pencil"></i>
+                            </Link>
+                            <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteEventHandler(event._id)}>
+                                <i className="fa fa-trash"></i>
+                            </button>
+                        </Fragment>
+                    )
+                });
+            });
+        });
+    
         return data;
-    }
+    };
 
     const deleteEventHandler = (id) => {
         deleteEvent(id)
