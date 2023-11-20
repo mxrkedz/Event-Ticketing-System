@@ -86,10 +86,7 @@ const EventsList = () => {
         }
     }
     
-
-
-
-    const eventsList = (allEvents) => {
+    const eventsList = () => {
         const data = {
             columns: [
                 {
@@ -115,30 +112,28 @@ const EventsList = () => {
             rows: []
         };
     
-        allEvents.forEach((event, index) => {
-            event.tickets.forEach(ticket => {
-                data.rows.push({
-                    id: event._id,
-                    name: event.name,
-                    price: `$${event.ticket.price}`,
-                    stock: event.ticket.stock,
-                    actions: (
-                        <Fragment>
-                            <Link to={`/admin/event/${event._id}`} className="btn btn-primary py-1 px-2">
-                                <i className="fa fa-pencil"></i>
-                            </Link>
-                            <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteEventHandler(event._id)}>
-                                <i className="fa fa-trash"></i>
-                            </button>
-                        </Fragment>
-                    )
-                });
+        allEvents.forEach(event => {
+            data.rows.push({
+                id: event._id,
+                name: event.name,
+                price: `$${event.price}`,
+                stock: event.stock,
+                actions: (
+                    <Fragment>
+                        <Link to={`/admin/event/${event._id}`} className="btn btn-primary py-1 px-2">
+                            <i className="fa fa-pencil"></i>
+                        </Link>
+                        <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteEventHandler(event._id)}>
+                            <i className="fa fa-trash"></i>
+                        </button>
+                    </Fragment>
+                )
             });
         });
     
         return data;
-    };
-
+    }
+    
     const deleteEventHandler = (id) => {
         deleteEvent(id)
     }
