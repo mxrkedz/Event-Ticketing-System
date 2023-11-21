@@ -21,6 +21,8 @@ import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
+import ListOrders from "./Components/Order/ListOrders";
+import OrderDetails from "./Components/Order/OrderDetails";
 
 function App() {
   const [state, setState] = useState({
@@ -163,6 +165,7 @@ function App() {
             }
             exact="true"
           />
+          <Route path="/search/:keyword" element={<Home />} exact="true" />
 
           {/* Transaction */}
           <Route
@@ -196,7 +199,6 @@ function App() {
               />
             }
           />
-          <Route path="/google" element={<GoogleLogin/>}/>
           <Route
             path="/payment"
             element={
@@ -207,6 +209,8 @@ function App() {
             }
           />
           <Route path="/success" element={<OrderSuccess />} />
+          <Route path="/orders/me" element={<ListOrders />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
           {/* Transaction End */}
 
           {/* Auth */}
@@ -215,9 +219,30 @@ function App() {
           <Route path="/me" element={<Profile />} exact="true" />
           {/* Auth End*/}
 
-          <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />
-          <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
+          <Route
+            path="/admin/events"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <EventsList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <OrdersList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UsersList />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
         </Routes>
         <Footer />

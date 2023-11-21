@@ -31,6 +31,8 @@ export default function MonthlySalesChart() {
     }, [])
 
     return (
+        <div>
+            <h2>Monthly Sales Chart</h2>
         <ResponsiveContainer width="90%" height={600}>
             <LineChart width={600} height={300} data={sales} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 <Line type="monotone" dataKey="total" stroke="#8884d8" />
@@ -40,7 +42,7 @@ export default function MonthlySalesChart() {
                 <Tooltip />
             </LineChart>
         </ResponsiveContainer>
-
+        </div>
 
     );
 }

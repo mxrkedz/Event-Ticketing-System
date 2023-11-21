@@ -67,6 +67,8 @@ export default function EventSalesChart({ data }) {
 
 
     return (
+        <div>
+            <h2>Event Sales Chart</h2>
         <ResponsiveContainer width="90%" height={1000}>
             <PieChart width={1000} height={1000}>
                 <Pie data={data} dataKey="percent" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
@@ -90,6 +92,8 @@ export default function EventSalesChart({ data }) {
                 <Legend layout="vertical" verticalAlign="top" align="center" />
             </PieChart>
         </ResponsiveContainer>
+        </div>
+
 
 
     );
