@@ -8,6 +8,9 @@ import { getToken } from '../../utils/helpers';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserSalesChart from './UserSalesChart'
+import EventSalesChart from './EventSalesChart'
+import MonthlySalesChart from './MonthlySalesChart'
 
 const Dashboard = () => {
 
@@ -29,7 +32,7 @@ const Dashboard = () => {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    // 'Authorization': `Bearer ${getToken()}`
+                    'Authorization': `Bearer ${getToken()}`
                 }
             }
 
@@ -91,9 +94,9 @@ const Dashboard = () => {
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-danger o-hidden h-100">
 
-                                        {/* <div className="card-body">
+                                        <div className="card-body">
                                             <div className="text-center card-font-size">Orders<br /> <b>{orders && orders.length}</b></div>
-                                        </div> */}
+                                        </div>
 
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/orders">
                                             <span className="float-left">View Details</span>
@@ -108,9 +111,9 @@ const Dashboard = () => {
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-info o-hidden h-100">
 
-                                        {/* <div className="card-body">
+                                        <div className="card-body">
                                             <div className="text-center card-font-size">Users<br /> <b>{users && users.length}</b></div>
-                                        </div> */}
+                                        </div>
 
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/users">
                                             <span className="float-left">View Details</span>
@@ -128,7 +131,20 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             </div>
+                            <Fragment>
+                                <UserSalesChart />
+                            </Fragment>
+                            <Fragment>
+                                <MonthlySalesChart />
+                            </Fragment>
+                            <Fragment>
+                                <EventSalesChart />
+                            </Fragment>
+
                         </Fragment>
+
+                        
+                        
                     )}
                 </div>
             </div>
