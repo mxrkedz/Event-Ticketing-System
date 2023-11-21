@@ -20,6 +20,7 @@ import axios from "axios";
 import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
+import ProcessOrder from "./Components/Admin/ProcessOrder";
 
 function App() {
   const [state, setState] = useState({
@@ -216,6 +217,7 @@ function App() {
           <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
+          <Route path="/admin/order/:id" element={<ProcessOrder />} />
         </Routes>
         <Footer />
       </Router>
