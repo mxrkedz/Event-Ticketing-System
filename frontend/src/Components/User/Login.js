@@ -40,7 +40,7 @@ const Login = () => {
         navigate(`/${redirect}`);
         setTimeout(() => {
           window.location.reload();
-        }, 100); // Adjust the delay as needed
+        }, 100);
       });
     } catch (error) {
       toast.error("Invalid email or password", {
@@ -48,19 +48,17 @@ const Login = () => {
       });
     }
   };
-
   const submitHandler = (e) => {
     e.preventDefault();
 
     // Validation checks
     if (!email.trim() || !password.trim()) {
-      notify('Please enter both email and password');
+      notify("Please enter both email and password");
       return;
     }
 
     login(email, password);
   };
-
   useEffect(() => {
     if (getUser() && redirect === "shipping") {
       navigate(`/${redirect}`);
@@ -75,7 +73,7 @@ const Login = () => {
         <Fragment>
           <Metadata title={"Login"} />
 
-          <div className="row wrapper" style={{marginBottom: "17.9%"}}>
+          <div className="row wrapper" style={{ marginBottom: "17.9%" }}>
             <div className="col-10 col-lg-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
                 <h1 className="mb-3">Login</h1>
@@ -119,7 +117,7 @@ const Login = () => {
               </form>
             </div>
           </div>
-          <ToastContainer/>
+          <ToastContainer />
         </Fragment>
       )}
     </Fragment>

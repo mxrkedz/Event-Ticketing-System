@@ -20,6 +20,7 @@ import axios from "axios";
 import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
+import { GoogleLogin } from "@react-oauth/google";
 
 function App() {
   const [state, setState] = useState({
@@ -195,6 +196,7 @@ function App() {
               />
             }
           />
+          <Route path="/google" element={<GoogleLogin/>}/>
           <Route
             path="/payment"
             element={
