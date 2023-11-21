@@ -7,6 +7,8 @@ import EventDetails from "./Components/EventTicket/EventDetails";
 import Login from "./Components/User/Login";
 import Register from "./Components/User/Register";
 import Profile from "./Components/User/Profile";
+import UpdatePassword from "./Components/User/UpdatePassword";
+import NewPassword from "./Components/User/NewPassword";
 import Cart from "./Components/Cart/Cart";
 import Shipping from "./Components/Cart/Shipping";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
@@ -144,6 +146,7 @@ function App() {
       <Router>
         <Header cartItems={state.cartItems} />
         <Routes>
+          
           <Route path="/" element={<Home />} exact="true" />
           <Route
             path="/dashboard"
@@ -212,6 +215,8 @@ function App() {
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />          
+          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
           {/* Auth End*/}
 
           <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />

@@ -19,7 +19,7 @@ const Profile = () => {
       }
     }
     try {
-      const { data } = await axios.get(`http://localhost:4001/api/v1/me`, config)
+      const { data } = await axios.get('http://localhost:4001/api/v1/me', config)
       console.log(data)
       setUser(data.user)
       setLoading(false)
@@ -54,7 +54,7 @@ const Profile = () => {
               </Link>
             </div>
 
-            <div className="col-12 col-md-5" style={{marginBottom: "15%"}}>
+            <div className="col-12 col-md-5">
               <h4>Full Name</h4>
               <p>{user.name}</p>
 
