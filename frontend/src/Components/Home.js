@@ -7,6 +7,13 @@ import Loader from "./Layout/Loader";
 // import Slider from 'rc-slider';
 // import 'rc-slider/assets/index.css';
 import { useParams } from "react-router-dom";
+import Carousel from './Layout/Carousel';
+
+const categories = [
+  "Convention", 
+  "Expo", 
+  "Music"
+];
 
 const Home = () => {
   let { keyword } = useParams();
@@ -17,6 +24,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [resPerPage, setResPerPage] = useState(0);
   const [filteredEventsCount, setFilteredEventsCount] = useState(0);
+  const [category, setCategory] = useState("");
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -25,7 +33,11 @@ const Home = () => {
   const getEvents = async (page = 1, keyword = "") => {
     let link = "";
 
-    link = `http://localhost:4001/api/v1/events/?page=${page}&keyword=${keyword}`;
+    link = `${process.env.REACT_APP_API}/api/v1/events/?page=${page}&keyword=${keyword}`;
+
+    if (category) {
+      link = `${process.env.REACT_APP_API}/api/v1/events?keyword=${keyword}&page=${currentPage}&category=${category}`;
+    }
 
     console.log(link);
     let res = await axios.get(link);
@@ -36,8 +48,8 @@ const Home = () => {
     setLoading(false);
   };
   useEffect(() => {
-    getEvents(currentPage, keyword);
-  }, [currentPage, keyword]);
+    getEvents(currentPage, keyword, category);
+  }, [currentPage, keyword, category]);
 
   let count = eventsCount;
   if (keyword) {
@@ -50,8 +62,13 @@ const Home = () => {
       ) : (
         <Fragment>
           <MetaData title={"Home"} />
+          <div>
+          <Carousel events={events} />
+
+          </div>
           <div className="container" style={{ marginBottom: "15%" }}>
             <h1 className="my-4 text-left">Latest Events</h1>
+            <hr/>
             <section id="events" className="mt-5">
               <div className="row">
                 {events &&
