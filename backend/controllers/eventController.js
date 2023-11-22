@@ -202,8 +202,6 @@ exports.deleteEvent = async (req, res, next) => {
 	  res.status(500).json({ error: `Error deleting event: ${error.message}` });
 	}
 };
-  
-
 exports.updateProduct = async (req, res, next) => {
 	let product = await Product.findById(req.params.id);
 	// console.log(req.body)
@@ -255,7 +253,6 @@ exports.updateProduct = async (req, res, next) => {
 	})
 
 }
-
 exports.eventSales = async (req, res, next) => {
     const totalSales = await Order.aggregate([
         {

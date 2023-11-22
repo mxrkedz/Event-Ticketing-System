@@ -46,10 +46,48 @@ const Dashboard = () => {
     }
   };
 
+  const getAdminOrders = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/admin/orders`,
+        config
+      );
+      setOrders(data.orders);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
+  const getAdminUsers = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getToken()}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/admin/users`,
+        config
+      );
+      setUsers(data.users);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
   useEffect(() => {
     getAdminEvents();
-    // allOrders()
-    // allUsers()
+    getAdminOrders(); // Call the function to fetch orders
+    getAdminUsers(); // Call the function to fetch users
   }, []);
 
   return (
@@ -68,18 +106,9 @@ const Dashboard = () => {
             <Fragment>
               <MetaData title={"Admin Dashboard"} />
 
-              <div className="row pr-4">
-                <div className="col-xl-12 col-sm-12 mb-3">
-                  <div className="card text-white bg-primary o-hidden h-100">
-                    <div className="card-body">
-                      {/* <div className="text-center card-font-size">Total Amount<br /> <b>${totalAmount && totalAmount.toFixed(2)}</b>
-                                            </div> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row pr-4">
-                <div className="col-xl-3 col-sm-6 mb-3">
+              {/*  */}
+              <div className="row pr-4 chart-container ">
+                <div className="col-xl-3 col-sm-6 mb-3 chart-wrapper">
                   <div className="card text-white bg-success o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
@@ -99,7 +128,7 @@ const Dashboard = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="col-xl-3 col-sm-6 mb-3">
+                <div className="col-xl-3 col-sm-6 mb-3 chart-wrapper">
                   <div className="card text-white bg-danger o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
@@ -120,7 +149,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="col-xl-3 col-sm-6 mb-3">
+                <div className="col-xl-3 col-sm-6 mb-3 chart-wrapper">
                   <div className="card text-white bg-info o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
@@ -140,7 +169,7 @@ const Dashboard = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="col-xl-3 col-sm-6 mb-3">
+                <div className="col-xl-3 col-sm-6 mb-3 chart-wrapper">
                   <div className="card text-white bg-warning o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">

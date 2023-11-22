@@ -5,7 +5,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 
 const sendOrderConfirmationEmail = async (userEmail, orderId) => {
-  const orderConfirmationUrl = `http://localhost:4001/api/v1/order/${orderId}`;
+  const orderConfirmationUrl = `http://localhost:3000/git order/${orderId}`;
 
   const message = `<h1>Thank you for choosing Ticket Tekcit!</h1>
    <p>Your order has been confirmed, and we're thrilled to be part of your event experience. You can review the details of your order by clicking on the link below:</p>
