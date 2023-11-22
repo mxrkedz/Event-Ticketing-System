@@ -22,7 +22,11 @@ const Search = () => {
                     type="text"
                     id="search_field"
                     className="form-control"
+<<<<<<< HEAD
                     placeholder="Enter Product Name ..."
+=======
+                    placeholder="Search Events ..."
+>>>>>>> e46c7ae039b5db5689acbe56436a73bae4440f3a
                     onChange={(e) => setKeyword(e.target.value)}
                 />
                 <div className="input-group-append">

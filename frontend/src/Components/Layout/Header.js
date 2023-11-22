@@ -7,6 +7,7 @@ import { logout, getUser } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Search from './Search';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -51,8 +52,12 @@ const Header = ({ cartItems }) => {
           </div>
         </Link>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
+<<<<<<< HEAD
 
 					<Search />
+=======
+          <Search />
+>>>>>>> e46c7ae039b5db5689acbe56436a73bae4440f3a
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">

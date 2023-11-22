@@ -7,6 +7,8 @@ import EventDetails from "./Components/EventTicket/EventDetails";
 import Login from "./Components/User/Login";
 import Register from "./Components/User/Register";
 import Profile from "./Components/User/Profile";
+import UpdatePassword from "./Components/User/UpdatePassword";
+import NewPassword from "./Components/User/NewPassword";
 import Cart from "./Components/Cart/Cart";
 import Shipping from "./Components/Cart/Shipping";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
@@ -21,8 +23,13 @@ import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
+<<<<<<< HEAD
 import NewEvent from "./Components/Admin/NewEvent";
 import UpdateEvent from "./Components/Admin/UpdateEvent";
+=======
+import ListOrders from "./Components/Order/ListOrders";
+import OrderDetails from "./Components/Order/OrderDetails";
+>>>>>>> e46c7ae039b5db5689acbe56436a73bae4440f3a
 
 function App() {
   const [state, setState] = useState({
@@ -146,6 +153,7 @@ function App() {
       <Router>
         <Header cartItems={state.cartItems} />
         <Routes>
+          
           <Route path="/" element={<Home />} exact="true" />
           <Route
             path="/dashboard"
@@ -165,6 +173,7 @@ function App() {
             }
             exact="true"
           />
+          <Route path="/search/:keyword" element={<Home />} exact="true" />
 
           {/* Transaction */}
           <Route
@@ -208,18 +217,49 @@ function App() {
             }
           />
           <Route path="/success" element={<OrderSuccess />} />
+          <Route path="/orders/me" element={<ListOrders />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
           {/* Transaction End */}
 
           {/* Auth */}
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />          
+          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
           {/* Auth End*/}
 
+<<<<<<< HEAD
           <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
           <Route path="/search/:keyword" element={<Home />} exact="true" />
+=======
+          <Route
+            path="/admin/events"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <EventsList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <OrdersList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UsersList />
+              </ProtectedRoute>
+            }
+          />
+>>>>>>> e46c7ae039b5db5689acbe56436a73bae4440f3a
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
           <Route path="/admin/event" element={<NewEvent/>} />
           <Route path="/admin/event/:id" element={<UpdateEvent/>}/>

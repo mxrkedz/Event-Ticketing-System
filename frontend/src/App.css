@@ -683,3 +683,17 @@ ul.CTAs a {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ChartContainer.css */
+
+.chart-container {
+  margin-bottom: 20px;
+}
+
+.chart-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
