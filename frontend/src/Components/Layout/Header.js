@@ -1,12 +1,12 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
+import Search from './Search'
 import axios from 'axios';
 import { logout, getUser } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Search from './Search';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -51,7 +51,8 @@ const Header = ({ cartItems }) => {
           </div>
         </Link>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
-          <Search />
+
+					<Search />
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">

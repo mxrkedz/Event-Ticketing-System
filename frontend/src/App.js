@@ -25,6 +25,8 @@ import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
 import ListOrders from "./Components/Order/ListOrders";
 import OrderDetails from "./Components/Order/OrderDetails";
+import NewEvent from "./Components/Admin/NewEvent"
+import UpdateEvent from "./Components/Admin/UpdateEvent"
 
 function App() {
   const [state, setState] = useState({
@@ -249,6 +251,8 @@ function App() {
             }
           />
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
+          <Route path="/admin/event" element={<NewEvent/>} />
+          <Route path="/admin/event/:id" element={<UpdateEvent/>}/>
         </Routes>
         <Footer />
       </Router>
