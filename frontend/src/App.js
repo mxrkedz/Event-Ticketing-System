@@ -21,6 +21,8 @@ import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
+import NewEvent from "./Components/Admin/NewEvent";
+import UpdateEvent from "./Components/Admin/UpdateEvent";
 
 function App() {
   const [state, setState] = useState({
@@ -217,7 +219,10 @@ function App() {
           <Route path="/admin/events" element={<ProtectedRoute isAdmin={true}><EventsList /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}><OrdersList /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute isAdmin={true}><UsersList /></ProtectedRoute>} />
+          <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
+          <Route path="/admin/event" element={<NewEvent/>} />
+          <Route path="/admin/event/:id" element={<UpdateEvent/>}/>
         </Routes>
         <Footer />
       </Router>

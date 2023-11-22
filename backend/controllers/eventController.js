@@ -3,90 +3,140 @@ const Order = require('../models/order')
 const APIFeatures = require('../utils/apiFeatures')
 const cloudinary = require('cloudinary')
 
-exports.newEvent = async (req, res, next) => {
-	// console.log(req.body);
-	try {
-		if(req.files){
-			req.body.images = req.files
-		}
-	  if (!req.body.images) {
-		return res.status(400).json({
-		  success: false,
-		  message: 'Images are required for creating a new event',
-		});
-	  }
+// exports.newEvent = async (req, res, next) => {
+// 	// console.log(req.body);
+// 	try {
+// 		if(req.files){
+// 			req.body.images = req.files
+// 		}
+// 	  if (!req.body.images) {
+// 		return res.status(400).json({
+// 		  success: false,
+// 		  message: 'Images are required for creating a new event',
+// 		});
+// 	  }
   
-	  let imagesLinks = [];
+// 	  let imagesLinks = [];
   
-	  for (let i = 0; i < req.body.images.length; i++) {
-		let imageDataUri = req.body.images[i].path; //tanggalin yung .path pag front end na
-		try {
-		  const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
-			folder: 'eventTickets/products',
-			width: 150,
-			crop: 'scale',
-		  });
+// 	  for (let i = 0; i < req.body.images.length; i++) {
+// 		let imageDataUri = req.body.images[i]; //tanggalin yung .path pag front end na
+// 		try {
+// 		  const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
+// 			folder: 'eventTickets/products',
+// 			width: 150,
+// 			crop: 'scale',
+// 		  });
   
-		  imagesLinks.push({
-			public_id: result.public_id,
-			url: result.secure_url,
-		  });
-		} catch (error) {
-		  console.error(`Error uploading image to Cloudinary: ${error}`);
-		}
-	  }
+// 		  imagesLinks.push({
+// 			public_id: result.public_id,
+// 			url: result.secure_url,
+// 		  });
+// 		} catch (error) {
+// 		  console.error(`Error uploading image to Cloudinary: ${error}`);
+// 		}
+// 	  }
   
-	  req.body.images = imagesLinks;
-	  req.body.user = req.user.id;
+// 	  req.body.images = imagesLinks;
+// 	  req.body.user = req.user.id;
   
-	//   const event = await Event.create(req.body);
-	const { name, 
-		startDate, 
-		endDate, 
-		location, 
-		category, 
-		description, 
-		organizer, 
-		price,
-		stock} = req.body;
+// 	//   const event = await Event.create(req.body);
+// 	const { name, 
+// 		startDate, 
+// 		endDate, 
+// 		location, 
+// 		category, 
+// 		description, 
+// 		organizer, 
+// 		price,
+// 		stock} = req.body;
 
-		const event = await Event.create({
-			name,
-			startDate,
-			endDate,
-			location,
-			category,
-			description,
-			organizer,
-			price,
-			stock,
-			images: imagesLinks
-		})
-	  if (!event) {
-		return res.status(400).json({
-		  success: false,
-		  message: 'Event not created',
-		});
-	  }
+// 		const event = await Event.create({
+// 			name,
+// 			startDate,
+// 			endDate,
+// 			location,
+// 			category,
+// 			description,
+// 			organizer,
+// 			price,
+// 			stock,
+// 			images: imagesLinks
+// 		})
+// 	  if (!event) {
+// 		return res.status(400).json({
+// 		  success: false,
+// 		  message: 'Event not created',
+// 		});
+// 	  }
   
-	  res.status(201).json({
-		success: true,
-		event,
-	  });
-	} catch (error) {
-	  console.error(`Error creating a new event: ${error}`);
-	  // You can choose to handle the error in a more detailed manner or send a specific error response.
-	  res.status(500).json({
-		success: false,
-		error: `Error creating a new event: ${error}`,
-	  });
+// 	  res.status(201).json({
+// 		success: true,
+// 		event,
+// 	  });
+// 	} catch (error) {
+// 	  console.error(`Error creating a new event: ${error}`);
+// 	  // You can choose to handle the error in a more detailed manner or send a specific error response.
+// 	  res.status(500).json({
+// 		success: false,
+// 		error: `Error creating a new event: ${error}`,
+// 	  });
+// 	}
+//   };
+
+exports.newEvent = async (req, res, next) => {
+
+	let images = []
+	if (typeof req.body.images === 'string') {
+		images.push(req.body.images)
+	} else {
+		images = req.body.images
 	}
-  };
+
+	let imagesLinks = [];
+
+	for (let i = 0; i < images.length; i++) {
+		let imageDataUri = images[i]
+		// console.log(imageDataUri)
+		try {
+			const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
+				folder: 'event',
+				width: 150,
+				crop: "scale",
+			});
+	
+			 imagesLinks.push({
+				public_id: result.public_id,
+				url: result.secure_url
+			})
+			
+		} catch (error) {
+			console.log(error)
+		}
+		
+	}
+
+	req.body.images = imagesLinks
+	req.body.user = req.user.id;
+
+	const event = await Event.create(req.body);
+	if (!event)
+		return res.status(400).json({
+			success: false,
+			message: 'Event not created'
+		})
+
+
+	res.status(201).json({
+		success: true,
+		event
+	})
+}
+
   exports.getEvents = async (req, res, next) => {
 	try {
 	  const resPerPage = 6;
 	  const eventsCount = await Event.countDocuments();
-	  const apiFeatures = new APIFeatures(Event.find(), req.query).search().filter();
+	  const apiFeatures = new APIFeatures(Event.find(), req.query).search().filter().category(['Convention', 'Expo', 'Music']).pagination(resPerPage);
   
 	  apiFeatures.pagination(resPerPage);
 	  const events = await apiFeatures.query;
@@ -204,13 +254,13 @@ exports.deleteEvent = async (req, res, next) => {
 };
   
 
-exports.updateProduct = async (req, res, next) => {
-	let product = await Product.findById(req.params.id);
+exports.updateEvent = async (req, res, next) => {
+	let event = await Event.findById(req.params.id);
 	// console.log(req.body)
-	if (!product) {
+	if (!event) {
 		return res.status(404).json({
 			success: false,
-			message: 'Product not found'
+			message: 'Event not found'
 		})
 	}
 	let images = []
@@ -221,15 +271,15 @@ exports.updateProduct = async (req, res, next) => {
 		images = req.body.images
 	}
 	if (images !== undefined) {
-		// Deleting images associated with the product
-		for (let i = 0; i < product.images.length; i++) {
-			const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+		// Deleting images associated with the event
+		for (let i = 0; i < event.images.length; i++) {
+			const result = await cloudinary.v2.uploader.destroy(event.images[i].public_id)
 		}
 	}
 	let imagesLinks = [];
 	for (let i = 0; i < images.length; i++) {
 		const result = await cloudinary.v2.uploader.upload(images[i], {
-			folder: 'products'
+			folder: 'events'
 		});
 		imagesLinks.push({
 			public_id: result.public_id,
@@ -238,20 +288,20 @@ exports.updateProduct = async (req, res, next) => {
 
 	}
 	req.body.images = imagesLinks
-	product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+	event = await Event.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
 		useFindandModify: false
 	})
-	if (!product)
+	if (!event)
 		return res.status(400).json({
 			success: false,
-			message: 'Product not updated'
+			message: 'Event not updated'
 		})
-	// console.log(product)
+	// console.log(event)
 	return res.status(200).json({
 		success: true,
-		product
+		event
 	})
 
 }

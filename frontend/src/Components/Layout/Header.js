@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
+import Search from './Search'
 import axios from 'axios';
 import { logout, getUser } from '../../utils/helpers';
 import { toast } from 'react-toastify';
@@ -50,8 +51,8 @@ const Header = ({ cartItems }) => {
           </div>
         </Link>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
-          <h3 style={{color:"white"}}>Search Area @GERARD JAMES MENESES ..................</h3>
-          {/* <Search /> */}
+
+					<Search />
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">

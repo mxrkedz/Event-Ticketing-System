@@ -8,6 +8,9 @@ import Loader from "./Layout/Loader";
 // import 'rc-slider/assets/index.css';
 import { useParams } from "react-router-dom";
 
+
+
+
 const Home = () => {
   let { keyword } = useParams();
   const [loading, setLoading] = useState(true);
