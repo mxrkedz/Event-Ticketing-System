@@ -54,7 +54,7 @@ const NewPassword = () => {
     return (
         <Fragment>
             <MetaData title={'New Password Reset'} />
-            <div className="row wrapper">
+            <div className="row wrapper" style={{marginBottom:"17%"}}>
                 <div className="col-10 col-lg-5">
                     <form className="shadow-lg" onSubmit={submitHandler}>
                         <h1 className="mb-3">New Password</h1>

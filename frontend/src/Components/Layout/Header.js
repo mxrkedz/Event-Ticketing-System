@@ -7,6 +7,7 @@ import { logout, getUser } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -63,14 +64,13 @@ const Header = ({ cartItems }) => {
           </Link>
           <Link to="/cart" style={{ textDecoration: 'none' }}>
             <span id="cart" className="ml-3">
+            <Badge badgeContent={cartItemCount} color="error" showZero>
               <ShoppingCartIcon/>
-            </span>
-            <span className="ml-1" id="cart_count">
-              {cartItemCount}
+              </Badge>
             </span>
           </Link>
           {user ? (
-            <div className="ml-4 dropdown d-inline">
+            <div className="ml-3 dropdown d-inline">
               <Link
                 to="#!"
                 className="btn dropdown-toggle text-white mr-4"
@@ -105,9 +105,14 @@ const Header = ({ cartItems }) => {
               </div>
             </div>
           ) : (
-            <Link to="/login" className="btn ml-4" id="login_btn">
-              Login
-            </Link>
+            <Fragment>
+              <Link to="/login" className="btn ml-4" id="login_btn" style={{ color: 'white' }}>
+                Login
+              </Link>
+              <Link to="/register" className="btn ml-2" id="login_btn" style={{ color: 'white' }}>
+                Register
+              </Link>
+            </Fragment>
           )}
         </div>
       </nav>

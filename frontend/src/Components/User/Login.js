@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { authenticate, getUser } from "../../utils/helpers";
+import OAuth from "./OAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -110,6 +111,7 @@ const Login = () => {
                 >
                   LOGIN
                 </button>
+                <OAuth/>
 
                 <Link to="/register" className="float-right mt-3">
                   New User?

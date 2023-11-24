@@ -16,22 +16,25 @@ class APIFeatures {
     }
 
     filter() {
-        const queryCopy = { ...this.queryStr };
-        const removeFields = ['keyword', 'limit', 'page'];
-        removeFields.forEach(el => delete queryCopy[el]);
 
+        const queryCopy = { ...this.queryStr };
+        const removeFields = ['keyword', 'limit', 'page']
+        removeFields.forEach(el => delete queryCopy[el]);
         let queryStr = JSON.stringify(queryCopy);
-        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
-        this.query = this.query.where(JSON.parse(queryStr));
+        console.log(queryStr);
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`)
+        console.log(JSON.parse(queryStr));
+        this.query = this.query.find(JSON.parse(queryStr));
         return this;
     }
 
-    category(categories) {
-        if (categories && categories.length > 0) {
-            this.query = this.query.where({ category: { $in: categories } });
+    category() {
+        const validCategories = ["Convention", "Music", "Expo"];
+        if (this.queryStr.category && validCategories.includes(this.queryStr.category.toLowerCase())) {
+          this.query = this.query.find({ category: this.queryStr.category.toLowerCase() });
         }
         return this;
-    }
+      }
 
     pagination(resPerPage) {
         const currentPage = Number(this.queryStr.page) || 1;

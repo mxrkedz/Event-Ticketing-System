@@ -16,7 +16,7 @@ const CarouselFP = ({ events }) => {
       activeIndex={currentEventIndex}
       onSelect={(selectedIndex) => setCurrentEventIndex(selectedIndex)}
       pause="hover"
-      style={{ height: "600px", overflow: "hidden" }}
+      style={{ height: "600px", width: "100%", overflow: "hidden" }}
     >
       {events.map((event, index) => (
         <Carousel.Item key={index}>
@@ -28,29 +28,18 @@ const CarouselFP = ({ events }) => {
                 alt={event.name}
                 style={{
                   objectFit: "cover",
-                  height: "100%",
-                  maxHeight: "600px",
+                  height: "600px",
                 }}
               />
               <Carousel.Caption>
-                <div style={{ padding: "15rem" }}>
-                  <h1
-                    style={{
-                      textShadow:
-                        "-1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black",
-                    }}
-                  >
-                    {event.name}
-                  </h1>
-                  <Link
-                    to={`/event/${event._id}`}
-                    id="view_btn"
-                    className="btn btn-block"
-                    style={{ maxWidth: "200px", margin: "0 auto" }}
-                  >
-                    <b>BUY TICKETS</b>
-                  </Link>
-                </div>
+                <h1
+                  style={{
+                    textShadow:
+                      "-1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black",
+                  }}
+                >
+                  {event.name}
+                </h1>
               </Carousel.Caption>
             </>
           )}

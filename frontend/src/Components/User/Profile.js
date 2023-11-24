@@ -53,25 +53,25 @@ const Profile = () => {
   <div className="row justify-content-center mt-5">
     <div className="col-12 col-md-6 mx-auto">
               <div className="profileCard">
-                <div class="profileCard_img">
+                <div className="profileCard_img">
                   <img
-                    className="rounded-circle img-fluid"
+                    className="img-fluid"
                     src={user.avatar.url}
                     alt={user.name}
                   />
                 </div>
-                <div class="card__name">
+                <div className="card__name">
                   <h2>{user.name}</h2>
                 </div>
 
-                <div class="card__email">
+                <div className="card__email">
                   <span>{user.email}</span>
                   <h2 style={{ marginTop: "10px", marginBottom: "-5px" }}>
                     Joined On
                   </h2>
                   <span>{String(user.createdAt).substring(0, 10)}</span>
                 </div>
-                <div class="card__btn">
+                <div className="card__btn">
                   <Link
                     to="/me/update"
                     id="edit_profile"

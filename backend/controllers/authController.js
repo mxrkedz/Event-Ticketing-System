@@ -3,6 +3,7 @@ const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto')
 const cloudinary = require('cloudinary')
+const bcrypt = require('bcryptjs');
 
 exports.checkEmail = async (req, res, next) => {
     try {
@@ -42,6 +43,60 @@ exports.registerUser = async (req, res, next) => {
     sendToken(user, 200, res)
 }
 
+exports.google = async (req, res, next) => {
+    try {
+      const { email, name, avatar } = req.body;
+  
+      // Check if the user already exists
+      const existingUser = await User.findOne({ email });
+  
+      let avatarData;
+  
+      if (avatar) {
+        // Upload avatar to Cloudinary
+        await cloudinary.v2.uploader.upload(avatar, {
+          folder: 'avatars',
+          width: 150,
+          crop: 'scale',
+        }, (err, result) => {
+          if (err) {
+            console.error('Error uploading avatar to Cloudinary:', err);
+            throw err;
+          }
+          avatarData = {
+            public_id: result.public_id,
+            url: result.secure_url,
+          };
+        });
+      }
+  
+      if (existingUser) {
+        // User exists, log in the user
+        // You may generate a token or create a session here
+        sendToken(existingUser, 200, res);
+      } else {
+        // User doesn't exist, create a new user
+        const randomPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(randomPassword, 10);
+  
+        const newUser = new User({
+          name,
+          email,
+          password: hashedPassword,
+          avatar: avatarData,
+        });
+  
+        await newUser.save();
+  
+        // Log in the new user
+        sendToken(newUser, 201, res);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  
 exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 

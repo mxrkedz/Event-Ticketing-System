@@ -82,7 +82,7 @@ const ProcessOrder = () => {
         updateOrder(id, formData)
     }
 
-    const shippingDetails = shippingInfo && `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`
+    const shippingDetails = shippingInfo && ` ${shippingInfo.country}`
     const isPaid = paymentInfo && paymentInfo.status === 'succeeded' ? true : false
     return (
         <Fragment>

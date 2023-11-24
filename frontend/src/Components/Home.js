@@ -7,13 +7,10 @@ import Loader from "./Layout/Loader";
 // import Slider from 'rc-slider';
 // import 'rc-slider/assets/index.css';
 import { useParams } from "react-router-dom";
-import Carousel from './Layout/Carousel';
+import Carousel from "./Layout/Carousel";
+import CloseIcon from '@mui/icons-material/Close';
 
-const categories = [
-  "Convention", 
-  "Expo", 
-  "Music"
-];
+const categories = ["Convention", "Expo", "Music"];
 
 const Home = () => {
   let { keyword } = useParams();
@@ -51,6 +48,10 @@ const Home = () => {
     getEvents(currentPage, keyword, category);
   }, [currentPage, keyword, category]);
 
+  const clearCategory = () => {
+    setCategory("");
+  };
+
   let count = eventsCount;
   if (keyword) {
     count = filteredEventsCount;
@@ -62,13 +63,39 @@ const Home = () => {
       ) : (
         <Fragment>
           <MetaData title={"Home"} />
-          <div>
-          <Carousel events={events} />
-
+          <div style={{ height: "500px", width: "100%", marginBottom: "8%" }}>
+            <Carousel events={events} />
           </div>
           <div className="container" style={{ marginBottom: "5%" }}>
             <h1 className="my-4 text-left">Latest Events</h1>
-            <hr/>
+            <hr />
+            <div>
+        <ul
+          className="pl-0"
+          style={{ display: "flex", listStyle: "none", padding: 0 }}
+        >
+          {categories.map((cat) => (
+            <li
+              key={cat}
+              className={`category_btn ${category === cat ? "active" : ""}`}
+              style={{
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+              onClick={() => setCategory(cat)}
+            >
+              {cat}
+            </li>
+          ))}
+          {category && (
+            <li className="clear_btn" onClick={clearCategory}>
+              <CloseIcon/> Clear
+            </li>
+          )}
+        </ul>
+      </div>
+            <hr />
+
             <section id="events" className="mt-5">
               <div className="row">
                 {events &&

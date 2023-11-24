@@ -1,28 +1,29 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Metadata from '../Layout/MetaData';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Metadata from "../Layout/MetaData";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import OAuth from "./OAuth";
 
 const Register = () => {
   const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const { name, email, password } = user;
 
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
-    '/assets/img/default_avatar.jpg',
+    "/assets/img/default_avatar.jpg"
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const notify = (message, type = 'error') =>
+  const notify = (message, type = "error") =>
     toast[type](message, {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
@@ -30,11 +31,11 @@ const Register = () => {
   let navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate("/");
     }
     if (error) {
       console.log(error);
-      notify(error.message || 'An error occurred');
+      notify(error.message || "An error occurred");
       setError();
     }
   }, [error, isAuthenticated]);
@@ -45,7 +46,7 @@ const Register = () => {
     // Validation checks
     if (!name || !email || !password || password.length < 6) {
       notify(
-        'Please fill in all fields and ensure the password is at least 6 characters long',
+        "Please fill in all fields and ensure the password is at least 6 characters long"
       );
       return;
     }
@@ -53,28 +54,28 @@ const Register = () => {
     // Check if the email is already taken
     try {
       const { data } = await axios.get(
-        `http://localhost:4001/api/v1/check-email?email=${email}`,
+        `http://localhost:4001/api/v1/check-email?email=${email}`
       );
 
       if (data.exists) {
-        notify('Email is already taken', 'error');
+        notify("Email is already taken", "error");
         return;
       }
     } catch (error) {
-      console.error('Error checking email:', error);
+      console.error("Error checking email:", error);
     }
 
     const formData = new FormData();
-    formData.set('name', name);
-    formData.set('email', email);
-    formData.set('password', password);
-    formData.set('avatar', avatar);
+    formData.set("name", name);
+    formData.set("email", email);
+    formData.set("password", password);
+    formData.set("avatar", avatar);
 
     register(formData);
   };
 
   const onChange = (e) => {
-    if (e.target.name === 'avatar') {
+    if (e.target.name === "avatar") {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
@@ -92,23 +93,23 @@ const Register = () => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       };
 
       const { data } = await axios.post(
-        'http://localhost:4001/api/v1/register',
+        "http://localhost:4001/api/v1/register",
         userData,
-        config,
+        config
       );
 
       setIsAuthenticated(true);
       setLoading(false);
       setUser(data.user);
-      navigate('/');
+      navigate("/");
 
       // Display success notification
-      notify('Registration successful', 'success');
+      notify("Registration successful", "success");
     } catch (error) {
       setIsAuthenticated(false);
       setLoading(false);
@@ -120,8 +121,8 @@ const Register = () => {
 
   return (
     <Fragment>
-      <Metadata title={'Register'} />
-      <div className="row wrapper" style={{marginBottom:"7%"}}>
+      <Metadata title={"Register"} />
+      <div className="row wrapper" style={{ marginBottom: "7%" }}>
         <div className="col-10 col-lg-5">
           <form
             className="shadow-lg"
@@ -202,6 +203,7 @@ const Register = () => {
             >
               REGISTER
             </button>
+            <OAuth />
           </form>
         </div>
       </div>

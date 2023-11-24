@@ -47,7 +47,7 @@ const ForgotPassword = () => {
     return (
         <Fragment>
             <MetaData title={'Forgot Password'} />
-            <div className="row wrapper">
+            <div className="row wrapper" style={{marginBottom:"21.5%"}}>
                 <div className="col-10 col-lg-5">
                     <form className="shadow-lg" onSubmit={submitHandler}>
                         <h1 className="mb-3">Forgot Password</h1>

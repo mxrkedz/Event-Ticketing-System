@@ -62,7 +62,7 @@ const UpdatePassword = () => {
         <Fragment>
             <MetaData title={'Change Password'} />
 
-            <div className="row wrapper">
+            <div className="row wrapper" style={{marginBottom:"16%"}}>
                 <div className="col-10 col-lg-5">
                     <form className="shadow-lg" onSubmit={submitHandler} >
                         <h1 className="mt-2 mb-5">Update Password</h1>

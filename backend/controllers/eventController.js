@@ -135,7 +135,7 @@ exports.getEvents = async (req, res, next) => {
     const apiFeatures = new APIFeatures(Event.find(), req.query)
       .search()
       .filter()
-      .category(["Convention", "Expo", "Music"])
+      .category()
       .pagination(resPerPage);
 
     apiFeatures.pagination(resPerPage);

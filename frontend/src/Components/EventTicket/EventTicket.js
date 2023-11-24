@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Link } from "react-router-dom";
 
 const EventTicket = ({ event }) => {
@@ -20,8 +21,8 @@ const EventTicket = ({ event }) => {
           <p id="product_id" style={{ margin: "0.1rem 0" }}>
             {event.location}
           </p>
-          <p id="eventDate">
-            {new Date(event.startDate)
+          <p id="eventDate" style={{ margin: "0.1rem" }}><CalendarMonthIcon/> {" "}
+             {new Date(event.startDate)
               .toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -38,14 +39,15 @@ const EventTicket = ({ event }) => {
               .toUpperCase()}
           </p>
 
-          <Link
+          
+        </div>
+        <Link
             to={`/event/${event._id}`}
             id="view_btn"
             className="btn btn-block"
           >
             <b>BUY TICKETS</b>
           </Link>
-        </div>
       </div>
     </div>
   );
