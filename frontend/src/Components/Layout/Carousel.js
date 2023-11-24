@@ -34,7 +34,14 @@ const CarouselFP = ({ events }) => {
               />
               <Carousel.Caption>
                 <div style={{ padding: "15rem" }}>
-                  <h1>{event.name}</h1>
+                  <h1
+                    style={{
+                      textShadow:
+                        "-1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black",
+                    }}
+                  >
+                    {event.name}
+                  </h1>
                   <Link
                     to={`/event/${event._id}`}
                     id="view_btn"

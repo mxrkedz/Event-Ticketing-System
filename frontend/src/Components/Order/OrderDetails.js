@@ -54,9 +54,7 @@ const OrderDetails = () => {
     }
   }, [error, id]);
 
-  const shippingDetails =
-    shippingInfo &&
-    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
+  const shippingDetails = shippingInfo && ` ${shippingInfo.country}`;
 
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
@@ -71,14 +69,18 @@ const OrderDetails = () => {
         <Fragment>
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8 mt-5 order-details">
-              <h1 className="my-5">Order # {order._id}</h1>
+              <h1 className="my-5">
+                <b>Order #</b> {order._id}
+              </h1>
 
-              <h4 className="mb-4">Shipping Info</h4>
+              <h4 className="mb-4">
+                <b>Shipping Info</b>
+              </h4>
               <p>
                 <b>Name:</b> {user && user.name}
               </p>
               <p>
-                <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
+                <b>Phone No.:</b> {shippingInfo && shippingInfo.phoneNo}
               </p>
               <p className="mb-4">
                 <b>Address:</b>
@@ -90,7 +92,7 @@ const OrderDetails = () => {
 
               <hr />
 
-              <h4 className="my-4">Payment</h4>
+              <h4 className="my-4" >Payment</h4>
               <p className={isPaid ? "greenColor" : "redColor"}>
                 <b>{isPaid ? "PAID" : "NOT PAID"}</b>
               </p>
@@ -115,18 +117,18 @@ const OrderDetails = () => {
                   orderItems.map((item) => (
                     <div key={item.product} className="row my-5">
                       <div className="col-4 col-lg-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          height="45"
-                          width="65"
-                        />
+                        <Link to={`/event/${item.event}`}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            height="100"
+                            width="100"
+                          />
+                        </Link>
                       </div>
 
                       <div className="col-5 col-lg-5">
-                        <Link to={`/products/${item.product}`}>
-                          {item.name}
-                        </Link>
+                        <Link to={`/event/${item.event}`}>{item.name}</Link>
                       </div>
 
                       <div className="col-4 col-lg-2 mt-4 mt-lg-0">
@@ -134,7 +136,7 @@ const OrderDetails = () => {
                       </div>
 
                       <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                        <p>{item.quantity} Piece(s)</p>
+                        <p>{item.quantity} Ticket(s)</p>
                       </div>
                     </div>
                   ))}

@@ -11,6 +11,7 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
   const [country, setCountry] = useState(shipping.country);
   const [user, setUser] = useState(getUser() ? getUser() : {})
   let navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -27,10 +28,10 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
           <form className="shadow-lg" onSubmit={submitHandler}>
             <h1 className="mb-4">Shipping Info</h1>
             <div className="form-group">
-              <label htmlFor="phone_field">Email</label>
+              <label htmlFor="email_field">Email</label>
               <input
-                type="phone"
-                id="phone_field"
+                type="email"
+                id="email_field"
                 className="form-control"
                 value={user.email}
                 readOnly

@@ -73,7 +73,7 @@ const sendOrderConfirmationEmail = async (userEmail, orderId) => {
 
 exports.newOrder = async (req, res, next) => {
   try {
-    const { orderItems, itemsPrice, taxPrice, totalPrice, paymentInfo } =
+    const { orderItems, itemsPrice, taxPrice, totalPrice, paymentInfo, shippingInfo } =
       req.body;
 
     const order = await Order.create({
@@ -82,6 +82,7 @@ exports.newOrder = async (req, res, next) => {
       taxPrice,
       totalPrice,
       paymentInfo,
+      shippingInfo,
       paidAt: Date.now(),
       user: req.user._id,
     });

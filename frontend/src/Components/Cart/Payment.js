@@ -6,6 +6,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "../../utils/helpers";
+import HelpIcon from '@mui/icons-material/Help';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const Payment = ({ cartItems, shippingInfo }) => {
   const [loading, setLoading] = useState(true);
@@ -44,7 +47,6 @@ const Payment = ({ cartItems, shippingInfo }) => {
       window.location.reload();
 
       navigate("/success");
-
     } catch (error) {
       toast.error(error.response.data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -67,7 +69,7 @@ const Payment = ({ cartItems, shippingInfo }) => {
     <Fragment>
       <MetaData title={"Payment"} />
       <CheckoutSteps shipping confirmOrder payment />
-      <div className="row wrapper" style={{marginBottom: "10.2%"}}>
+      <div className="row wrapper" style={{ marginBottom: "10.2%" }}>
         <div className="col-10 col-lg-5">
           <form className="shadow-lg" onSubmit={submitHandler}>
             <h1 className="mb-4">Card Info</h1>
@@ -79,6 +81,7 @@ const Payment = ({ cartItems, shippingInfo }) => {
                 className="form-control"
                 pattern="[0-9]*" // Use the pattern attribute to restrict input to numeric characters
                 inputMode="numeric" // Use the inputMode attribute for better mobile support
+                placeholder="XXXX XXXXXX XXXXX"
                 onInput={(e) =>
                   (e.target.value = e.target.value.replace(/\D/, ""))
                 } // JavaScript to remove non-numeric characters
@@ -92,29 +95,40 @@ const Payment = ({ cartItems, shippingInfo }) => {
                 type="text"
                 id="card_exp_field"
                 className="form-control"
-                pattern="\d{2}/\d{4}" // Allow two digits, followed by "/", and then two more digits
+                pattern="\d{2}/\d{2}" // Allow two digits, followed by "/", and then two more digits
                 inputMode="numeric"
+                placeholder="MM/YY"
                 required
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="card_cvc_field">Card CVC</label>
-              <input
-                type="text"
-                id="card_cvc_field"
-                className="form-control"
-                pattern="[0-9]*"
-                inputMode="numeric"
-                onInput={(e) =>
-                  (e.target.value = e.target.value.replace(/\D/, ""))
-                }
-                required
-              />
+              <div className="cvc-input-container">
+                <input
+                  type="text"
+                  id="card_cvc_field"
+                  className="form-control"
+                  pattern="[0-9]*"
+                  inputMode="numeric"
+                  placeholder="***"
+                  onInput={(e) =>
+                    (e.target.value = e.target.value.replace(/\D/, ""))
+                  }
+                  required
+                />
+                <div className="delete-icon-container">
+                  <Tooltip title="Please copy your CVV/CVC code from the back of your card and continue with your payment.">
+                    <IconButton>
+                      <HelpIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
             </div>
 
             <button id="pay_btn" type="submit" className="btn btn-block py-3">
-              Pay {` - ${orderInfo && orderInfo.totalPrice}`}
+              Pay {` - ₱${orderInfo && orderInfo.totalPrice}`}
             </button>
           </form>
         </div>

@@ -121,7 +121,7 @@ const Register = () => {
   return (
     <Fragment>
       <Metadata title={'Register'} />
-      <div className="row wrapper">
+      <div className="row wrapper" style={{marginBottom:"7%"}}>
         <div className="col-10 col-lg-5">
           <form
             className="shadow-lg"

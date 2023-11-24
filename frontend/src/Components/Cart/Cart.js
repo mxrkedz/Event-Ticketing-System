@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-const Cart = ({ updateCart, cartItems, removeItemFromCart }) => {
+const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
   const navigate = useNavigate();
 
   const increaseQty = (id, quantity, stock) => {
@@ -23,6 +23,13 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart }) => {
   const removeCartItemHandler = (id) => {
     removeItemFromCart(id);
   };
+  const clearCartHandler = () => {
+    clearCart();
+    toast.success("Cart cleared", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
   const checkoutHandler = () => {
     navigate("/login?redirect=shipping");
   };
@@ -112,8 +119,14 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart }) => {
                   </div>
                 </div>
                 <hr />
+                
               </Fragment>
             ))}
+            <button
+                    id="clear_cart_btn"
+                    className="btn btn-danger btn-block"
+                    onClick={clearCartHandler}
+                  >Clear Cart</button>
           </div>
 
           <div className="col-12 col-lg-3 my-4">

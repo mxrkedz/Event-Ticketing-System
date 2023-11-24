@@ -36,7 +36,20 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
   };
 
   const addToCart = async () => {
-    await addItemToCart(id, quantity);
+    if (isItemInCart()) {
+      // Item is already in the cart, show a notification
+      toast.error("Item is already in the cart", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      // Item is not in the cart, add it
+      await addItemToCart(id, quantity);
+      setSuccess("Item added to the cart");
+    }
+  };
+
+  const isItemInCart = () => {
+    return cartItems.some((item) => item.event === id);
   };
 
   useEffect(() => {

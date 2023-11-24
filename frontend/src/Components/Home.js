@@ -15,9 +15,6 @@ const categories = [
   "Music"
 ];
 
-
-
-
 const Home = () => {
   let { keyword } = useParams();
   const [loading, setLoading] = useState(true);
@@ -69,7 +66,7 @@ const Home = () => {
           <Carousel events={events} />
 
           </div>
-          <div className="container" style={{ marginBottom: "15%" }}>
+          <div className="container" style={{ marginBottom: "5%" }}>
             <h1 className="my-4 text-left">Latest Events</h1>
             <hr/>
             <section id="events" className="mt-5">

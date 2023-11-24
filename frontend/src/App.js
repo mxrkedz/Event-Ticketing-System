@@ -25,8 +25,8 @@ import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
 import ListOrders from "./Components/Order/ListOrders";
 import OrderDetails from "./Components/Order/OrderDetails";
-import NewEvent from "./Components/Admin/NewEvent"
-import UpdateEvent from "./Components/Admin/UpdateEvent"
+import NewEvent from "./Components/Admin/NewEvent";
+import UpdateEvent from "./Components/Admin/UpdateEvent";
 
 function App() {
   const [state, setState] = useState({
@@ -45,6 +45,16 @@ function App() {
     });
     localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
   };
+
+  const clearCart = () => {
+    setState({
+      ...state,
+      cartItems: [], // Set the cartItems to an empty array
+    });
+  
+    // Update the localStorage with the modified cartItems (empty array)
+    localStorage.setItem("cartItems", JSON.stringify([]));
+  };  
 
   const addItemToCart = async (id, quantity) => {
     console.log(id, quantity);
@@ -150,7 +160,6 @@ function App() {
       <Router>
         <Header cartItems={state.cartItems} />
         <Routes>
-          
           <Route path="/" element={<Home />} exact="true" />
           <Route
             path="/dashboard"
@@ -181,6 +190,7 @@ function App() {
                 addItemToCart={addItemToCart}
                 updateCart={updateCart}
                 removeItemFromCart={removeItemFromCart}
+                clearCart={clearCart}
               />
             }
             exact="true"
@@ -222,8 +232,12 @@ function App() {
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
-          <Route path="/password/update" element={<UpdatePassword />} />          
-          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />
+          <Route
+            path="/password/reset/:token"
+            element={<NewPassword />}
+            exact="true"
+          />
           {/* Auth End*/}
 
           <Route
@@ -251,8 +265,8 @@ function App() {
             }
           />
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
-          <Route path="/admin/event" element={<NewEvent/>} />
-          <Route path="/admin/event/:id" element={<UpdateEvent/>}/>
+          <Route path="/admin/event" element={<NewEvent />} />
+          <Route path="/admin/event/:id" element={<UpdateEvent />} />
         </Routes>
         <Footer />
       </Router>
