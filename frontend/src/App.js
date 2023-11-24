@@ -8,6 +8,7 @@ import Login from "./Components/User/Login";
 import Register from "./Components/User/Register";
 import Profile from "./Components/User/Profile";
 import UpdatePassword from "./Components/User/UpdatePassword";
+import ForgotPassword from "./Components/User/ForgotPassword";
 import NewPassword from "./Components/User/NewPassword";
 import Cart from "./Components/Cart/Cart";
 import Shipping from "./Components/Cart/Shipping";
@@ -224,6 +225,7 @@ function App() {
           <Route path="/me" element={<Profile />} exact="true" />
           <Route path="/password/update" element={<UpdatePassword />} />          
           <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
+          <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
           {/* Auth End*/}
 
           <Route
