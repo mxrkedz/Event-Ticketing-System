@@ -87,9 +87,16 @@ exports.forgotPassword = async (req, res, next) => {
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
     // Create reset password url
-    const resetUrl = `${req.protocol}://${req.get('host')}/password/reset/${resetToken}`;
-    const message = `Hello,\n\nWe received a request to reset your password. To reset your password, please click the following link:\n\n${resetUrl}\n\nIf you did not request this password reset, please ignore this email. Your account's security is important to us.\n\nThank you,\nThe  Team`
-    try {
+    const resetUrl = `${req.protocol}://localhost:3000/password/reset/${resetToken}`;
+    const message = `<h1>Change password request!</h1>
+    <p>Your request on changing the password has been delivered. You can change the password of your account by clicking on the link below:</p>
+   <br/>
+   <a href=${resetUrl} target="_blank">Change password request.</a>
+   <br/>
+   <p>We appreciate your trust in us and look forward to providing you with a seamless event experience.</p>
+   <br/>
+   <p>Best Regards,</p>
+   <p>The Ticket Tekcit Team</p>`;    try {
         await sendEmail({
             email: user.email,
             subject: 'TicketTricky Password Recovery',
