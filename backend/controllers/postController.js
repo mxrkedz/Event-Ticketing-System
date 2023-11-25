@@ -18,7 +18,7 @@ exports.newPost = async (req, res, next) => {
     	  let imagesLinks = [];
     
     	  for (let i = 0; i < req.body.images.length; i++) {
-    		let imageDataUri = req.body.images[i].path; //tanggalin yung .path pag front end na
+    		let imageDataUri = req.body.images[i]; //tanggalin yung .path pag front end na
     		try {
     		  const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
     			folder: 'eventTickets/posts',

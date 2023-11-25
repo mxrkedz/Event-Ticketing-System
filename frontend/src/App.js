@@ -29,6 +29,8 @@ import ListOrders from "./Components/Order/ListOrders";
 import OrderDetails from "./Components/Order/OrderDetails";
 import NewEvent from "./Components/Admin/NewEvent";
 import UpdateEvent from "./Components/Admin/UpdateEvent";
+import NewPost from "./Components/Admin/NewPost";
+import UpdatePost from "./Components/Admin/UpdatePost";
 
 function App() {
   const [state, setState] = useState({
@@ -275,6 +277,10 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/admin/post" element={<NewPost />} />
+          <Route path="/admin/post/:id" element={<UpdatePost />} />
+
         </Routes>
         <Footer />
       </Router>
