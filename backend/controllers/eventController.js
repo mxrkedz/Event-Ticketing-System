@@ -95,7 +95,6 @@ exports.newEvent = async (req, res, next) => {
 
   for (let i = 0; i < images.length; i++) {
     let imageDataUri = images[i];
-    // console.log(imageDataUri)
     try {
       const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
         folder: "event",
