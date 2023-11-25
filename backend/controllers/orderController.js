@@ -5,17 +5,15 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 
 const sendOrderConfirmationEmail = async (userEmail, orderId) => {
-  const orderConfirmationUrl = `http://localhost:3000/git order/${orderId}`;
+  const orderConfirmationUrl = `http://localhost:4001/api/v1/order/${orderId}/confirm`;
 
-  const message = `<h1>Thank you for choosing Ticket Tekcit!</h1>
-   <p>Your order has been confirmed, and we're thrilled to be part of your event experience. You can review the details of your order by clicking on the link below:</p>
+  const message = `<h1>New Order Confirmation!</h1>
+  <h3>Order # ${orderId}</h3>
+  <p>We're excited to inform you that a new order has been placed. You can confirm the order by clicking on the link below:</p>
   <br/>
-  <a href=${orderConfirmationUrl} target="_blank">Review Order Details</a>
+  <a href="${orderConfirmationUrl}" target="_blank">Confirm Order</a>
   <br/>
-  <p>We appreciate your trust in us and look forward to providing you with a seamless event experience.</p>
-  <br/>
-  <p>Best Regards,</p>
-  <p>The Ticket Tekcit Team</p>`;
+  <p>Please find the order details attached to this email for your reference.</p>`;
 
   try {
     // Fetch the order details
@@ -70,7 +68,67 @@ const sendOrderConfirmationEmail = async (userEmail, orderId) => {
     console.error(`Error sending order confirmation email: ${error.message}`);
   }
 };
+const sendTransactionCompleteEmail = async (userEmail, orderId) => {
+  const message = `<h1>Order Confirmed!</h1>
+  <h3>Order # ${orderId}</h3>
+  <p>We're pleased to inform you that your order has been confirmed and is currently being processed. You can view the details and track the status of your order by clicking on the link below:</p>
+  <br/>
+  <a href="http://localhost:3000/orders/me" target="_blank">View Orders</a>
+  <br/>
+  <p>Thank you for choosing Ticket Tekcit. We appreciate your business and look forward to providing you with a seamless experience.</p>
+  <br/>
+  <p>Best Regards,</p>
+  <p>The Ticket Tekcit Team</p>`;
 
+
+  try {
+    const order = await Order.findById(orderId).populate("orderItems.event", "eventName");
+    if (!order) {
+      console.error(`Order not found for ID: ${orderId}`);
+      return;
+    }
+
+    // Create a PDF document
+    const pdfDoc = new PDFDocument();
+    const pdfPath = "order_confirmation.pdf";
+    pdfDoc.pipe(fs.createWriteStream(pdfPath));
+    pdfDoc
+      .font("Helvetica-Bold")
+      .fontSize(18)
+      .text("Order Details", { align: "center" });
+    pdfDoc.moveDown(0.5);
+    pdfDoc.text(`Order ID: ${orderId}`);
+    pdfDoc.text(`Order Items:`);
+
+    // Loop through order items and add to PDF
+    order.orderItems.forEach((item, index) => {
+      pdfDoc.text(`  Item ${index + 1}:`);
+      pdfDoc.text(`    Name: ${item.name}`);
+      pdfDoc.text(`    Quantity: ${item.quantity}`);
+      pdfDoc.text(`    Price: ${item.price}`);
+    });
+
+    pdfDoc.text(`Total Price: ${order.totalPrice}`);
+    pdfDoc.text(`Paid At: ${order.paidAt}`);
+    pdfDoc.end();
+
+    await sendEmail({
+      email: userEmail,
+      subject: "Ticket Tekcit Order Confirmation",
+      message,
+      attachments: [
+        {
+          filename: "order_details.pdf",
+          path: pdfPath,
+        },
+      ],
+    });
+
+    console.log(`Order confirmation email sent to: ${userEmail}`);
+  } catch (error) {
+    console.error(`Error sending order confirmation email: ${error.message}`);
+  }
+};
 exports.newOrder = async (req, res, next) => {
   try {
     const { orderItems, itemsPrice, taxPrice, totalPrice, paymentInfo, shippingInfo } =
@@ -88,7 +146,8 @@ exports.newOrder = async (req, res, next) => {
     });
 
     // Send order confirmation email to the user
-    await sendOrderConfirmationEmail(req.user.email, order._id);
+    // req.user.email
+    await sendOrderConfirmationEmail("tickettekcit@admin.com", order._id);
 
     res.status(201).json({
       success: true,
@@ -99,6 +158,25 @@ exports.newOrder = async (req, res, next) => {
     res
       .status(500)
       .json({ error: `Error creating new order: ${error.message}` });
+  }
+};
+exports.confirmOrder = async (req, res, next) => {
+  try{
+    const orderId = req.params.id;
+    const users = await Order.findById(orderId).populate("user");
+    const userEmail = users.user.email;
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { orderStatus: "Processing" }, // Assuming 'status' is the field in your Order model representing order status
+      { new: true } // To return the updated order after the update is applied
+    );
+    const order = await Order.findById(orderId);
+        // req.user.email
+        await sendTransactionCompleteEmail(userEmail, orderId);
+      } catch (error) {
+        console.error("Error confirming order:", error);
+        res.status(500).json({ success: false, error: "Failed to confirm order" });
+
   }
 };
 
