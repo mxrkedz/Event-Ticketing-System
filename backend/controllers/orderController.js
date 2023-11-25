@@ -5,7 +5,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 
 const sendOrderConfirmationEmail = async (userEmail, orderId) => {
-  const orderConfirmationUrl = `http://localhost:3000/git order/${orderId}`;
+  const orderConfirmationUrl = `http://localhost:3000/admin/orders`;
 
   const message = `<h1>Thank you for choosing Ticket Tekcit!</h1>
    <p>Your order has been confirmed, and we're thrilled to be part of your event experience. You can review the details of your order by clicking on the link below:</p>
@@ -70,11 +70,16 @@ const sendOrderConfirmationEmail = async (userEmail, orderId) => {
     console.error(`Error sending order confirmation email: ${error.message}`);
   }
 };
-
 exports.newOrder = async (req, res, next) => {
   try {
-    const { orderItems, itemsPrice, taxPrice, totalPrice, paymentInfo, shippingInfo } =
-      req.body;
+    const {
+      orderItems,
+      itemsPrice,
+      taxPrice,
+      totalPrice,
+      paymentInfo,
+      shippingInfo,
+    } = req.body;
 
     const order = await Order.create({
       orderItems,
@@ -88,7 +93,7 @@ exports.newOrder = async (req, res, next) => {
     });
 
     // Send order confirmation email to the user
-    await sendOrderConfirmationEmail(req.user.email, order._id);
+    await sendOrderConfirmationEmail("admin@gmail.com", order._id);
 
     res.status(201).json({
       success: true,
@@ -101,7 +106,6 @@ exports.newOrder = async (req, res, next) => {
       .json({ error: `Error creating new order: ${error.message}` });
   }
 };
-
 exports.getSingleOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).populate(
@@ -127,7 +131,6 @@ exports.getSingleOrder = async (req, res, next) => {
       .json({ error: `Error fetching single order: ${error.message}` });
   }
 };
-
 exports.myOrders = async (req, res, next) => {
   try {
     const orders = await Order.find({ user: req.user.id });
@@ -143,7 +146,6 @@ exports.myOrders = async (req, res, next) => {
       .json({ error: `Error fetching user's orders: ${error.message}` });
   }
 };
-
 exports.allOrders = async (req, res, next) => {
   try {
     const orders = await Order.find();
@@ -166,7 +168,6 @@ exports.allOrders = async (req, res, next) => {
       .json({ error: `Error fetching all orders: ${error.message}` });
   }
 };
-
 exports.updateOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -197,7 +198,6 @@ exports.updateOrder = async (req, res, next) => {
     res.status(500).json({ error: `Error updating order: ${error.message}` });
   }
 };
-
 async function updateStock(id, quantity) {
   try {
     const event = await Event.findById(id);
@@ -211,7 +211,6 @@ async function updateStock(id, quantity) {
     console.error(`Error updating stock for Event ID ${id}: ${error.message}`);
   }
 }
-
 exports.deleteOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -232,158 +231,161 @@ exports.deleteOrder = async (req, res, next) => {
     });
   }
 };
-
 exports.totalOrders = async (req, res, next) => {
   const totalOrders = await Order.aggregate([
-      {
-          $group: {
-              _id: null,
-              count: { $sum: 1 }
-          }
-      }
-  ])
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ]);
   if (!totalOrders) {
-      return res.status(404).json({
-          message: 'error total orders',
-      })
+    return res.status(404).json({
+      message: "error total orders",
+    });
   }
   res.status(200).json({
-      success: true,
-      totalOrders
-  })
-
-}
-
+    success: true,
+    totalOrders,
+  });
+};
 exports.totalSales = async (req, res, next) => {
   const totalSales = await Order.aggregate([
-      {
-          $group: {
-              _id: null,
-              totalSales: { $sum: "$totalPrice" }
-          }
-      }
-  ])
+    {
+      $group: {
+        _id: null,
+        totalSales: { $sum: "$totalPrice" },
+      },
+    },
+  ]);
   if (!totalSales) {
-      return res.status(404).json({
-          message: 'error total sales',
-      })
+    return res.status(404).json({
+      message: "error total sales",
+    });
   }
   res.status(200).json({
-      success: true,
-      totalSales
-  })
-}
-
+    success: true,
+    totalSales,
+  });
+};
 exports.customerSales = async (req, res, next) => {
   const customerSales = await Order.aggregate([
-      {
-          $lookup: {
-              from: 'users',
-              localField: 'user',
-              foreignField: '_id',
-              as: 'userDetails'
-          },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userDetails",
       },
-      // {
-      //     $group: {
-      //         _id: "$user",
-      //         total: { $sum: "$totalPrice" },
-      //     }
-      // },
+    },
+    // {
+    //     $group: {
+    //         _id: "$user",
+    //         total: { $sum: "$totalPrice" },
+    //     }
+    // },
 
-      { $unwind: "$userDetails" },
-      // {
-      //     $group: {
-      //         _id: "$user",
-      //         total: { $sum: "$totalPrice" },
-      //         doc: { "$first": "$$ROOT" },
+    { $unwind: "$userDetails" },
+    // {
+    //     $group: {
+    //         _id: "$user",
+    //         total: { $sum: "$totalPrice" },
+    //         doc: { "$first": "$$ROOT" },
 
-      //     }
-      // },
+    //     }
+    // },
 
-      // {
-      //     $replaceRoot: {
-      //         newRoot: { $mergeObjects: [{ total: '$total' }, '$doc'] },
-      //     },
-      // },
-      {
-          $group: {
-              _id: "$userDetails.name",
-              total: { $sum: "$totalPrice" }
-          }
+    // {
+    //     $replaceRoot: {
+    //         newRoot: { $mergeObjects: [{ total: '$total' }, '$doc'] },
+    //     },
+    // },
+    {
+      $group: {
+        _id: "$userDetails.name",
+        total: { $sum: "$totalPrice" },
       },
-      {
-          $project: {
-              _id: 0,
-              "userDetails.name": 1,
-              total: 1,
-          }
+    },
+    {
+      $project: {
+        _id: 0,
+        "userDetails.name": 1,
+        total: 1,
       },
-      { $sort: { total: 1 } },
-
-  ])
-  console.log(customerSales)
+    },
+    { $sort: { total: 1 } },
+  ]);
+  console.log(customerSales);
   if (!customerSales) {
-      return res.status(404).json({
-          message: 'error customer sales',
-      })
-
-
+    return res.status(404).json({
+      message: "error customer sales",
+    });
   }
   // return console.log(customerSales)
   res.status(200).json({
-      success: true,
-      customerSales
-  })
-
-}
+    success: true,
+    customerSales,
+  });
+};
 exports.salesPerMonth = async (req, res, next) => {
   const salesPerMonth = await Order.aggregate([
+    {
+      $group: {
+        // _id: {month: { $month: "$paidAt" } },
+        _id: {
+          year: { $year: "$paidAt" },
+          month: { $month: "$paidAt" },
+        },
+        total: { $sum: "$totalPrice" },
+      },
+    },
 
-      {
-          $group: {
-              // _id: {month: { $month: "$paidAt" } },
-              _id: {
-                  year: { $year: "$paidAt" },
-                  month: { $month: "$paidAt" }
-              },
-              total: { $sum: "$totalPrice" },
+    {
+      $addFields: {
+        month: {
+          $let: {
+            vars: {
+              monthsInString: [
+                ,
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                " Sept",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
+            },
+            in: {
+              $arrayElemAt: ["$$monthsInString", "$_id.month"],
+            },
           },
+        },
       },
-
-      {
-          $addFields: {
-              month: {
-                  $let: {
-                      vars: {
-                          monthsInString: [, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', ' Sept', 'Oct', 'Nov', 'Dec'],
-                          
-                      },
-                      in: {
-                          $arrayElemAt: ['$$monthsInString', "$_id.month"]
-                      }
-                  }
-              }
-          }
+    },
+    { $sort: { "_id.month": 1 } },
+    {
+      $project: {
+        _id: 0,
+        month: 1,
+        total: 1,
       },
-      { $sort: { "_id.month": 1 } },
-      {
-          $project: {
-              _id: 0,
-              month: 1,
-              total: 1,
-          }
-      }
-
-  ])
+    },
+  ]);
   if (!salesPerMonth) {
-      return res.status(404).json({
-          message: 'error sales per month',
-      })
+    return res.status(404).json({
+      message: "error sales per month",
+    });
   }
   // return console.log(customerSales)
   res.status(200).json({
-      success: true,
-      salesPerMonth
-  })
-}
+    success: true,
+    salesPerMonth,
+  });
+};
