@@ -47,7 +47,6 @@ exports.newPost = async (req, res, next) => {
       post,
     });
 };
-
 exports.getPosts = async (req, res, next) => {
   try {
     const resPerPage = 6;
@@ -85,7 +84,6 @@ exports.getPosts = async (req, res, next) => {
     });
   }
 };
-
 exports.getSinglePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -109,7 +107,6 @@ exports.getSinglePost = async (req, res, next) => {
       .json({ error: `Error fetching single post: ${error.message}` });
   }
 };
-
 exports.getAdminPosts = async (req, res, next) => {
   try {
     const posts = await Post.find();
@@ -125,7 +122,6 @@ exports.getAdminPosts = async (req, res, next) => {
     });
   }
 };
-
 exports.updatePost = async (req, res, next) => {
   try {
     let post = await Post.findById(req.params.id);
@@ -137,8 +133,54 @@ exports.updatePost = async (req, res, next) => {
       });
     }
 
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+
+        // Deleting images associated with the event
+        if (images !== undefined) {
+          for (let i = 0; i < post.images.length; i++) {
+            try {
+              const result = await cloudinary.v2.uploader.destroy(
+                post.images[i].public_id
+              );
+            } catch (error) {
+              console.log(`Error deleting image from Cloudinary: ${error}`);
+            }
+          }
+        }
+    
+
+        let imagesLinks = [];
+    for (let i = 0; i < images.length; i++) {
+      try {
+        const result = await cloudinary.v2.uploader.upload(images[i], {
+          folder: "eventTickets/posts",
+        });
+
+        imagesLinks.push({
+          public_id: result.public_id,
+          url: result.secure_url,
+        });
+      } catch (error) {
+        console.log(`Error uploading image to Cloudinary: ${error}`);
+        // Handle the error as needed
+        // You can choose to send an error response or take other actions
+        return res.status(500).json({
+          success: false,
+          error: `Error uploading image to Cloudinary: ${error.message}`,
+        });
+      }
+    }
+    req.body.images = imagesLinks;
     post = await Post.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
+      runValidators: true,
+      useFindAndModify: false,
     });
 
     if (!post) {
@@ -157,7 +199,6 @@ exports.updatePost = async (req, res, next) => {
     res.status(500).json({ error: `Error updating post: ${error.message}` });
   }
 };
-
 exports.deletePost = async (req, res, next) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);

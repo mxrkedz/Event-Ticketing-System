@@ -1,37 +1,111 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { styled } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { red } from "@mui/material/colors";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShareIcon from "@mui/icons-material/Share";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Layout/Loader";
 
-const PostDetails = ({ post }) => {
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+const PostDetails = () => {
+  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState({});
+  const [error, setError] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
+
+  const { id } = useParams();
+
+  const postDetails = async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:4001/api/v1/post/${id}`);
+      if (!res.data) {
+        setError("Post not found");
+      }
+      setPost(res.data.post);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching post details:", error);
+      setError("Error fetching post details");
+      setLoading(false); // Make sure to set loading to false in case of an error
+    }
+  };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  useEffect(() => {
+    postDetails(id);
+  }, [id, error, success]);
+
   return (
-    <div className="col-sm-12 col-md-8 col-lg-4 my-3">
-      <div className="card p-3 rounded">
-        {post.images && post.images.length > 0 && (
-          <img
-            className="card-img-top"
-            src={post.images[0].url}
-            alt={post.name}
-            style={{ width: "auto", height: "200px" }}
-          />
-        )}
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title" style={{ margin: "0.1rem 0" }}>
-            <b>{post.title}</b>
-          </h5>
-          <p id="post_id" style={{ margin: "0.1rem 0" }}>
-            {post.location}
-          </p>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Card sx={{ maxWidth: "lg" }}>
+          {post.images.map((image, index) => (
+            <CardMedia
+              key={index}
+              component="img"
+              height="194"
+              image={image.url}
+              alt={post.title}
+            />
+          ))}
 
-          
-        </div>
-        <Link
-            to={`/post/${post._id}`}
-            id="view_btn"
-            className="btn btn-block"
-          >
-            <b>Check Details</b>
-          </Link>
-      </div>
-    </div>
+          <CardContent>
+            <Typography variant="body2" color="text.primary">
+              {post.title}
+            </Typography>
+            <Typography variant="body3" color="text.secondary">
+              {post.location}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>{post.content}</Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      )}
+    </>
   );
 };
 
