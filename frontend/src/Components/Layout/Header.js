@@ -72,6 +72,11 @@ const Header = ({ cartItems }) => {
               <HomeIcon /> Home
             </span>
           </Link>
+          <Link to="/news" style={{ textDecoration: "none" }}>
+            <span id="cart" className="ml-3">
+              News
+            </span>
+          </Link>
           <Link to="/cart" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-3">
               <Badge badgeContent={cartItemCount} color="error" showZero>

@@ -31,6 +31,8 @@ import NewEvent from "./Components/Admin/NewEvent";
 import UpdateEvent from "./Components/Admin/UpdateEvent";
 import NewPost from "./Components/Admin/NewPost";
 import UpdatePost from "./Components/Admin/UpdatePost";
+import ListPosts from "./Components/Post/ListPosts";
+import PostDetails from "./Components/Post/PostDetails";
 
 function App() {
   const [state, setState] = useState({
@@ -280,7 +282,15 @@ function App() {
 
           <Route path="/admin/post" element={<NewPost />} />
           <Route path="/admin/post/:id" element={<UpdatePost />} />
-
+          <Route path="/news" element={<ListPosts />} exact="true" />
+          <Route
+            path="/post/:id"
+            element={
+              <PostDetails/>
+            }
+            exact="true"
+          />
+          
         </Routes>
         <Footer />
       </Router>
