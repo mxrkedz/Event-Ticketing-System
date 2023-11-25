@@ -9,9 +9,11 @@ app.use(cookieParser());
 
 const events = require("./routes/event");
 const auth = require('./routes/auth');
-const order = require('./routes/order')
+const order = require('./routes/order');
+const post = require('./routes/post');
 
 app.use("/api/v1", events);
 app.use('/api/v1', auth);
 app.use('/api/v1',order);
+app.use('/api/v1',post);
 module.exports = app;
