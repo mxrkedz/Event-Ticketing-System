@@ -11,9 +11,11 @@ const events = require("./routes/event");
 const auth = require('./routes/auth');
 const order = require('./routes/order');
 const post = require('./routes/post');
+const comment = require('./routes/comment');
 
 app.use("/api/v1", events);
 app.use('/api/v1', auth);
 app.use('/api/v1',order);
 app.use('/api/v1',post);
+app.use('/api/v1',comment);
 module.exports = app;
