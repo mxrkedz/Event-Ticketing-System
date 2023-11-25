@@ -12,6 +12,7 @@ const {
   totalSales,
   customerSales,
   salesPerMonth,
+  confirmOrder
 } = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
@@ -24,6 +25,7 @@ router.get(
   authorizeRoles("admin"),
   allOrders
 );
+router.get("/order/:id/confirm", confirmOrder);
 
 router
   .route("/admin/order/:id")
