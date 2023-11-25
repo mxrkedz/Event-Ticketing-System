@@ -242,90 +242,56 @@ exports.deleteEvent = async (req, res, next) => {
 };
 
 exports.updateEvent = async (req, res, next) => {
-  try {
-    let event = await Event.findById(req.params.id);
-
-    if (!event) {
-      return res.status(404).json({
-        success: false,
-        message: "Event not found",
-      });
-    }
-
-    let images = [];
-
-    if (typeof req.body.images === "string") {
-      images.push(req.body.images);
-    } else {
-      images = req.body.images;
-    }
-
-    // Deleting images associated with the event
-    if (images !== undefined) {
-      for (let i = 0; i < event.images.length; i++) {
-        try {
-          const result = await cloudinary.v2.uploader.destroy(
-            event.images[i].public_id
-          );
-        } catch (error) {
-          console.log(`Error deleting image from Cloudinary: ${error}`);
-          // Handle the error as needed
-          // You can choose to send an error response or take other actions
-        }
-      }
-    }
-
-    let imagesLinks = [];
-    for (let i = 0; i < images.length; i++) {
-      try {
-        const result = await cloudinary.v2.uploader.upload(images[i], {
-          folder: "events",
-        });
-
-        imagesLinks.push({
-          public_id: result.public_id,
-          url: result.secure_url,
-        });
-      } catch (error) {
-        console.log(`Error uploading image to Cloudinary: ${error}`);
-        // Handle the error as needed
-        // You can choose to send an error response or take other actions
-        return res.status(500).json({
-          success: false,
-          error: `Error uploading image to Cloudinary: ${error.message}`,
-        });
-      }
-    }
-
-    req.body.images = imagesLinks;
-    event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    });
-
-    if (!event) {
-      return res.status(400).json({
-        success: false,
-        message: "Event not updated",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      event,
-    });
-  } catch (error) {
-    console.error(`Error updating event: ${error.message}`);
-    // Handle the error as needed
-    // You can choose to send an error response or take other actions
-    return res.status(500).json({
+  let event = await Event.findById(req.params.id);
+  // console.log(req.body)
+  if (!event) {
+    return res.status(404).json({
       success: false,
-      error: `Error updating event: ${error.message}`,
+      message: "Event not found",
     });
   }
-};
+  let images = [];
 
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+  if (images !== undefined) {
+    // Deleting images associated with the event
+    for (let i = 0; i < event.images.length; i++) {
+      const result = await cloudinary.v2.uploader.destroy(
+        event.images[i].public_id
+      );
+    }
+  }
+  let imagesLinks = [];
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "events",
+    });
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+  req.body.images = imagesLinks;
+  event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindandModify: false,
+  });
+  if (!event)
+    return res.status(400).json({
+      success: false,
+      message: "Event not updated",
+    });
+  // console.log(event)
+  return res.status(200).json({
+    success: true,
+    event,
+  });
+};
 exports.eventSales = async (req, res, next) => {
   const totalSales = await Order.aggregate([
     {
