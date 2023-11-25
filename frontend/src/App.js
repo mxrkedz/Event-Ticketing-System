@@ -16,6 +16,7 @@ import OrderSuccess from "./Components/Cart/OrderSuccess";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
 import Payment from "./Components/Cart/Payment";
 import EventsList from "./Components/Admin/EventsList";
+import PostsList from "./Components/Admin/PostsList";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -28,6 +29,8 @@ import ListOrders from "./Components/Order/ListOrders";
 import OrderDetails from "./Components/Order/OrderDetails";
 import NewEvent from "./Components/Admin/NewEvent";
 import UpdateEvent from "./Components/Admin/UpdateEvent";
+import NewPost from "./Components/Admin/NewPost";
+import UpdatePost from "./Components/Admin/UpdatePost";
 
 function App() {
   const [state, setState] = useState({
@@ -265,6 +268,19 @@ function App() {
           <Route path="/admin/order/:id" element={<ProcessOrder />} />
           <Route path="/admin/event" element={<NewEvent />} />
           <Route path="/admin/event/:id" element={<UpdateEvent />} />
+
+          <Route
+            path="/admin/posts"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <PostsList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/admin/post" element={<NewPost />} />
+          <Route path="/admin/post/:id" element={<UpdatePost />} />
+
         </Routes>
         <Footer />
       </Router>
