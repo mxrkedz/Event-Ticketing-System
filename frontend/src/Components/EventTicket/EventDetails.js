@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddShoppingCartSharpIcon from "@mui/icons-material/AddShoppingCartSharp";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 
 const EventDetails = ({ addItemToCart, cartItems }) => {
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
   const addToCart = async () => {
     if (isItemInCart()) {
       // Item is already in the cart, show a notification
-      toast.error("Item is already in the cart", {
+      toast.error("Item already added to cart!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
@@ -79,6 +80,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
       >
         <div className="col-12 col-lg-5 img-fluid" id="product_image">
           <Carousel
+            indicators={false}
             pause="hover"
             style={{ height: "600px", overflow: "hidden" }}
           >
@@ -103,7 +105,6 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           </p>
           <p id="product_id">Event # {event._id}</p>
           <hr />
-
           <div className="mt-2">
             <h4>
               <b>About:</b>
@@ -129,10 +130,16 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
             {event.name} Tickets: ₱{event.price}
           </h1>
           <div className="mt-auto">
-            <Button className="btn addToCart_btn" onClick={addToCart}>
-              <AddShoppingCartSharpIcon /> Add to Cart
-            </Button>
-          </div>
+            {event.stock === 0 ? (
+              <button className="addToCart_btn" disabled>
+                <ProductionQuantityLimitsIcon /> Out of Stock
+              </button>
+            ) : (
+              <button className="addToCart_btn" onClick={addToCart}>
+                <AddShoppingCartSharpIcon /> Add to Cart
+              </button>
+            )}
+          </div>{" "}
           <hr />
         </div>
       </div>

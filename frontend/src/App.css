@@ -142,7 +142,9 @@ footer {
   color: #ffffff;
   text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
   text-align: center;
+  transition: background-color 0.2s; /* Add a transition for a smoother effect */
   transition: all 0.2s;
+  outline: none; 
 }
 .addToCart_btn:hover {
   border-color: rgb(255, 255, 255);
@@ -150,9 +152,14 @@ footer {
 }
 .addToCart_btn:active {
   background-color: #734e57;
-  transition: background-color 0.2s; /* Add a transition for a smoother effect */
+  outline: none; 
 }
+.addToCart_btn:focus{
+  background-color: #734e57;
+  border-color: rgb(255, 255, 255);
+  outline: none; 
 
+}
 /* Product Details Page */
 #product_id {
   color: grey;
@@ -574,6 +581,8 @@ a[data-toggle="collapse"] {
   text-align: center;
   overflow: hidden;
   margin-bottom: 38.4%;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5); /* Add a drop shadow */
+
 }
 .profileCard_img {
   height: 116px;
@@ -697,6 +706,7 @@ ul.CTAs a {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 /* ChartContainer.css */
 .chart-container {
   margin-bottom: 20px;

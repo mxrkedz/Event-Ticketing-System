@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 
 const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
   const navigate = useNavigate();
@@ -201,7 +202,7 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
                           !cartItems.every((item) => item.quantity >= 1)
                         }
                       >
-                        Check out
+                        <ShoppingCartCheckoutIcon/> Check out
                       </button>
                     </div>
                   </div>

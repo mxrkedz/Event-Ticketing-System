@@ -1,13 +1,20 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../../App.css';
-import Search from './Search'
-import axios from 'axios';
-import { logout, getUser } from '../../utils/helpers';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Badge from '@mui/material/Badge';
+import React, { Fragment, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../../App.css";
+import Search from "./Search";
+import axios from "axios";
+import { logout, getUser } from "../../utils/helpers";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Badge from "@mui/material/Badge";
+import HomeIcon from "@mui/icons-material/Home";
+import SpeedIcon from '@mui/icons-material/Speed';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -17,15 +24,15 @@ const Header = ({ cartItems }) => {
     try {
       await axios.get(`http://localhost:4001/api/v1/logout`);
       setUser({});
-      logout(() => navigate('/'));
+      logout(() => navigate("/"));
     } catch (error) {
-      toast.error(error.response?.data?.message || 'An error occurred');
+      toast.error(error.response?.data?.message || "An error occurred");
     }
   };
 
   const logoutHandler = () => {
     logoutUser();
-    toast.success('Logged out', {
+    toast.success("Logged out", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
     setTimeout(() => {
@@ -44,28 +51,31 @@ const Header = ({ cartItems }) => {
   return (
     <Fragment>
       <nav className="navbar row">
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <div className="col-12 col-md-3">
             <div className="navbar-brand">
-              <img src="/logo.png" alt="Logo" style={{ width: '200px', height: 'auto' }} />
+              <img
+                src="/logo.png"
+                alt="Logo"
+                style={{ width: "200px", height: "auto" }}
+              />
             </div>
           </div>
         </Link>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
-
-					<Search />
+          <Search />
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-        <Link to="/" style={{ textDecoration: 'none' }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-3">
-              Home
+              <HomeIcon /> Home
             </span>
           </Link>
-          <Link to="/cart" style={{ textDecoration: 'none' }}>
+          <Link to="/cart" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-3">
-            <Badge badgeContent={cartItemCount} color="error" showZero>
-              <ShoppingCartIcon/>
+              <Badge badgeContent={cartItemCount} color="error" showZero>
+                <ShoppingCartIcon />
               </Badge>
             </span>
           </Link>
@@ -90,27 +100,48 @@ const Header = ({ cartItems }) => {
                 <span>{user && user.name}</span>
               </Link>
 
-              <div className="dropdown-menu" aria-labelledby="dropDownMenuButton">
-                {user && user.role === 'admin' && <Link className="dropdown-item" to="/dashboard">Dashboard</Link>}
+              <div
+                className="dropdown-menu mt-3 ml-3"
+                aria-labelledby="dropDownMenuButton"
+              >
+                {user && user.role === "admin" && (
+                  <Link style={{color:"goldenrod"}}className="dropdown-item" to="/dashboard">
+                    <SpeedIcon/> Dashboard
+                  </Link>
+                )}
                 <Link className="dropdown-item" to="/orders/me">
-                  Orders
+                  <ShoppingBasketIcon/> Orders
                 </Link>
                 <Link className="dropdown-item" to="/me">
-                  Profile
+                  <PersonIcon/> Profile
                 </Link>
 
-                <Link className="dropdown-item text-danger" to="/" onClick={logoutHandler}>
-                  Logout
+                <Link
+                  className="dropdown-item text-danger"
+                  to="/"
+                  onClick={logoutHandler}
+                >
+                  <LogoutIcon/> Logout
                 </Link>
               </div>
             </div>
           ) : (
             <Fragment>
-              <Link to="/login" className="btn ml-4" id="login_btn" style={{ color: 'white' }}>
-                Login
+              <Link
+                to="/login"
+                className="btn ml-4"
+                id="login_btn"
+                style={{ color: "white" }}
+              >
+                <LoginIcon/> Login
               </Link>
-              <Link to="/register" className="btn ml-2" id="login_btn" style={{ color: 'white' }}>
-                Register
+              <Link
+                to="/register"
+                className="btn ml-2"
+                id="login_btn"
+                style={{ color: "white" }}
+              >
+                <PersonAddIcon/> Register
               </Link>
             </Fragment>
           )}

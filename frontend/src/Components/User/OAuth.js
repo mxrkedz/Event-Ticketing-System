@@ -61,7 +61,7 @@ function OAuth() {
       className="btn btn-block py-3 mt-3"
       id="login-with-google-btn"
     >
-      <GoogleIcon style={{marginBottom:"1px"}}/> CONTINUE WITH GOOGLE
+      <GoogleIcon style={{color: "#4285F4", marginBottom:"1px"}}/> CONTINUE WITH <b style={{color: "#4285F4"}}>G</b><b style={{color: "#EA4335"}}>O</b><b style={{color: "#FBBC05"}}>O</b><b style={{color: "#4285F4"}}>G</b><b style={{color: "#34A853"}}>L</b><b style={{color: "#EA4335"}}>E</b>
     </button>
   );
 }

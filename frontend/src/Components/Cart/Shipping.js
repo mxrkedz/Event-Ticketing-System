@@ -4,6 +4,7 @@ import { countries } from "countries-list";
 import MetaData from "../Layout/MetaData";
 import CheckoutSteps from "./CheckoutSteps";
 import { getUser } from '../../utils/helpers'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const Shipping = ({ shipping, saveShippingInfo }) => {
   const countriesList = Object.values(countries);
@@ -72,7 +73,7 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
               type="submit"
               className="btn btn-block py-3"
             >
-              Continue
+              Continue <ArrowForwardIcon/>
             </button>
           </form>
         </div>

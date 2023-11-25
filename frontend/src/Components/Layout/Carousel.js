@@ -17,6 +17,8 @@ const CarouselFP = ({ events }) => {
       onSelect={(selectedIndex) => setCurrentEventIndex(selectedIndex)}
       pause="hover"
       style={{ height: "600px", width: "100%", overflow: "hidden" }}
+      controls={true}
+      indicators={false}
     >
       {events.map((event, index) => (
         <Carousel.Item key={index}>
