@@ -129,6 +129,22 @@ exports.getSinglePost = async (req, res, next) => {
         .status(500)
         .json({ error: `Error fetching single post: ${error.message}` });
     }
+};
+
+exports.getAdminPosts = async (req, res, next) => {
+    try {
+      const posts = await Post.find();
+  
+      res.status(200).json({
+        success: true,
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
   };
 
 exports.updatePost = async (req, res, next) => {
