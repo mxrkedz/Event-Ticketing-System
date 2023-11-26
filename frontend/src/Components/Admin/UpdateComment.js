@@ -7,17 +7,17 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { getToken } from "../../utils/helpers";
 
-const UpdatePost = () => {
-  const [title, setTitle] = useState("");
-  const [images, setImages] = useState([]);
-  const [imagesPreview, setImagesPreview] = useState([]);
-  const [location, setLocation] = useState("");
+const subjects = ["Inquiry", "Request", "Complaint"];
+
+const UpdateComment = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
-  const [post, setPost] = useState({});
-  const [oldImages, setOldImages] = useState([]);
+  const [comment, setComment] = useState({});
   const [updateError, setUpdateError] = useState("");
   const [isUpdated, setIsUpdated] = useState(false);
 
@@ -33,7 +33,7 @@ const UpdatePost = () => {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
 
-  const getPostDetails = async (id) => {
+  const getCommentDetails = async (id) => {
     try {
       const config = {
         headers: {
@@ -43,17 +43,17 @@ const UpdatePost = () => {
       };
 
       const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/post/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/comment/${id}`,
         config
       );
-      setPost(data.post);
+      setComment(data.comment);
       setLoading(false);
     } catch (error) {
       setError(error.response.data.message);
     }
   };
 
-  const updatePost = async (id, postData) => {
+  const updatePost = async (id, commentData) => {
     try {
       const config = {
         headers: {
@@ -62,8 +62,8 @@ const UpdatePost = () => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:4001/api/v1/admin/post/${id}`,
-        postData,
+        `http://localhost:4001/api/v1/admin/comment/${id}`,
+        commentData,
         config
       );
       setIsUpdated(data.success);
@@ -72,13 +72,12 @@ const UpdatePost = () => {
     }
   };
   useEffect(() => {
-    if (post && post._id !== id) {
-      getPostDetails(id);
+    if (comment && comment._id !== id) {
+      getCommentDetails(id);
     } else {
-      setTitle(post.title);
-      setLocation(post.location);
-      setContent(post.content);
-      setOldImages(post.images);
+      setName(comment.name);
+      setEmail(comment.email);
+      setContent(comment.content);
     }
     if (error) {
       errMsg(error);
@@ -87,38 +86,21 @@ const UpdatePost = () => {
       errMsg(updateError);
     }
     if (isUpdated) {
-      navigate("/admin/posts");
+      navigate("/admin/inquiries");
       successMsg("Post Updated Successfully");
     }
-  }, [error, isUpdated, updateError, post, id]);
+  }, [error, isUpdated, updateError, comment, id]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.set("title", title);
-    formData.set("location", location);
+    formData.set("name", name);
+    formData.set("email", email);
     formData.set("content", content);
-    images.forEach((image) => {
-      formData.append("images", image);
-    });
-    updatePost(post._id, formData);
+
+    updatePost(comment._id, formData);
   };
-  const onChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImagesPreview([]);
-    setImages([]);
-    setOldImages([]);
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImages((oldArray) => [...oldArray, reader.result]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+
   return (
     <Fragment>
       <MetaData title={"Update Post"} />
@@ -134,32 +116,50 @@ const UpdatePost = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4">Update Post</h1>
-
+                <h1 className="mb-4" style={{marginRight:"150px"}}>Update Post</h1>
+                <hr/>
                 <div className="form-group">
-                  <label htmlFor="title_field">Title</label>
+                  <label htmlFor="title_field">Name</label>
                   <input
                     type="text"
                     id="title_field"
                     className="form-control"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="location_field">Location</label>
+                  <label htmlFor="location_field">Email Address</label>
                   <input
                     type="text"
                     id="location_field"
                     className="form-control"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
+                <div className="form-group">
+                <label htmlFor="subject_field">Subject</label>
+                <select
+                  className="form-control"
+                  id="subject_field"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select a subject
+                  </option>
+                  {subjects.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
                 <div className="form-group">
-                  <label htmlFor="content_field">Content</label>
+                  <label htmlFor="content_field">Message</label>
                   <input
                     type="text"
                     id="content_field"
@@ -167,44 +167,6 @@ const UpdatePost = () => {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
-                </div>
-
-                <div className="form-group">
-                  <label>Images</label>
-                  <div className="custom-file">
-                    <input
-                      type="file"
-                      name="images"
-                      className="custom-file-input"
-                      id="customFile"
-                      onChange={onChange}
-                      multiple
-                    />
-                    <label className="custom-file-label" htmlFor="customFile">
-                      Choose Images
-                    </label>
-                  </div>
-                  {oldImages &&
-                    oldImages.map((img) => (
-                      <img
-                        key={img}
-                        src={img.url}
-                        alt={img.url}
-                        className="mt-3 mr-2"
-                        width="55"
-                        height="52"
-                      />
-                    ))}
-                  {imagesPreview.map((img) => (
-                    <img
-                      src={img}
-                      key={img}
-                      alt="Images Preview"
-                      className="mt-3 mr-2"
-                      width="55"
-                      height="52"
-                    />
-                  ))}
                 </div>
                 <button
                   id="login_button"
@@ -223,4 +185,4 @@ const UpdatePost = () => {
   );
 };
 
-export default UpdatePost;
+export default UpdateComment;

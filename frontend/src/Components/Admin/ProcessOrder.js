@@ -22,11 +22,11 @@ const ProcessOrder = () => {
     const { shippingInfo, orderItems, paymentInfo, user, totalPrice, orderStatus } = order
     const orderId = id;
     const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
 
     const successMsg = (message = '') => toast.success(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
 
     const getOrderDetails = async (id) => {

@@ -10,17 +10,15 @@ import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const EventsList = () => {
-    const [allEvents, setallEvents] = useState([])
+const CommentsList = () => {
+    const [allComments, setallComments] = useState([])
     const [error, setError] = useState('')
     const [deleteError, setDeleteError] = useState('')
-    const [users, setUsers] = useState([])
-    const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [isDeleted, setIsDeleted] = useState(false)
 
     let navigate = useNavigate()
-    const getAdminEvents = async () => {
+    const getAdminPosts = async () => {
         try {
 
             const config = {
@@ -30,9 +28,9 @@ const EventsList = () => {
                 }
             }
 
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/events`, config)
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/comments`, config)
             console.log(data)
-            setallEvents(data.events)
+            setallComments(data.comments)
             setLoading(false)
         } catch (error) {
 
@@ -41,7 +39,7 @@ const EventsList = () => {
         }
     }
     useEffect(() => {
-        getAdminEvents()
+        getAdminPosts()
 
         if (error) {
             toast.error(error, {
@@ -56,10 +54,10 @@ const EventsList = () => {
         }
 
         if (isDeleted) {
-            toast.success('Event Deleted Successfully!', {
+            toast.success('Comment Deleted Successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
-            navigate('/admin/events');
+            navigate('/admin/inquiries');
             
             setIsDeleted(false)
             setDeleteError('')
@@ -68,7 +66,7 @@ const EventsList = () => {
 
     }, [error, deleteError, isDeleted,])
 
-    const deleteEvent = async (id) => {
+    const deletePost = async (id) => {
         try {
             const config = {
                 headers: {
@@ -76,7 +74,7 @@ const EventsList = () => {
                     'Authorization': `Bearer ${getToken()}`
                 }
             }
-            const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/event/${id}`, config)
+            const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/comment/${id}`, config)
 
             setIsDeleted(data.success)
             setLoading(false)
@@ -86,7 +84,7 @@ const EventsList = () => {
         }
     }
     
-    const eventsList = () => {
+    const postsList = () => {
         const data = {
             columns: [
                 {
@@ -95,13 +93,18 @@ const EventsList = () => {
                     sort: 'asc'
                 },
                 {
-                    label: 'Price',
-                    field: 'price',
+                    label: 'Email',
+                    field: 'email',
                     sort: 'asc'
                 },
                 {
-                    label: 'Stock',
-                    field: 'stock',
+                    label: 'Subject',
+                    field: 'subject',
+                    sort: 'asc'
+                },
+                {
+                    label: 'Content',
+                    field: 'content',
                     sort: 'asc'
                 },
                 {
@@ -112,18 +115,19 @@ const EventsList = () => {
             rows: []
         };
     
-        allEvents.forEach(event => {
+        allComments.forEach(comment => {
             data.rows.push({
-                id: event._id,
-                name: event.name,
-                price: `$${event.price}`,
-                stock: event.stock,
+                id: comment._id,
+                name: comment.name,
+                email: comment.email,
+                subject: comment.subject,
+                content: comment.content,
                 actions: (
                     <Fragment>
-                        <Link to={`/admin/event/${event._id}`} className="btn btn-primary py-1 px-2">
+                        <Link to={`/admin/inquiries/${comment._id}`} className="btn btn-primary py-1 px-2">
                             <i className="fa fa-pencil"></i>
                         </Link>
-                        <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteEventHandler(event._id)}>
+                        <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteCommentHandler(comment._id)}>
                             <i className="fa fa-trash"></i>
                         </button>
                     </Fragment>
@@ -134,13 +138,13 @@ const EventsList = () => {
         return data;
     }
     
-    const deleteEventHandler = (id) => {
-        deleteEvent(id)
+    const deleteCommentHandler = (id) => {
+        deletePost(id)
     }
 
     return (
         <Fragment>
-            <MetaData title={'All events'} />
+            <MetaData title={'All posts'} />
             <div className="row">
                 <div className="col-12 col-md-2">
                     <Sidebar />
@@ -148,11 +152,11 @@ const EventsList = () => {
 
                 <div className="col-12 col-md-10">
                     <Fragment>
-                        <h1 className="my-5">All events</h1>
+                        <h1 className="my-5">All posts</h1>
 
                         {loading ? <Loader /> : (
                             <MDBDataTable
-                                data={eventsList()}
+                                data={postsList()}
                                 className="px-3"
                                 bordered
                                 striped
@@ -168,4 +172,4 @@ const EventsList = () => {
     )
 }
 
-export default EventsList
+export default CommentsList

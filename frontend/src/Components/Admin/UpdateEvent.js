@@ -2,11 +2,10 @@ import React, { Fragment, useState, useEffect } from 'react'
 import MetaData from '../Layout/MetaData'
 import Sidebar from './SideBar'
 import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios';
 import { getToken } from '../../utils/helpers';
-
 
 const UpdateEvent = () => {
     const [name, setName] = useState('');
@@ -36,10 +35,10 @@ const UpdateEvent = () => {
     let navigate = useNavigate();
 
     const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
     const successMsg = (message = '') => toast.success(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
 
     const getEventDetails =  async (id) => {
@@ -150,7 +149,7 @@ const UpdateEvent = () => {
                 </div>
                 <div className="col-12 col-md-10">
                     <Fragment>
-                        <div className="wrapper my-5">
+                        <div className="wrapper my-5" style={{}}>
                             <form className="shadow-lg" onSubmit={submitHandler} encType='multipart/form-data'>
                                 <h1 className="mb-4">Update Event</h1>
                                 <div className="form-group">
@@ -274,6 +273,8 @@ const UpdateEvent = () => {
                         </div>
                     </Fragment>
                 </div>
+            <ToastContainer/>
+
             </div>
         </Fragment>
     )

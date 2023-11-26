@@ -22,10 +22,48 @@ body {
   background-clip: padding-box;
   border-radius: 5px;
 }
-nav {
+.navbar {
   background-color: #252627;
-  padding: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
 }
+
+.navbar-brand img {
+  max-width: auto;
+  height: auto;
+  padding: 10px;
+}
+
+.navbar .col-md-3,
+.navbar .col-md-6,
+.navbar .col-md-4 {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .navbar .col-12 {
+    width: 100%;
+  }
+
+  .navbar .col-md-3,
+  .navbar .col-md-6,
+  .navbar .col-md-4 {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-brand img {
+    width: 150px; /* Adjust as needed for your design */
+  }
+}
+
 #search_btn {
   background-color: #904e55;
 }
@@ -103,6 +141,7 @@ footer {
   text-align: center;
   color: white;
   overflow: hidden;
+  z-index: 1000;
   /* or overflow: auto;
 	*/
 }
@@ -789,5 +828,26 @@ ul.CTAs a {
 }
 
 #login-with-google-btn:focus {
+  outline: none;
+}
+
+#login-with-facebook-btn {
+  transition: background-color .3s, box-shadow .3s;
+    
+  padding: 12px 16px 12px 42px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+  color: white;
+  background-color: #3b5998;
+}
+#login-with-facebook-btn:hover {
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+}
+#login-with-facebook-btn:active {
+  background-color: #3b5998;
+}
+
+#login-with-facebook-btn:focus {
   outline: none;
 }

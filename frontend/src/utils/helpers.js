@@ -15,6 +15,15 @@ export const authenticateGoogle = (data, next) => {
   }
   next();
 };
+
+export const authenticateFacebook = (data, next) => {
+  if (window !== "undefined") {
+    sessionStorage.setItem("token", JSON.stringify(data.token));
+    sessionStorage.setItem("user", JSON.stringify(data.user));
+  }
+  next();
+};
+
 export const getToken = () => {
   if (window !== "undefined") {
     if (sessionStorage.getItem("token")) {

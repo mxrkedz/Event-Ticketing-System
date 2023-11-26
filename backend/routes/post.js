@@ -12,7 +12,7 @@ const { newPost,
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
 
-router.post('/admin/post/new', upload.array('images', 10), isAuthenticatedUser, newPost);
+router.post('/admin/post/new', upload.array('images', 10), isAuthenticatedUser, authorizeRoles('admin'), newPost);
 router.get('/admin/posts', isAuthenticatedUser, authorizeRoles('admin'), getAdminPosts);
 // // router.route('/admin/post/:id', isAuthenticatedUser, authorizeRoles('admin')).put(updatePost).delete(deletePost);
 router.route('/admin/post/:id', isAuthenticatedUser, authorizeRoles('admin')).put(updatePost).delete(deletePost);

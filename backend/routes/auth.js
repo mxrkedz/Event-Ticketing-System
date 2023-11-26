@@ -16,6 +16,7 @@ const {
   checkEmail,
   updateUser,
   google,
+  facebook,
 } = require("../controllers/authController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
@@ -23,6 +24,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 router.post("/register", upload.single("avatar"), registerUser);
 router.post("/login", loginUser);
 router.post("/google", google);
+router.post("/facebook", facebook);
 router.get("/logout", logout);
 router.get("/check-email", checkEmail);
 
