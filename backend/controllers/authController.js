@@ -344,7 +344,6 @@ exports.getUserDetails = async (req, res, next) => {
     // return next(new ErrorHandler(`User does not found with id: ${req.params.id}`))
   }
 
-<<<<<<< HEAD
     res.status(200).json({
         success: true,
         user
@@ -369,10 +368,3 @@ exports.updateUser = async (req, res, next) => {
         success: true
     })
 }
-=======
-  res.status(200).json({
-    success: true,
-    user,
-  });
-};
->>>>>>> d24ce74b34be4df7210a108bd6eb8a5d50fc1e03
