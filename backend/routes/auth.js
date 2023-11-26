@@ -15,6 +15,7 @@ const {
   getUserDetails,
   checkEmail,
   updateUser,
+  deleteUser,
   google,
   facebook,
 } = require("../controllers/authController");
@@ -35,6 +36,6 @@ router.put("/password/update", isAuthenticatedUser, updatePassword);
 router.put("/me/update", isAuthenticatedUser, upload.single("avatar"), updateProfile);
 // router.put('/me/update', isAuthenticatedUser, upload.single("avatar"), updateProfile)
 router.get("/admin/users", allUsers);
-router.route('/admin/user/:id').get(isAuthenticatedUser, getUserDetails ).put(isAuthenticatedUser,  updateUser)
+router.route('/admin/user/:id').get(isAuthenticatedUser, getUserDetails ).put(isAuthenticatedUser,  updateUser).delete(isAuthenticatedUser, deleteUser)
 
 module.exports = router;
