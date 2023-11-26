@@ -8,6 +8,7 @@ import { errMsg, successMsg } from '../../utils/helpers';
 import { getToken } from '../../utils/helpers';
 import axios from 'axios';
 
+
 const UpdateUser = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -18,35 +19,38 @@ const UpdateUser = () => {
     const [isUpdated, setIsUpdated] = useState(false)
     let navigate = useNavigate();
 
+
     const { id } = useParams();
     const config = {
         headers: {
-            'Content-Type': 'application/json', 
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${getToken()}`
         }
     }
     const getUserDetails = async (id) => {
-    
+   
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/user/${id}`,config)
             setUser(data.user)
             setLoading(false)
-            
+           
         } catch (error) {
             setError(error.response.data.message)
         }
     }
+
 
     const updateUser = async (id, userData) => {
         try {
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/user/${id}`, userData, config)
             setIsUpdated(data.success)
             setLoading(false)
-            
+           
         } catch (error) {
            setError(error.response.data.message)
         }
     }
+
 
     useEffect(() => {
         // console.log(user && user._id !== userId);
@@ -75,6 +79,7 @@ const UpdateUser = () => {
         formData.set('role', role);
         updateUser(user._id, formData)
     }
+
 
     return (
         <Fragment>
@@ -133,4 +138,7 @@ const UpdateUser = () => {
     )
 }
 
+
 export default UpdateUser
+
+

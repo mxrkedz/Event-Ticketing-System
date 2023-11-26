@@ -24,6 +24,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import OrdersList from "./Components/Admin/OrdersList";
 import UsersList from "./Components/Admin/UsersList";
+import UpdateUser from "./Components/Admin/UpdateUser";
 import ProtectedRoute from "./Components/Route/ProtectedRoute";
 import ProcessOrder from "./Components/Admin/ProcessOrder";
 import ListOrders from "./Components/Order/ListOrders";
@@ -236,6 +237,7 @@ function App() {
           {/* Transaction End */}
 
           {/* Auth */}
+          
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
@@ -261,6 +263,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/admin/user/:id" element={<UpdateUser />} />
           <Route
             path="/admin/users"
             element={
