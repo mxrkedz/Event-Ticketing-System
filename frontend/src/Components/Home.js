@@ -6,9 +6,10 @@ import Event from "./EventTicket/EventTicket";
 import Loader from "./Layout/Loader";
 // import Slider from 'rc-slider';
 // import 'rc-slider/assets/index.css';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Carousel from "./Layout/Carousel";
 import CloseIcon from '@mui/icons-material/Close';
+
 
 const categories = ["Convention", "Expo", "Music"];
 
@@ -23,6 +24,7 @@ const Home = () => {
   const [filteredEventsCount, setFilteredEventsCount] = useState(0);
   const [category, setCategory] = useState("");
 
+  let navigate = useNavigate();
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
@@ -33,6 +35,7 @@ const Home = () => {
     link = `${process.env.REACT_APP_API}/api/v1/events/?page=${page}&keyword=${keyword}`;
 
     if (category) {
+      navigate('/')
       link = `${process.env.REACT_APP_API}/api/v1/events?keyword=${keyword}&page=${currentPage}&category=${category}`;
     }
 

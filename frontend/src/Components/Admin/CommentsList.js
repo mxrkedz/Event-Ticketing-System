@@ -54,7 +54,7 @@ const CommentsList = () => {
         }
 
         if (isDeleted) {
-            toast.success('Comment Deleted Successfully', {
+            toast.success('Post Deleted Successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
             navigate('/admin/inquiries');

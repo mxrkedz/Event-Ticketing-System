@@ -101,6 +101,7 @@ const UpdateUser = () => {
                                         className="form-control"
                                         name='name'
                                         value={name}
+                                        disabled
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                 </div>
@@ -111,6 +112,7 @@ const UpdateUser = () => {
                                         id="email_field"
                                         className="form-control"
                                         name='email'
+                                        disabled
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />

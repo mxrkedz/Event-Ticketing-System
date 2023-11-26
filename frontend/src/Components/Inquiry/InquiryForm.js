@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../Layout/MetaData";
 import { getToken } from "../../utils/helpers";
@@ -7,6 +7,7 @@ import { getUser } from "../../utils/helpers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmailIcon from "@mui/icons-material/Email";
+import emailjs from "@emailjs/browser";
 
 const InquiryForm = () => {
   const [name, setName] = useState("");
@@ -24,6 +25,8 @@ const InquiryForm = () => {
 
   let navigate = useNavigate();
 
+  const form = useRef();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -34,6 +37,22 @@ const InquiryForm = () => {
     formData.set("content", content);
 
     newComment(formData);
+
+    emailjs
+      .sendForm(
+        "service_rmf4fjc",
+        "template_0jh272o",
+        form.current,
+        "ZhHO9W2UQjGXKpmjY"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   const newComment = async (formData) => {
@@ -84,6 +103,7 @@ const InquiryForm = () => {
         <Fragment>
           <div className="wrapper my-3">
             <form
+              ref={form}
               className=""
               onSubmit={submitHandler}
               encType="multipart/form-data"
@@ -92,6 +112,7 @@ const InquiryForm = () => {
                 <label htmlFor="name_field">Name</label>
                 <input
                   type="text"
+                  name="from_name"
                   id="name_field"
                   className="form-control"
                   value={name}
@@ -103,6 +124,7 @@ const InquiryForm = () => {
                 <label htmlFor="email_field">Email Address</label>
                 <input
                   type="text"
+                  name="from_email"
                   id="email_field"
                   className="form-control"
                   value={email}
@@ -112,6 +134,7 @@ const InquiryForm = () => {
               <div className="form-group">
                 <label htmlFor="subject_field">Subject</label>
                 <select
+                  name="email_subject"
                   className="form-control"
                   id="subject_field"
                   value={subject}
@@ -131,6 +154,7 @@ const InquiryForm = () => {
               <div className="form-group">
                 <label htmlFor="content_field">Message</label>
                 <textarea
+                  name="message"
                   type="text"
                   id="content_field"
                   className="form-control"

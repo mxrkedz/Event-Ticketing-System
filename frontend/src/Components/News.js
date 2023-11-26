@@ -2,52 +2,53 @@ import React, { Fragment, useState, useEffect } from "react";
 import MetaData from "./Layout/MetaData";
 import axios from "axios";
 import Pagination from "react-js-pagination";
-import Loader from "./Layout/Loader";
 import ListPost from "./Post/ListPosts";
-
-// import Slider from 'rc-slider';
-// import 'rc-slider/assets/index.css';
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
-import Carousel from "./Layout/Carousel";
-import CloseIcon from "@mui/icons-material/Close";
+import Loader from "./Layout/Loader";
 
-const categories = ["Convention", "Expo", "Music"];
-
-const News = ({ post }) => {
+const News = () => {
   let { keyword } = useParams();
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState();
   const [postsCount, setPostsCount] = useState(0);
+  const [filteredPostsCount, setFilteredPostsCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [resPerPage, setResPerPage] = useState(0);
-  const [filteredPostsCount, setFilteredPostsCount] = useState(0);
 
-  function setCurrentPageNo(pageNumber) {
-    setCurrentPage(pageNumber);
-  }
+  const getPosts = async (currentPage = 1, keyword = "") => {
+    try {
+      const link = `${process.env.REACT_APP_API}/api/v1/posts/?page=${currentPage}&keyword=${keyword}`;
+      console.log("Fetching posts. Page:", currentPage);
 
-  const getPosts = async (page = 1, keyword = "") => {
-    let link = "";
-
-    link = `${process.env.REACT_APP_API}/api/v1/posts/?page=${page}&keyword=${keyword}`;
-
-    console.log(link);
-    let res = await axios.get(link);
-    console.log(res);
-    setPosts(res.data.posts);
-    setResPerPage(res.data.resPerPage);
-    setPostsCount(res.data.postsCount);
-    setLoading(false);
+      const res = await axios.get(link);
+      console.log(res);
+      setPosts((prevPosts) => [...prevPosts, ...res.data.posts]);
+      setResPerPage(res.data.resPerPage);
+      setPostsCount(res.data.postsCount);
+      setFilteredPostsCount(res.data.filteredPostsCount);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      setError(error);
+      setLoading(false);
+    }
   };
+
+  let count = postsCount;
+
+  if (keyword) {
+    count = filteredPostsCount;
+  }
+  const fetchMoreData = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
   useEffect(() => {
     getPosts(currentPage, keyword);
   }, [currentPage, keyword]);
 
-  let count = postsCount;
-  if (keyword) {
-    count = filteredPostsCount;
-  }
   return (
     <Fragment>
       <MetaData title={"News"} />
@@ -55,29 +56,44 @@ const News = ({ post }) => {
         <Loader />
       ) : (
         <Fragment>
-          <div className="container" style={{ marginBottom: "8%" }}>
-            <h1 className="my-4 text-left">Latest News</h1>
-            <hr />
-            <section id="posts" className="mt-5">
-              <div className="row">
-                {posts &&
-                  posts.map((post) => <ListPost key={post._id} post={post} />)}
-              </div>
-            </section>
+          <div
+            className="container-fluid"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             {resPerPage <= postsCount && (
-              <div className="d-flex justify-content-center mt-5">
-                <Pagination
-                  activePage={currentPage}
-                  itemsCountPerPage={resPerPage}
-                  totalItemsCount={postsCount}
-                  onChange={setCurrentPageNo}
-                  nextPageText={"Next"}
-                  prevPageText={"Prev"}
-                  firstPageText={"First"}
-                  lastPageText={"Last"}
-                  itemClass="page-item"
-                  linkClass="page-link"
-                />
+              <div
+                id="parentScroll"
+                className="d-flex justify-content-center mt-5"
+              >
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  next={fetchMoreData}
+                  scrollableTarget="#parentScroll"
+                  hasMore={currentPage * resPerPage < postsCount}
+                  loader={<Loader />}
+                  endMessage={
+                    <p style={{ textAlign: "center" }}>
+                      <b>No more posts</b>
+                    </p>
+                  }
+                >
+                  <div
+                    className="container-fluid"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {posts.map((post) => (
+                      <ListPost key={post._id} post={post} />
+                    ))}
+                  </div>
+                </InfiniteScroll>
               </div>
             )}
           </div>
