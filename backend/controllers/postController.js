@@ -49,7 +49,7 @@ exports.newPost = async (req, res, next) => {
 };
 exports.getPosts = async (req, res, next) => {
   try {
-    const resPerPage = 3;
+    const resPerPage = 1;
     const postsCount = await Post.countDocuments();
     const apiFeatures = new APIFeatures(Post.find(), req.query)
       .search()

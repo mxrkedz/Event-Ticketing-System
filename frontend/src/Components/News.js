@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import MetaData from "./Layout/MetaData";
 import axios from "axios";
 import Pagination from "react-js-pagination";
@@ -12,22 +12,17 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState();
-  const [postsCount, setPostsCount] = useState(0);
-  const [filteredPostsCount, setFilteredPostsCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [resPerPage, setResPerPage] = useState(0);
 
-  const getPosts = async (currentPage = 1, keyword = "") => {
+  const getPosts = async () => {
     try {
-      const link = `${process.env.REACT_APP_API}/api/v1/posts/?page=${currentPage}&keyword=${keyword}`;
-      console.log("Fetching posts. Page:", currentPage);
+      const link = `${process.env.REACT_APP_API}/api/v1/posts?page=${currentPage}&per_page=1`;
 
       const res = await axios.get(link);
       console.log(res);
       setPosts((prevPosts) => [...prevPosts, ...res.data.posts]);
       setResPerPage(res.data.resPerPage);
-      setPostsCount(res.data.postsCount);
-      setFilteredPostsCount(res.data.filteredPostsCount);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -36,69 +31,65 @@ const News = () => {
     }
   };
 
-  let count = postsCount;
-
-  if (keyword) {
-    count = filteredPostsCount;
-  }
   const fetchMoreData = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    setLoading(true);
+    setCurrentPage((prevPageNumber) => prevPageNumber + 1);
   };
 
+  const pageEnd = useRef();
+
   useEffect(() => {
-    getPosts(currentPage, keyword);
-  }, [currentPage, keyword]);
+    getPosts(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchMoreData();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(pageEnd.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (loading) {
+      const handleScroll = () => {
+        if (
+          window.innerHeight + document.documentElement.scrollTop ===
+          document.documentElement.offsetHeight
+        ) {
+          fetchMoreData();
+        }
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [loading]);
 
   return (
     <Fragment>
-      <MetaData title={"News"} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <Fragment>
-          <div
-            className="container-fluid"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {resPerPage <= postsCount && (
-              <div
-                id="parentScroll"
-                className="d-flex justify-content-center mt-5"
-              >
-                <InfiniteScroll
-                  dataLength={posts.length}
-                  next={fetchMoreData}
-                  scrollableTarget="#parentScroll"
-                  hasMore={currentPage * resPerPage < postsCount}
-                  loader={<Loader />}
-                  endMessage={
-                    <p style={{ textAlign: "center" }}>
-                      <b>No more posts</b>
-                    </p>
-                  }
-                >
-                  <div
-                    className="container-fluid"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {posts.map((post) => (
-                      <ListPost key={post._id} post={post} />
-                    ))}
-                  </div>
-                </InfiniteScroll>
-              </div>
-            )}
+      <Fragment>
+        <MetaData title={"News"} />
+        <div className="container p-5">
+        {posts.map((post) => (
+          <div className="card mb-5">
+            <ListPost key={post._id} post={post} col={1} />
           </div>
-        </Fragment>
-      )}
+        ))}
+        <div className="loading" ref={pageEnd}>
+        {loading ? <Loader /> : posts.length === 0 ? null : <h4 className="d-flex justify-content-center mt-5">- No More News -</h4>}
+        </div></div>
+      </Fragment>
     </Fragment>
   );
 };

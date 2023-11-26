@@ -156,55 +156,70 @@ exports.deleteEvent = async (req, res, next) => {
   }
 };
 exports.updateEvent = async (req, res, next) => {
-  let event = await Event.findById(req.params.id);
-  // console.log(req.body)
-  if (!event) {
-    return res.status(404).json({
-      success: false,
-      message: "Event not found",
-    });
-  }
-  let images = [];
+  try {
+    let event = await Event.findById(req.params.id);
 
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
-  if (images !== undefined) {
-    // Deleting images associated with the event
-    for (let i = 0; i < event.images.length; i++) {
-      const result = await cloudinary.v2.uploader.destroy(
-        event.images[i].public_id
-      );
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
     }
-  }
-  let imagesLinks = [];
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "events",
+
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+
+    if (images !== undefined) {
+      // Deleting images associated with the event
+      for (let i = 0; i < event.images.length; i++) {
+        const result = await cloudinary.v2.uploader.destroy(
+          event.images[i].public_id
+        );
+      }
+    }
+
+    let imagesLinks = [];
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "events",
+      });
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.images = imagesLinks;
+
+    event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false, // Fix typo here (useFindAndModify instead of useFindandModify)
     });
-    imagesLinks.push({
-      public_id: result.public_id,
-      url: result.secure_url,
+
+    if (!event) {
+      return res.status(400).json({
+        success: false,
+        message: "Event not updated",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      event,
     });
-  }
-  req.body.images = imagesLinks;
-  event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-    useFindandModify: false,
-  });
-  if (!event)
-    return res.status(400).json({
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
       success: false,
-      message: "Event not updated",
+      message: "Internal Server Error",
     });
-  // console.log(event)
-  return res.status(200).json({
-    success: true,
-    event,
-  });
+  }
 };
 exports.eventSales = async (req, res, next) => {
   const totalSales = await Order.aggregate([

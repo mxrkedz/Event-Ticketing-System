@@ -33,7 +33,7 @@ body {
 .navbar-brand img {
   max-width: auto;
   height: auto;
-  padding: 10px;
+  padding: 0px;
 }
 
 .navbar .col-md-3,
@@ -66,6 +66,7 @@ body {
 
 #search_btn {
   background-color: #904e55;
+  color: white;
 }
 .input-group {
   width: 90%;
@@ -74,16 +75,28 @@ body {
 #search_field {
   height: 2.4rem;
   padding: 1rem;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-weight: bold;
 }
 #login_btn,
 #view_btn {
   background-color: #904e55;
-  padding: 0.4rem 1.8rem;
+  padding: 5px 10px;
   font-family: calibri;
+  font-size: 1rem;
+  border-radius: 5px;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-weight: bold;
 }
 #cart {
-  font-size: 1rem;
   color: white;
+  font-family: calibri;
+  font-size: 1rem;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-weight: bold;
 }
 #cart_count {
   background-color: #904e55;
@@ -183,7 +196,7 @@ footer {
   text-align: center;
   transition: background-color 0.2s; /* Add a transition for a smoother effect */
   transition: all 0.2s;
-  outline: none; 
+  outline: none;
 }
 .addToCart_btn:hover {
   border-color: rgb(255, 255, 255);
@@ -191,13 +204,12 @@ footer {
 }
 .addToCart_btn:active {
   background-color: #734e57;
-  outline: none; 
+  outline: none;
 }
-.addToCart_btn:focus{
+.addToCart_btn:focus {
   background-color: #734e57;
   border-color: rgb(255, 255, 255);
-  outline: none; 
-
+  outline: none;
 }
 /* Product Details Page */
 #product_id {
@@ -235,6 +247,23 @@ footer {
   padding: 5px 20px;
   border-radius: 3px;
   background: red;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.blueColor {
+  display: inline-block;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  width: auto;
+  padding: 5px 20px;
+  border-radius: 3px;
+  background: blue;
   text-align: center;
   font-size: 14px;
   font-weight: 600;
@@ -320,7 +349,7 @@ footer {
 }
 #delete_cart_item {
   color: red;
-  cursor: pointer; 
+  cursor: pointer;
   margin-right: auto;
 }
 #card_item_price {
@@ -409,7 +438,6 @@ footer {
 .rounded-circle {
   border-radius: 50% !important;
   border: 2px solid #904e55;
-
 }
 .btn.focus,
 .btn:focus {
@@ -494,7 +522,7 @@ footer {
 }
 
 #edit_profile {
-  color:white;
+  color: white;
   background-color: #564e58;
   border-color: #564e58;
 }
@@ -502,7 +530,7 @@ footer {
   margin: -20px;
   color: white;
 }
-.card__link2{
+.card__link2 {
   color: var(--white-color);
   text-decoration: none;
   font-size: 1.5rem;
@@ -520,7 +548,7 @@ footer {
   background-color: transparent;
   color: var(--white-color);
   padding: 12px 23px;
-  border: 1px solid  var(--primary-color);
+  border: 1px solid var(--primary-color);
   font-size: 0.9rem;
   border-radius: 10px;
   transition: 0.3s;
@@ -616,12 +644,11 @@ a[data-toggle="collapse"] {
   height: auto;
   width: auto;
   border-radius: 15px;
-  background-color:  #252627;
+  background-color: #252627;
   text-align: center;
   overflow: hidden;
   margin-bottom: 38.4%;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5); /* Add a drop shadow */
-
 }
 .profileCard_img {
   height: 116px;
@@ -645,7 +672,7 @@ a[data-toggle="collapse"] {
   color: #904e55;
 }
 
-.card__email h2{
+.card__email h2 {
   color: white;
 }
 
@@ -757,7 +784,7 @@ ul.CTAs a {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.order-container{
+.order-container {
   padding: 50px;
 }
 .cvc-input-container {
@@ -770,8 +797,8 @@ ul.CTAs a {
   top: 50%;
   transform: translateY(-50%);
 }
-.category_btn{
-  background-color: #564E58;
+.category_btn {
+  background-color: #564e58;
   border: 1px solid rgba(54, 54, 54, 0.6);
   font-weight: 600;
   position: relative;
@@ -784,10 +811,10 @@ ul.CTAs a {
   height: 45px;
   width: 130px;
   opacity: 1;
-  color:white;
+  color: white;
   font-family: calibri;
 }
-#clear_cart_btn{
+#clear_cart_btn {
   float: right;
 }
 .clear_btn {
@@ -811,17 +838,17 @@ ul.CTAs a {
 }
 
 #login-with-google-btn {
-  transition: background-color .3s, box-shadow .3s;
-    
+  transition: background-color 0.3s, box-shadow 0.3s;
+
   padding: 12px 16px 12px 42px;
   border: none;
   border-radius: 3px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   color: #757575;
   background-color: white;
 }
 #login-with-google-btn:hover {
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 #login-with-google-btn:active {
   background-color: #eeeeee;
@@ -832,17 +859,17 @@ ul.CTAs a {
 }
 
 #login-with-facebook-btn {
-  transition: background-color .3s, box-shadow .3s;
-    
+  transition: background-color 0.3s, box-shadow 0.3s;
+
   padding: 12px 16px 12px 42px;
   border: none;
   border-radius: 3px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   color: white;
   background-color: #3b5998;
 }
 #login-with-facebook-btn:hover {
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 #login-with-facebook-btn:active {
   background-color: #3b5998;

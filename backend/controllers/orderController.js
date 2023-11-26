@@ -173,7 +173,7 @@ exports.confirmOrder = async (req, res, next) => {
     const userEmail = users.user.email;
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
-      { orderStatus: "Processing" }, // Assuming 'status' is the field in your Order model representing order status
+      { orderStatus: "Confirmed" }, // Assuming 'status' is the field in your Order model representing order status
       { new: true } // To return the updated order after the update is applied
     );
     const order = await Order.findById(orderId);
