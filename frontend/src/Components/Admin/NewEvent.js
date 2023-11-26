@@ -4,7 +4,7 @@ import MetaData from "../Layout/MetaData";
 import Sidebar from "./SideBar";
 import { getToken } from "../../utils/helpers";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const NewEvent = () => {
@@ -41,7 +41,7 @@ const NewEvent = () => {
     formData.set("stock", stock);
     formData.set("seller", seller);
     formData.set("startDate", startDate);
-    formData.set("endDate", endDate); // Make sure endDate is included
+    formData.set("endDate", endDate);
     formData.set("location", location);
 
     images.forEach((image) => {
@@ -86,7 +86,13 @@ const NewEvent = () => {
       setSuccess(data.success);
       setEvent(data.event);
     } catch (error) {
-      setError(error.response.data.message);
+      if (error.response && error.response.data) {
+        // Handle validation errors from the server
+        setError(error.response.data.message);
+      } else {
+        // Handle other errors (e.g., network issues)
+        setError("An unexpected error occurred.");
+      }
     }
   };
   useEffect(() => {
@@ -98,7 +104,7 @@ const NewEvent = () => {
 
     if (success) {
       navigate("/admin/events");
-      toast.success("Event created successfully", {
+      toast.success("Event Created Successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }
@@ -256,7 +262,6 @@ const NewEvent = () => {
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                  // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>
@@ -265,6 +270,7 @@ const NewEvent = () => {
           </Fragment>
         </div>
       </div>
+      <ToastContainer />
     </Fragment>
   );
 };

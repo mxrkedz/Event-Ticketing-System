@@ -71,18 +71,18 @@ const sendOrderConfirmationEmail = async (userEmail, orderId) => {
 const sendTransactionCompleteEmail = async (userEmail, orderId) => {
   const message = `<h1>Order Confirmed!</h1>
   <h3>Order # ${orderId}</h3>
-  <p>We're pleased to inform you that your order has been confirmed and is currently being processed. You can view the details and track the status of your order by clicking on the link below:</p>
-  <br/>
-  <a href="http://localhost:3000/orders/me" target="_blank">View Orders</a>
+  <p>We're pleased to inform you that your order has been confirmed and is currently being processed.</p>
   <br/>
   <p>Thank you for choosing Ticket Tekcit. We appreciate your business and look forward to providing you with a seamless experience.</p>
   <br/>
   <p>Best Regards,</p>
   <p>The Ticket Tekcit Team</p>`;
 
-
   try {
-    const order = await Order.findById(orderId).populate("orderItems.event", "eventName");
+    const order = await Order.findById(orderId).populate(
+      "orderItems.event",
+      "eventName"
+    );
     if (!order) {
       console.error(`Order not found for ID: ${orderId}`);
       return;
@@ -131,8 +131,14 @@ const sendTransactionCompleteEmail = async (userEmail, orderId) => {
 };
 exports.newOrder = async (req, res, next) => {
   try {
-    const { orderItems, itemsPrice, taxPrice, totalPrice, paymentInfo, shippingInfo } =
-      req.body;
+    const {
+      orderItems,
+      itemsPrice,
+      taxPrice,
+      totalPrice,
+      paymentInfo,
+      shippingInfo,
+    } = req.body;
 
     const order = await Order.create({
       orderItems,
@@ -161,7 +167,7 @@ exports.newOrder = async (req, res, next) => {
   }
 };
 exports.confirmOrder = async (req, res, next) => {
-  try{
+  try {
     const orderId = req.params.id;
     const users = await Order.findById(orderId).populate("user");
     const userEmail = users.user.email;
@@ -171,12 +177,11 @@ exports.confirmOrder = async (req, res, next) => {
       { new: true } // To return the updated order after the update is applied
     );
     const order = await Order.findById(orderId);
-        // req.user.email
-        await sendTransactionCompleteEmail(userEmail, orderId);
-      } catch (error) {
-        console.error("Error confirming order:", error);
-        res.status(500).json({ success: false, error: "Failed to confirm order" });
-
+    // req.user.email
+    await sendTransactionCompleteEmail(userEmail, orderId);
+  } catch (error) {
+    console.error("Error confirming order:", error);
+    res.status(500).json({ success: false, error: "Failed to confirm order" });
   }
 };
 
@@ -313,155 +318,161 @@ exports.deleteOrder = async (req, res, next) => {
 
 exports.totalOrders = async (req, res, next) => {
   const totalOrders = await Order.aggregate([
-      {
-          $group: {
-              _id: null,
-              count: { $sum: 1 }
-          }
-      }
-  ])
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ]);
   if (!totalOrders) {
-      return res.status(404).json({
-          message: 'error total orders',
-      })
+    return res.status(404).json({
+      message: "error total orders",
+    });
   }
   res.status(200).json({
-      success: true,
-      totalOrders
-  })
-
-}
+    success: true,
+    totalOrders,
+  });
+};
 
 exports.totalSales = async (req, res, next) => {
   const totalSales = await Order.aggregate([
-      {
-          $group: {
-              _id: null,
-              totalSales: { $sum: "$totalPrice" }
-          }
-      }
-  ])
+    {
+      $group: {
+        _id: null,
+        totalSales: { $sum: "$totalPrice" },
+      },
+    },
+  ]);
   if (!totalSales) {
-      return res.status(404).json({
-          message: 'error total sales',
-      })
+    return res.status(404).json({
+      message: "error total sales",
+    });
   }
   res.status(200).json({
-      success: true,
-      totalSales
-  })
-}
+    success: true,
+    totalSales,
+  });
+};
 
 exports.customerSales = async (req, res, next) => {
   const customerSales = await Order.aggregate([
-      {
-          $lookup: {
-              from: 'users',
-              localField: 'user',
-              foreignField: '_id',
-              as: 'userDetails'
-          },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userDetails",
       },
-      // {
-      //     $group: {
-      //         _id: "$user",
-      //         total: { $sum: "$totalPrice" },
-      //     }
-      // },
+    },
+    // {
+    //     $group: {
+    //         _id: "$user",
+    //         total: { $sum: "$totalPrice" },
+    //     }
+    // },
 
-      { $unwind: "$userDetails" },
-      // {
-      //     $group: {
-      //         _id: "$user",
-      //         total: { $sum: "$totalPrice" },
-      //         doc: { "$first": "$$ROOT" },
+    { $unwind: "$userDetails" },
+    // {
+    //     $group: {
+    //         _id: "$user",
+    //         total: { $sum: "$totalPrice" },
+    //         doc: { "$first": "$$ROOT" },
 
-      //     }
-      // },
+    //     }
+    // },
 
-      // {
-      //     $replaceRoot: {
-      //         newRoot: { $mergeObjects: [{ total: '$total' }, '$doc'] },
-      //     },
-      // },
-      {
-          $group: {
-              _id: "$userDetails.name",
-              total: { $sum: "$totalPrice" }
-          }
+    // {
+    //     $replaceRoot: {
+    //         newRoot: { $mergeObjects: [{ total: '$total' }, '$doc'] },
+    //     },
+    // },
+    {
+      $group: {
+        _id: "$userDetails.name",
+        total: { $sum: "$totalPrice" },
       },
-      {
-          $project: {
-              _id: 0,
-              "userDetails.name": 1,
-              total: 1,
-          }
+    },
+    {
+      $project: {
+        _id: 0,
+        "userDetails.name": 1,
+        total: 1,
       },
-      { $sort: { total: 1 } },
-
-  ])
-  console.log(customerSales)
+    },
+    { $sort: { total: 1 } },
+  ]);
+  console.log(customerSales);
   if (!customerSales) {
-      return res.status(404).json({
-          message: 'error customer sales',
-      })
-
-
+    return res.status(404).json({
+      message: "error customer sales",
+    });
   }
   // return console.log(customerSales)
   res.status(200).json({
-      success: true,
-      customerSales
-  })
-
-}
+    success: true,
+    customerSales,
+  });
+};
 exports.salesPerMonth = async (req, res, next) => {
   const salesPerMonth = await Order.aggregate([
+    {
+      $group: {
+        // _id: {month: { $month: "$paidAt" } },
+        _id: {
+          year: { $year: "$paidAt" },
+          month: { $month: "$paidAt" },
+        },
+        total: { $sum: "$totalPrice" },
+      },
+    },
 
-      {
-          $group: {
-              // _id: {month: { $month: "$paidAt" } },
-              _id: {
-                  year: { $year: "$paidAt" },
-                  month: { $month: "$paidAt" }
-              },
-              total: { $sum: "$totalPrice" },
+    {
+      $addFields: {
+        month: {
+          $let: {
+            vars: {
+              monthsInString: [
+                ,
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                " Sept",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
+            },
+            in: {
+              $arrayElemAt: ["$$monthsInString", "$_id.month"],
+            },
           },
+        },
       },
-
-      {
-          $addFields: {
-              month: {
-                  $let: {
-                      vars: {
-                          monthsInString: [, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', ' Sept', 'Oct', 'Nov', 'Dec'],
-                          
-                      },
-                      in: {
-                          $arrayElemAt: ['$$monthsInString', "$_id.month"]
-                      }
-                  }
-              }
-          }
+    },
+    { $sort: { "_id.month": 1 } },
+    {
+      $project: {
+        _id: 0,
+        month: 1,
+        total: 1,
       },
-      { $sort: { "_id.month": 1 } },
-      {
-          $project: {
-              _id: 0,
-              month: 1,
-              total: 1,
-          }
-      }
-
-  ])
+    },
+  ]);
   if (!salesPerMonth) {
-      return res.status(404).json({
-          message: 'error sales per month',
-      })
+    return res.status(404).json({
+      message: "error sales per month",
+    });
   }
   // return console.log(customerSales)
   res.status(200).json({
-      success: true,
-      salesPerMonth
-  })
-}
+    success: true,
+    salesPerMonth,
+  });
+};

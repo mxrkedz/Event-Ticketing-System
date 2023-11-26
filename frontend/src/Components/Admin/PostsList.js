@@ -7,7 +7,7 @@ import Loader from '../Layout/Loader'
 import Sidebar from './SideBar'
 import { getToken } from '../../utils/helpers';
 import axios from 'axios'
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PostsList = () => {
@@ -54,7 +54,7 @@ const PostsList = () => {
         }
 
         if (isDeleted) {
-            toast.success('post deleted successfully', {
+            toast.success('Post Deleted Successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
             navigate('/admin/posts');
@@ -161,7 +161,7 @@ const PostsList = () => {
                     </Fragment>
                 </div>
             </div>
-
+            <ToastContainer/>
         </Fragment>
     )
 }

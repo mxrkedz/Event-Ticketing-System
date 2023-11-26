@@ -9,12 +9,13 @@ import "react-toastify/dist/ReactToastify.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 import HomeIcon from "@mui/icons-material/Home";
-import SpeedIcon from '@mui/icons-material/Speed';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
-import LoginIcon from '@mui/icons-material/Login';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SpeedIcon from "@mui/icons-material/Speed";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import FeedIcon from '@mui/icons-material/Feed';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -66,26 +67,26 @@ const Header = ({ cartItems }) => {
           <Search />
         </div>
 
-        <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
+        <div className="col-12 col-md-4 mt-4 mt-md-0 text-center">
           <Link to="/" style={{ textDecoration: "none" }}>
-            <span id="cart" className="ml-3">
-              <HomeIcon /> Home
+            <span id="cart" className="ml-1">
+              <HomeIcon/> Home
             </span>
           </Link>
           <Link to="/news" style={{ textDecoration: "none" }}>
-            <span id="cart" className="ml-3">
-              News
+            <span id="cart" className="ml-4">
+              <FeedIcon/> News
             </span>
           </Link>
           <Link to="/cart" style={{ textDecoration: "none" }}>
-            <span id="cart" className="ml-3">
+            <span id="cart" className="ml-4">
               <Badge badgeContent={cartItemCount} color="error" showZero>
                 <ShoppingCartIcon />
               </Badge>
             </span>
           </Link>
           {user ? (
-            <div className="ml-3 dropdown d-inline">
+            <div className="ml-4 dropdown d-inline">
               <Link
                 to="#!"
                 className="btn dropdown-toggle text-white mr-4"
@@ -110,15 +111,19 @@ const Header = ({ cartItems }) => {
                 aria-labelledby="dropDownMenuButton"
               >
                 {user && user.role === "admin" && (
-                  <Link style={{color:"goldenrod"}}className="dropdown-item" to="/dashboard">
-                    <SpeedIcon/> Dashboard
+                  <Link
+                    style={{ color: "goldenrod" }}
+                    className="dropdown-item"
+                    to="/dashboard"
+                  >
+                    <SpeedIcon /> Dashboard
                   </Link>
                 )}
                 <Link className="dropdown-item" to="/orders/me">
-                  <ShoppingBasketIcon/> Orders
+                  <ShoppingBasketIcon /> Orders
                 </Link>
                 <Link className="dropdown-item" to="/me">
-                  <PersonIcon/> Profile
+                  <PersonIcon /> Profile
                 </Link>
 
                 <Link
@@ -126,7 +131,7 @@ const Header = ({ cartItems }) => {
                   to="/"
                   onClick={logoutHandler}
                 >
-                  <LogoutIcon/> Logout
+                  <LogoutIcon /> Logout
                 </Link>
               </div>
             </div>
@@ -138,7 +143,7 @@ const Header = ({ cartItems }) => {
                 id="login_btn"
                 style={{ color: "white" }}
               >
-                <LoginIcon/> Login
+                <LoginIcon /> Login
               </Link>
               <Link
                 to="/register"
@@ -146,7 +151,7 @@ const Header = ({ cartItems }) => {
                 id="login_btn"
                 style={{ color: "white" }}
               >
-                <PersonAddIcon/> Register
+                <PersonAddIcon /> Register
               </Link>
             </Fragment>
           )}

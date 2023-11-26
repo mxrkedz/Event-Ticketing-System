@@ -32,9 +32,11 @@ import NewEvent from "./Components/Admin/NewEvent";
 import UpdateEvent from "./Components/Admin/UpdateEvent";
 import NewPost from "./Components/Admin/NewPost";
 import UpdatePost from "./Components/Admin/UpdatePost";
-import ListPosts from "./Components/Post/ListPosts";
 import PostDetails from "./Components/Post/PostDetails";
 import News from "./Components/News";
+import InquiryPage from "./Components/Inquiry/InquiryPage";
+import CommentsList from "./Components/Admin/CommentsList";
+import UpdateComment from "./Components/Admin/UpdateComment";
 
 function App() {
   const [state, setState] = useState({
@@ -59,10 +61,10 @@ function App() {
       ...state,
       cartItems: [], // Set the cartItems to an empty array
     });
-  
+
     // Update the localStorage with the modified cartItems (empty array)
     localStorage.setItem("cartItems", JSON.stringify([]));
-  };  
+  };
 
   const addItemToCart = async (id, quantity) => {
     console.log(id, quantity);
@@ -188,6 +190,14 @@ function App() {
             exact="true"
           />
           <Route path="/search/:keyword" element={<Home />} exact="true" />
+          <Route path="/inquiry" element={<InquiryPage />} exact="true" />
+          <Route path="/admin/inquiries" element={<CommentsList />} exact="true" />
+          <Route path="/admin/inquiry" element={<InquiryPage />} exact="true" />
+          <Route path="/admin/inquiries/:id" element={<UpdateComment />} exact="true" />
+
+          {/* <Route path="/admin/post/:id" element={<UpdatePost />} /> */}
+
+
 
           {/* Transaction */}
           <Route
@@ -241,9 +251,17 @@ function App() {
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
           <Route path="/me/update" element={<UpdateProfile />} exact="true" />
-          <Route path="/password/update" element={<UpdatePassword />} />          
-          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
-          <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />
+          <Route
+            path="/password/reset/:token"
+            element={<NewPassword />}
+            exact="true"
+          />
+          <Route
+            path="/password/forgot"
+            element={<ForgotPassword />}
+            exact="true"
+          />
           {/* Auth End*/}
 
           <Route
@@ -285,15 +303,8 @@ function App() {
 
           <Route path="/admin/post" element={<NewPost />} />
           <Route path="/admin/post/:id" element={<UpdatePost />} />
-          <Route path="/news" element={<News/>} exact="true" />
-          <Route
-            path="/news/:id"
-            element={
-              <PostDetails/>
-            }
-            exact="true"
-          />
-          
+          <Route path="/news" element={<News />} exact="true" />
+          <Route path="/news/:id" element={<PostDetails />} exact="true" />
         </Routes>
         <Footer />
       </Router>

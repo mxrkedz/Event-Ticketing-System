@@ -82,7 +82,7 @@ const NewPost = () => {
 
     if (success) {
       navigate("/admin/posts");
-      toast.success("Post created successfully", {
+      toast.success("Post Created Successfully!", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }

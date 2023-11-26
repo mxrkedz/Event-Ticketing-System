@@ -4,7 +4,7 @@ import { MDBDataTable } from 'mdbreact'
 import MetaData from '../Layout/MetaData'
 import Loader from '../Layout/Loader'
 import Sidebar from './SideBar'
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getToken } from '../../utils/helpers'
 import axios from 'axios'
@@ -16,10 +16,10 @@ const OrdersList = () => {
     const [allOrders, setAllOrders] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
     const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
     const successMsg = (message = '') => toast.success(message, {
-        position: toast.POSITION.BOTTOM_CENTER
+        position: toast.POSITION.BOTTOM_RIGHT
     });
 
     const listOrders = async () => {
@@ -151,6 +151,7 @@ const OrdersList = () => {
                     </Fragment>
                 </div>
             </div>
+            <ToastContainer/>
         </Fragment>
     )
 }

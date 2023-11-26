@@ -4,30 +4,13 @@ const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("cloudinary");
 
 exports.newEvent = async (req, res, next) => {
-  let images = [];
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
+  try {
+    let images = [];
 
-  let imagesLinks = [];
-
-  for (let i = 0; i < images.length; i++) {
-    let imageDataUri = images[i];
-    try {
-      const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
-        folder: "event",
-        width: 150,
-        crop: "scale",
-      });
-
-      imagesLinks.push({
-        public_id: result.public_id,
-        url: result.secure_url,
-      });
-    } catch (error) {
-      console.log(error);
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
     }
 
     let imagesLinks = [];
@@ -47,8 +30,6 @@ exports.newEvent = async (req, res, next) => {
         });
       } catch (error) {
         console.log(`Error uploading image to Cloudinary: ${error}`);
-        // Handle the error as needed
-        // You can choose to send an error response or take other actions
         return res.status(500).json({
           success: false,
           error: `Error uploading image to Cloudinary: ${error.message}`,
@@ -71,7 +52,14 @@ exports.newEvent = async (req, res, next) => {
       success: true,
       event,
     });
-}};
+  } catch (error) {
+    console.log(`Unexpected error in newEvent: ${error}`);
+    return res.status(500).json({
+      success: false,
+      error: `Unexpected error: ${error.message}`,
+    });
+  }
+};
 exports.getEvents = async (req, res, next) => {
   try {
     const resPerPage = 6;

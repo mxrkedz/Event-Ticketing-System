@@ -11,13 +11,25 @@ import { useParams } from "react-router-dom";
 const ListPosts = ({ post }) => {
   return (
     <div className="col-sm-12 col-md-8 col-lg-4 my-3">
-      <div className="card p-3 rounded">
+      <div
+        className="card p-3 rounded"
+        style={{
+          width: "100%",
+          WebkitBoxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         {post.images && post.images.length > 0 && (
           <img
             className="card-img-top"
             src={post.images[0].url}
             alt={post.name}
-            style={{ width: "auto", height: "200px" }}
+            style={{
+              width: "auto",
+              height: "300px",
+              border: "5px ridge #904E55",
+              borderRadius: "5px",
+            }}
           />
         )}
         <div className="card-body d-flex flex-column">
@@ -27,16 +39,10 @@ const ListPosts = ({ post }) => {
           <p id="post_id" style={{ margin: "0.1rem 0" }}>
             {post.location}
           </p>
-
-          
         </div>
-        <Link
-            to={`/news/${post._id}`}
-            id="view_btn"
-            className="btn btn-block"
-          >
-            <b>Check Details</b>
-          </Link>
+        <Link to={`/news/${post._id}`} id="view_btn" className="btn btn-block">
+          <b>Check Details</b>
+        </Link>
       </div>
     </div>
   );

@@ -69,41 +69,59 @@ const PostDetails = () => {
       {loading ? (
         <Loader />
       ) : (
-        <Card sx={{ maxWidth: "lg" }}>
-          {post.images.map((image, index) => (
-            <CardMedia
-              key={index}
-              component="img"
-              height="194"
-              image={image.url}
-              alt={post.title}
-            />
-          ))}
-
-          <CardContent>
-            <Typography variant="body2" color="text.primary">
-              {post.title}
-            </Typography>
-            <Typography variant="body3" color="text.secondary">
-              {post.location}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
+        <div className="container my-5" style={{ maxHeight: "100%" }}>
+          <div className="container mt-5">
+            <Card
+              sx={{
+                maxWidth: "lg",
+                position: "relative",
+                WebkitBoxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+                boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+              }}
             >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>{post.content}</Typography>
-            </CardContent>
-          </Collapse>
-        </Card>
+              {post.images.map((image, index) => (
+                <CardMedia
+                  key={index}
+                  component="img"
+                  height="600"
+                  image={image.url}
+                  alt={post.title}
+                />
+              ))}
+
+              <CardContent>
+                <Typography variant="h3" color="text.primary">
+                  {post.title}
+                </Typography>
+                <Typography variant="h5" color="text.secondary">
+                  {post.location}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+              <Collapse
+                in={expanded}
+                timeout="auto"
+                unmountOnExit
+                style={{ zIndex: "2000" }}
+              >
+                <hr/>
+
+                <CardContent>
+                  <Typography paragraph>{post.content}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          </div>
+        </div>
       )}
     </>
   );

@@ -27,7 +27,7 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
   };
   const clearCartHandler = () => {
     clearCart();
-    toast.success("Cart cleared", {
+    toast.success("Cart Cleared!", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
   };

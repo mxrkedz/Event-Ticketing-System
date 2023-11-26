@@ -16,7 +16,13 @@ const CarouselFP = ({ events }) => {
       activeIndex={currentEventIndex}
       onSelect={(selectedIndex) => setCurrentEventIndex(selectedIndex)}
       pause="hover"
-      style={{ height: "600px", width: "100%", overflow: "hidden" }}
+      style={{
+        height: "auto",
+        width: "100%",
+        overflow: "hidden",
+        WebkitBoxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+        boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+      }}
       controls={true}
       indicators={false}
     >
@@ -37,7 +43,7 @@ const CarouselFP = ({ events }) => {
                 <h1
                   style={{
                     textShadow:
-                      "-1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black",
+                      "-1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 0px 4px 2px rgba(0,0,0,0.8)",
                   }}
                 >
                   {event.name}

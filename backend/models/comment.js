@@ -1,17 +1,24 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const commentSchema = new mongoose.Schema({
-  event: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Event",
+  name: {
+    type: String,
+    required: [true, "Please enter your name"],
+    maxLength: [30, "Your name cannot exceed 30 characters"],
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
+  email: {
+    type: String,
+    required: [true, "Please enter your email"],
+    unique: true,
+    validate: [validator.isEmail, "Please enter valid email address"],
   },
-  remark: {
+  subject: {
+    type: String,
+    required: true,
+    enum: ["Inquiry", "Request", "Complaint"],
+  },
+  content: {
     type: String,
     required: true,
   },
@@ -19,12 +26,6 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-
-
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

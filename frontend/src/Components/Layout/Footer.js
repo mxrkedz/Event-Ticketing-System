@@ -4,7 +4,7 @@ import '../../App.css';
 const Footer = () => {
     return (
         <Fragment>
-            <footer className="py-1">
+            <footer>
                 <p className="text-center mt-1">
                 &copy; 2023 Ticket Tekcit, All Rights Reserved.
                 </p>
