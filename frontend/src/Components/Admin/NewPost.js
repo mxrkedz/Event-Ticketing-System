@@ -13,8 +13,7 @@ const NewPost = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
   const [Post, setPost] = useState({});
 
@@ -22,6 +21,12 @@ const NewPost = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length !== 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
     const formData = new FormData();
     formData.set("title", title);
@@ -49,9 +54,9 @@ const NewPost = () => {
       };
 
       reader.readAsDataURL(file);
-      // console.log(reader)
     });
   };
+
   const newPost = async (formData) => {
     try {
       const config = {
@@ -66,16 +71,35 @@ const NewPost = () => {
         formData,
         config
       );
-      setLoading(false);
+
       setSuccess(data.success);
       setPost(data.post);
     } catch (error) {
-      setError(error.response.data.message);
+      setErrors({ message: error.response.data.message });
     }
   };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!title.trim()) {
+      errors.title = 'Title is required';
+    }
+
+    if (!location.trim()) {
+      errors.location = 'Location is required';
+    }
+
+    if (!content.trim()) {
+      errors.content = 'Content is required';
+    }
+
+    return errors;
+  };
+
   useEffect(() => {
-    if (error) {
-      toast.error(error, {
+    if (errors.message) {
+      toast.error(errors.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }
@@ -86,7 +110,7 @@ const NewPost = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }
-  }, [error, success]);
+  }, [errors.message, success]);
 
   return (
     <Fragment>
@@ -111,11 +135,11 @@ const NewPost = () => {
                   <input
                     type="text"
                     id="title_field"
-                    className="form-control"
+                    className={`form-control ${errors.title && 'is-invalid'}`}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    required
                   />
+                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
                 </div>
 
                 <div className="form-group">
@@ -123,11 +147,11 @@ const NewPost = () => {
                   <input
                     type="text"
                     id="location_field"
-                    className="form-control"
+                    className={`form-control ${errors.location && 'is-invalid'}`}
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    required
                   />
+                  {errors.location && <div className="invalid-feedback">{errors.location}</div>}
                 </div>
 
                 <div className="form-group">
@@ -135,11 +159,11 @@ const NewPost = () => {
                   <input
                     type="text"
                     id="content_field"
-                    className="form-control"
+                    className={`form-control ${errors.content && 'is-invalid'}`}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    required
                   />
+                  {errors.content && <div className="invalid-feedback">{errors.content}</div>}
                 </div>
 
                 <div className="form-group">
@@ -159,11 +183,11 @@ const NewPost = () => {
                     </label>
                   </div>
 
-                  {imagesPreview.map((img) => (
+                  {imagesPreview.map((img, index) => (
                     <img
                       src={img}
-                      key={img}
-                      alt="Images Preview"
+                      key={index}
+                      alt={`Image Preview ${index}`}
                       className="mt-3 mr-2"
                       width="55"
                       height="52"
@@ -175,7 +199,6 @@ const NewPost = () => {
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                  // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>
@@ -187,4 +210,5 @@ const NewPost = () => {
     </Fragment>
   );
 };
+
 export default NewPost;

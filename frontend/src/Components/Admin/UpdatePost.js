@@ -13,7 +13,7 @@ const UpdatePost = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
   const [post, setPost] = useState({});
@@ -48,8 +48,8 @@ const UpdatePost = () => {
       );
       setPost(data.post);
       setLoading(false);
-    } catch (error) {
-      setError(error.response.data.message);
+    } catch (errors) {
+      setErrors(errors.response.data.message);
     }
   };
 
@@ -80,8 +80,8 @@ const UpdatePost = () => {
       setContent(post.content);
       setOldImages(post.images);
     }
-    if (error) {
-      errMsg(error);
+    if (errors) {
+      errMsg(errors);
     }
     if (updateError) {
       errMsg(updateError);
@@ -90,10 +90,34 @@ const UpdatePost = () => {
       navigate("/admin/posts");
       successMsg("Post Updated Successfully");
     }
-  }, [error, isUpdated, updateError, post, id]);
+  }, [errors, isUpdated, updateError, post, id]);
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!title.trim()) {
+      errors.title = 'Title is required';
+    }
+
+    if (!location.trim()) {
+      errors.location = 'Location is required';
+    }
+
+    if (!content.trim()) {
+      errors.content = 'Content is required';
+    }
+
+    return errors;
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length !== 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     const formData = new FormData();
     formData.set("title", title);
     formData.set("location", location);
@@ -145,6 +169,7 @@ const UpdatePost = () => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
+                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
                 </div>
 
                 <div className="form-group">
@@ -156,6 +181,7 @@ const UpdatePost = () => {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                   />
+                  {errors.location && <div className="invalid-feedback">{errors.location}</div>}
                 </div>
 
                 <div className="form-group">
@@ -167,6 +193,7 @@ const UpdatePost = () => {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
+                  {errors.content && <div className="invalid-feedback">{errors.content}</div>}
                 </div>
 
                 <div className="form-group">

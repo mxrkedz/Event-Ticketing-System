@@ -29,8 +29,59 @@ const NewEvent = () => {
 
   let navigate = useNavigate();
 
+  const validateForm = () => {
+    const errors = {};
+
+    // Validate required fields
+    if (!name.trim()) {
+      errors.name = 'Name is required';
+    }
+
+    if (price <= 0) {
+      errors.price = 'Price must be greater than 0';
+    }
+
+    if (!description.trim()) {
+      errors.description = 'Description is required';
+    }
+
+    if (!category) {
+      errors.category = 'Category is required';
+    }
+
+    if (stock <= 0) {
+      errors.stock = 'Stock must be greater than 0';
+    }
+
+    if (!organizer.trim()) {
+      errors.organizer = 'Seller Name is required';
+    }
+
+    if (!startDate) {
+      errors.startDate = 'Start Date is required';
+    }
+
+    if (!endDate) {
+      errors.endDate = 'End Date is required';
+    }
+
+    if (!location.trim()) {
+      errors.location = 'Location is required';
+    }
+
+    // Set the errors in the state
+    setError(errors);
+
+    // Return true if there are no errors, otherwise false
+    return Object.keys(errors).length === 0;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const isFormValid = validateForm();
+
+    if (isFormValid) {
 
     const formData = new FormData();
     formData.set("name", name);
@@ -49,7 +100,12 @@ const NewEvent = () => {
     });
 
     newEvent(formData);
-  };
+  } else {
+    toast.error('Please fill in all required fields.', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }
+};
 
   const onChange = (e) => {
     const files = Array.from(e.target.files);
@@ -136,8 +192,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    required
                   />
+                  {error.name && <p className="error-message text-danger">{error.name}</p>}
                 </div>
 
                 <div className="form-group">
@@ -148,8 +204,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    required
                   />
+                  {error.price && <p className="error-message text-danger">{error.price}</p>}
                 </div>
 
                 <div className="form-group">
@@ -160,8 +216,8 @@ const NewEvent = () => {
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    required
                   ></textarea>
+                  {error.description && <p className="error-message text-danger">{error.description}</p>}
                 </div>
 
                 <div className="form-group">
@@ -178,6 +234,7 @@ const NewEvent = () => {
                       </option>
                     ))}
                   </select>
+                  {error.category && <p className="error-message text-danger">{error.category}</p>}
                 </div>
                 <div className="form-group">
                   <label htmlFor="stock_field">Stock</label>
@@ -187,8 +244,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
-                    required
                   />
+                  {error.stock && <p className="error-message text-danger">{error.stock}</p>}
                 </div>
 
                 <div className="form-group">
@@ -199,8 +256,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={organizer}
                     onChange={(e) => setOrganizer(e.target.value)}
-                    required
                   />
+                   {error.organizer && <p className="error-message text-danger">{error.organizer}</p>}
                 </div>
 
                 <div className="form-group">
@@ -211,8 +268,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    required
                   />
+                  {error.startDate && <p className="error-message text-danger">{error.startDate}</p>}
                 </div>
 
                 <div className="form-group">
@@ -223,8 +280,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    required
                   />
+                  {error.endDate && <p className="error-message text-danger">{error.endDate}</p>}
                 </div>
                 <div className="form-group">
                   <label htmlFor="location_field">Location</label>
@@ -234,8 +291,8 @@ const NewEvent = () => {
                     className="form-control"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    required
                   />
+                   {error.location && <p className="error-message text-danger">{error.location}</p>}
                 </div>
                 <div className="form-group">
                   <label>Images</label>
