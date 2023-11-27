@@ -24,6 +24,7 @@ const CarouselFP = ({ events }) => {
         boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
         borderBottom: "8px solid #252627",
         borderRadius: "0px 0px 40px 40px",
+        backgroundColor: "#333333 "
       }}
       controls={true}
       indicators={false}

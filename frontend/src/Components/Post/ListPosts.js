@@ -29,6 +29,7 @@ const ListPosts = ({ post }) => {
               height: "500px",
               border: "5px ridge #904E55",
               borderRadius: "5px",
+              backgroundColor: "#333333 "
             }}
           />
         )}

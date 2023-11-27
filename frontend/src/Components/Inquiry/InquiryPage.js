@@ -8,7 +8,7 @@ const InquiryPage = () => {
     <Fragment>
       <Fragment>
         <div className="container" style={{ marginBottom: "1.63%" }}>
-          <h1 className="my-4 text-left">Feedback & Inquiry</h1>
+          <h1 className="my-4 text-left" id="titlePage">Feedback & Inquiry</h1>
           <hr />
           <section id="posts" className="mt-5">
             <div className="container">

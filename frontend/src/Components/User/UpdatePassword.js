@@ -4,18 +4,19 @@ import MetaData from "../Layout/MetaData";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { getToken, getUser } from "../../utils/helpers";
+import { getToken } from "../../utils/helpers";
 
 const UpdatePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
+  const [oldPasswordError, setOldPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
   const [isUpdated, setIsUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
-  const updatePassword = async (formData) => {
-    console.log(formData);
 
+  const updatePassword = async (formData) => {
     try {
       const config = {
         headers: {
@@ -31,7 +32,7 @@ const UpdatePassword = () => {
       );
       setIsUpdated(data.success);
       setLoading(false);
-      toast.success("password updated", {
+      toast.success("Password updated", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       navigate("/me");
@@ -39,6 +40,7 @@ const UpdatePassword = () => {
       setError(error.response.data.message);
     }
   };
+
   useEffect(() => {
     if (error) {
       toast.error(error, {
@@ -47,14 +49,39 @@ const UpdatePassword = () => {
     }
   }, [error]);
 
+  const validateForm = () => {
+    let isValid = true;
+
+    // Validate old password
+    if (oldPassword.trim() === "") {
+      setOldPasswordError("Old password is required");
+      isValid = false;
+    } else {
+      setOldPasswordError("");
+    }
+
+    // Validate new password
+    if (password.trim() === "") {
+      setPasswordError("New password is required");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.set("oldPassword", oldPassword);
-    formData.set("password", password);
+    // Validate the form
+    if (validateForm()) {
+      const formData = new FormData();
+      formData.set("oldPassword", oldPassword);
+      formData.set("password", password);
 
-    updatePassword(formData);
+      updatePassword(formData);
+    }
   };
 
   return (
@@ -75,6 +102,7 @@ const UpdatePassword = () => {
                 onChange={(e) => setOldPassword(e.target.value)}
                 required
               />
+              <p className="text-danger">{oldPasswordError}</p>
             </div>
 
             <div className="form-group">
@@ -87,6 +115,7 @@ const UpdatePassword = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <p className="text-danger">{passwordError}</p>
             </div>
 
             <button

@@ -1,9 +1,42 @@
 const Comment = require("../models/comment");
 const APIFeatures = require("../utils/apiFeatures");
+const cloudinary = require("cloudinary");
 
 exports.newComment = async (req, res, next) => {
   try {
-    const { user, email, subject, content } = req.body;
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+
+    let imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+      let imageDataUri = images[i];
+      try {
+        const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
+          folder: "eventTickets/comments",
+          width: 150,
+          crop: "scale",
+        });
+
+        imagesLinks.push({
+          public_id: result.public_id,
+          url: result.secure_url,
+        });
+      } catch (error) {
+        console.log(`Error uploading image to Cloudinary: ${error}`);
+        return res.status(500).json({
+          success: false,
+          error: `Error uploading image to Cloudinary: ${error.message}`,
+        });
+      }
+    }
+
+    req.body.images = imagesLinks;
 
     const comment = await Comment.create(req.body);
     if (!comment) {

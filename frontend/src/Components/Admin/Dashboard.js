@@ -98,7 +98,7 @@ const Dashboard = () => {
         </div>
 
         <div className="col-12 col-md-10">
-          <h1 className="my-4">Dashboard</h1>
+          <h1 className="my-4" id="titlePage">Dashboard</h1>
 
           {loading ? (
             <Loader />
@@ -112,7 +112,7 @@ const Dashboard = () => {
                   <div className="card text-white bg-success o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
-                        events
+                        Events
                         <br /> <b>{events && events.length}</b>
                       </div>
                     </div>

@@ -89,7 +89,7 @@ const News = () => {
           </div>
         ))}
         <div className="loading" ref={pageEnd}>
-        {loading ? <Loader /> : posts.length === 0 ? null : <h4 className="d-flex justify-content-center mt-5">- No More News -</h4>}
+        {loading ? <Loader /> : posts.length === 0 ? null : <h4 className="d-flex justify-content-center mt-5" id="titlePage">- No More News -</h4>}
         </div></div>
       </Fragment>
     </Fragment>

@@ -49,7 +49,7 @@ const Profile = () => {
         <Fragment>
           <MetaData title={"Your Profile"} />
 
-          <h2 className="row justify-content-center mt-5">My Profile</h2>
+          <h2 className="row justify-content-center mt-5" id="titlePage">My Profile</h2>
           <div className="container">
             <div className="row justify-content-center mt-5">
               <div className="col-12 col-md-6 mx-auto">

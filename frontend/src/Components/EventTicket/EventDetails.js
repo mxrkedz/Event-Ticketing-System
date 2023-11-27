@@ -104,7 +104,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
         </div>
 
         <div className="col-12 col-lg-5 " style={{ marginTop: "8%" }}>
-          <h1 style={{ margin: "0.1rem 0" }}>{event.name}</h1>
+          <h1 style={{ margin: "0.1rem 0" }} id="titlePage">{event.name}</h1>
           <p id="category" style={{ margin: "0.1rem 0" }}>
             {event.category} by {event.organizer}
           </p>
@@ -132,7 +132,7 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
             <b>Purchase Tickets:</b>
           </h4>
           <h1 style={{ marginBottom: "2rem" }} id="h1_ticket_price">
-            {event.name} Tickets: ₱{event.price}
+            Tickets: ₱{event.price}
           </h1>
           <div className="mt-auto">
             {event.stock === 0 ? (
