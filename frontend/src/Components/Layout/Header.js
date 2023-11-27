@@ -15,7 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import FeedIcon from '@mui/icons-material/Feed';
+import FeedIcon from "@mui/icons-material/Feed";
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState({});
@@ -70,12 +70,12 @@ const Header = ({ cartItems }) => {
         <div className="col-12 col-md-4 mt-4 mt-md-0 text-center">
           <Link to="/" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-1">
-              <HomeIcon/> Home
+              <HomeIcon /> Home
             </span>
           </Link>
           <Link to="/news" style={{ textDecoration: "none" }}>
             <span id="cart" className="ml-4">
-              <FeedIcon/> News
+              <FeedIcon /> News
             </span>
           </Link>
           <Link to="/cart" style={{ textDecoration: "none" }}>
@@ -141,9 +141,9 @@ const Header = ({ cartItems }) => {
                 to="/login"
                 className="btn ml-4"
                 id="login_btn"
-                style={{ color: "white" }}
+                style={{ color: "white", border: "3px solid #904E55", backgroundColor: "#252627"}}
               >
-                <LoginIcon /> Login
+                Login
               </Link>
               <Link
                 to="/register"
@@ -151,7 +151,7 @@ const Header = ({ cartItems }) => {
                 id="login_btn"
                 style={{ color: "white" }}
               >
-                <PersonAddIcon /> Register
+                Register
               </Link>
             </Fragment>
           )}

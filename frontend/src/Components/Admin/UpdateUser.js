@@ -88,7 +88,7 @@ const UpdateUser = () => {
                 <div className="col-12 col-md-2">
                     <Sidebar />
                 </div>
-                <div className="col-12 col-md-10">
+                <div className="col-12 col-md-10" >
                     <div className="row wrapper">
                         <div className="col-10 col-lg-5">
                             <form className="shadow-lg" onSubmit={submitHandler}>
@@ -101,6 +101,7 @@ const UpdateUser = () => {
                                         className="form-control"
                                         name='name'
                                         value={name}
+                                        disabled
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                 </div>
@@ -111,6 +112,7 @@ const UpdateUser = () => {
                                         id="email_field"
                                         className="form-control"
                                         name='email'
+                                        disabled
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />

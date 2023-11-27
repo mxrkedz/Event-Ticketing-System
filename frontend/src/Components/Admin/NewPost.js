@@ -114,6 +114,7 @@ const NewPost = () => {
                     className="form-control"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -125,6 +126,7 @@ const NewPost = () => {
                     className="form-control"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -136,6 +138,7 @@ const NewPost = () => {
                     className="form-control"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
+                    required
                   />
                 </div>
 

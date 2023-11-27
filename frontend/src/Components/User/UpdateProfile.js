@@ -155,6 +155,7 @@ const UpdateProfile = () => {
                                 name='name'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                             />
                             {nameError && <div className="invalid-feedback">{nameError}</div>}
                         </div>
@@ -168,6 +169,7 @@ const UpdateProfile = () => {
                                 name='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                             {emailError && <div className="invalid-feedback">{emailError}</div>}
                         </div>

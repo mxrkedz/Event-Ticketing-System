@@ -6,6 +6,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
   const navigate = useNavigate();
@@ -53,10 +56,12 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
     <Fragment>
       <MetaData title={"Your Cart"} />
       {cartItems.length === 0 ? (
-        <div className="container" style={{ marginBottom: "35.9%" }}>
-          <h2 className="mt-5 text-center">Your Cart is Empty!</h2>
+        <div className="container" style={{ marginBottom: "30%" }}>
+          <h2 className="mt-5 text-center" id="titlePage">
+            Your Cart is Empty.
+          </h2>
           <p className="text-center">
-            <Link to={`/`}>
+            <Link to={`/`} id="edit_profile" className="btn card__btn-contact">
               Continue Shopping <ArrowForwardIcon />
             </Link>
           </p>
@@ -110,14 +115,16 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
 
                             <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                               <div className="stockCounter d-inline">
-                                <span
-                                  className="btn btn-danger minus"
+                                <Fab
+                                  size="small"
+                                  color="error"
+                                  aria-label="minus"
                                   onClick={() =>
                                     decreaseQty(item.event, item.quantity)
                                   }
                                 >
-                                  -
-                                </span>
+                                  <RemoveIcon />
+                                </Fab>
 
                                 <input
                                   type="number"
@@ -125,9 +132,10 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
                                   value={item.quantity}
                                   readOnly
                                 />
-
-                                <span
-                                  className="btn btn-primary plus"
+                                <Fab
+                                  size="small"
+                                  color="primary"
+                                  aria-label="add"
                                   onClick={() =>
                                     increaseQty(
                                       item.event,
@@ -136,18 +144,22 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
                                     )
                                   }
                                 >
-                                  +
-                                </span>
+                                  <AddIcon />
+                                </Fab>
                               </div>
                             </div>
 
                             <div className="col-4 col-lg-1 mt-4 mt-lg-0">
-                              <DeleteIcon
-                                id="delete_cart_item"
+                              <Fab
+                                size="small"
+                                color="error"
+                                aria-label="remove"
                                 onClick={() =>
                                   removeCartItemHandler(item.event)
                                 }
-                              />
+                              >
+                                <DeleteIcon />
+                              </Fab>
                             </div>
                           </div>
                         </div>
@@ -202,7 +214,7 @@ const Cart = ({ updateCart, cartItems, removeItemFromCart, clearCart }) => {
                           !cartItems.every((item) => item.quantity >= 1)
                         }
                       >
-                        <ShoppingCartCheckoutIcon/> Check out
+                        <ShoppingCartCheckoutIcon /> Check out
                       </button>
                     </div>
                   </div>

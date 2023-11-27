@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 const ListPosts = ({ post }) => {
   return (
-    <div className="col-sm-12 col-md-8 col-lg-4 my-3">
+    <div className="col-lg-12 col-sm-8 col-sm-4 my-3">
       <div
         className="card p-3 rounded"
         style={{
@@ -26,9 +26,10 @@ const ListPosts = ({ post }) => {
             alt={post.name}
             style={{
               width: "auto",
-              height: "300px",
+              height: "500px",
               border: "5px ridge #904E55",
               borderRadius: "5px",
+              backgroundColor: "#333333 "
             }}
           />
         )}

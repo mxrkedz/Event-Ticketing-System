@@ -70,6 +70,9 @@ const PostDetails = () => {
         <Loader />
       ) : (
         <div className="container my-5" style={{ maxHeight: "100%" }}>
+                  <h1 className="my-4 text-left" id="titlePage">{post.title}</h1>
+            <hr style={{ marginBottom: "5%" }}/>
+
           <div className="container mt-5">
             <Card
               sx={{
@@ -77,6 +80,7 @@ const PostDetails = () => {
                 position: "relative",
                 WebkitBoxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
                 boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+                
               }}
             >
               {post.images.map((image, index) => (
@@ -86,6 +90,7 @@ const PostDetails = () => {
                   height="600"
                   image={image.url}
                   alt={post.title}
+                  sx={{backgroundColor: "#333333 "}}
                 />
               ))}
 

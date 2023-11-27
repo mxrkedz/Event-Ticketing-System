@@ -78,11 +78,16 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
         className="row d-flex justify-content-around"
         style={{ marginBottom: "10.2%" }}
       >
-        <div className="col-12 col-lg-5 img-fluid" id="product_image">
+        <div className="col-12 col-lg-6 img-fluid" id="product_image">
           <Carousel
             indicators={false}
             pause="hover"
-            style={{ height: "600px", overflow: "hidden" }}
+            style={{
+              height: "auto",
+              minHeight: "500px",
+              maxHeight: "1000px",
+              overflow: "hidden",
+            }}
           >
             {event.images &&
               event.images.map((image) => (
@@ -98,8 +103,8 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           </Carousel>
         </div>
 
-        <div className="col-12 col-lg-5 mt-5">
-          <h1 style={{ margin: "0.1rem 0" }}>{event.name}</h1>
+        <div className="col-12 col-lg-5 " style={{ marginTop: "8%" }}>
+          <h1 style={{ margin: "0.1rem 0" }} id="titlePage">{event.name}</h1>
           <p id="category" style={{ margin: "0.1rem 0" }}>
             {event.category} by {event.organizer}
           </p>
@@ -124,10 +129,10 @@ const EventDetails = ({ addItemToCart, cartItems }) => {
           </h6>
           <hr />
           <h4 className="mt-2" style={{ marginBottom: "2rem" }}>
-            <b>Buy Your Tickets Here:</b>
+            <b>Purchase Tickets:</b>
           </h4>
           <h1 style={{ marginBottom: "2rem" }} id="h1_ticket_price">
-            {event.name} Tickets: ₱{event.price}
+            Tickets: ₱{event.price}
           </h1>
           <div className="mt-auto">
             {event.stock === 0 ? (

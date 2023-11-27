@@ -16,9 +16,12 @@ const UpdateComment = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
+  const [imagesPreview, setImagesPreview] = useState([]);
   const [success, setSuccess] = useState("");
   const [comment, setComment] = useState({});
   const [updateError, setUpdateError] = useState("");
+  const [oldImages, setOldImages] = useState([]);
   const [isUpdated, setIsUpdated] = useState(false);
 
   let { id } = useParams();
@@ -78,6 +81,7 @@ const UpdateComment = () => {
       setName(comment.name);
       setEmail(comment.email);
       setContent(comment.content);
+      setOldImages(comment.images);
     }
     if (error) {
       errMsg(error);
@@ -87,7 +91,7 @@ const UpdateComment = () => {
     }
     if (isUpdated) {
       navigate("/admin/inquiries");
-      successMsg("Post Updated Successfully");
+      successMsg("Comment Updated Successfully");
     }
   }, [error, isUpdated, updateError, comment, id]);
 
@@ -101,9 +105,28 @@ const UpdateComment = () => {
     updatePost(comment._id, formData);
   };
 
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImagesPreview([]);
+    setImages([]);
+    setOldImages([]);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+      // console.log(reader)
+    });
+  };
+
   return (
     <Fragment>
-      <MetaData title={"Update Post"} />
+      <MetaData title={"Update Comment"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -116,7 +139,7 @@ const UpdateComment = () => {
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
-                <h1 className="mb-4" style={{marginRight:"150px"}}>Update Post</h1>
+                <h1 className="mb-4" style={{marginRight:"150px"}}>Update Inquiry</h1>
                 <hr/>
                 <div className="form-group">
                   <label htmlFor="title_field">Name</label>
@@ -160,13 +183,52 @@ const UpdateComment = () => {
 
                 <div className="form-group">
                   <label htmlFor="content_field">Message</label>
-                  <input
+                  <textarea
                     type="text"
                     id="content_field"
                     className="form-control"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
+                </div>
+                <div className="form-group">
+                  <label>Images</label>
+
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="images"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={onChange}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Choose Images
+                    </label>
+                  </div>
+
+                  {oldImages &&
+                    oldImages.map((img) => (
+                      <img
+                        key={img}
+                        src={img.url}
+                        alt={img.url}
+                        className="mt-3 mr-2"
+                        width="55"
+                        height="52"
+                      />
+                    ))}
+                  {imagesPreview.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Images Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  ))}
                 </div>
                 <button
                   id="login_button"

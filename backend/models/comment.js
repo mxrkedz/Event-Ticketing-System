@@ -10,7 +10,6 @@ const commentSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please enter your email"],
-    unique: true,
     validate: [validator.isEmail, "Please enter valid email address"],
   },
   subject: {
@@ -22,6 +21,18 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  images: [
+    {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

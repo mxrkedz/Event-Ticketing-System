@@ -192,13 +192,33 @@ function App() {
           />
           <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/inquiry" element={<InquiryPage />} exact="true" />
-          <Route path="/admin/inquiries" element={<CommentsList />} exact="true" />
-          <Route path="/admin/inquiry" element={<InquiryPage />} exact="true" />
-          <Route path="/admin/inquiries/:id" element={<UpdateComment />} exact="true" />
-
-          {/* <Route path="/admin/post/:id" element={<UpdatePost />} /> */}
-
-
+          <Route
+            path="/admin/inquiries"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <CommentsList />
+              </ProtectedRoute>
+            }
+            exact="true"
+          />
+          <Route
+            path="/admin/inquiry"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <InquiryPage />
+              </ProtectedRoute>
+            }
+            exact="true"
+          />
+          <Route
+            path="/admin/inquiries/:id"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UpdateComment />
+              </ProtectedRoute>
+            }
+            exact="true"
+          />
 
           {/* Transaction */}
           <Route
@@ -248,7 +268,7 @@ function App() {
           {/* Transaction End */}
 
           {/* Auth */}
-          
+
           <Route path="/login" element={<Login />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
@@ -282,7 +302,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/admin/user/:id" element={<UpdateUser />} />
+          <Route
+            path="/admin/user/:id"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UpdateUser />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/admin/users"
             element={
@@ -291,9 +318,30 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/admin/order/:id" element={<ProcessOrder />} />
-          <Route path="/admin/event" element={<NewEvent />} />
-          <Route path="/admin/event/:id" element={<UpdateEvent />} />
+          <Route
+            path="/admin/order/:id"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <ProcessOrder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/event"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <NewEvent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/event/:id"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UpdateEvent />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/admin/posts"
@@ -304,8 +352,22 @@ function App() {
             }
           />
 
-          <Route path="/admin/post" element={<NewPost />} />
-          <Route path="/admin/post/:id" element={<UpdatePost />} />
+          <Route
+            path="/admin/post"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <NewPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/post/:id"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <UpdatePost />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/news" element={<News />} exact="true" />
           <Route path="/news/:id" element={<PostDetails />} exact="true" />
         </Routes>

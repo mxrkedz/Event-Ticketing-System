@@ -173,7 +173,7 @@ exports.confirmOrder = async (req, res, next) => {
     const userEmail = users.user.email;
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
-      { orderStatus: "Processing" }, // Assuming 'status' is the field in your Order model representing order status
+      { orderStatus: "Confirmed" }, // Assuming 'status' is the field in your Order model representing order status
       { new: true } // To return the updated order after the update is applied
     );
     const order = await Order.findById(orderId);
@@ -184,7 +184,6 @@ exports.confirmOrder = async (req, res, next) => {
     res.status(500).json({ success: false, error: "Failed to confirm order" });
   }
 };
-
 exports.getSingleOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).populate(
@@ -210,7 +209,6 @@ exports.getSingleOrder = async (req, res, next) => {
       .json({ error: `Error fetching single order: ${error.message}` });
   }
 };
-
 exports.myOrders = async (req, res, next) => {
   try {
     const orders = await Order.find({ user: req.user.id });
@@ -226,7 +224,6 @@ exports.myOrders = async (req, res, next) => {
       .json({ error: `Error fetching user's orders: ${error.message}` });
   }
 };
-
 exports.allOrders = async (req, res, next) => {
   try {
     const orders = await Order.find();
@@ -249,7 +246,6 @@ exports.allOrders = async (req, res, next) => {
       .json({ error: `Error fetching all orders: ${error.message}` });
   }
 };
-
 exports.updateOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -280,7 +276,6 @@ exports.updateOrder = async (req, res, next) => {
     res.status(500).json({ error: `Error updating order: ${error.message}` });
   }
 };
-
 async function updateStock(id, quantity) {
   try {
     const event = await Event.findById(id);
@@ -294,7 +289,6 @@ async function updateStock(id, quantity) {
     console.error(`Error updating stock for Event ID ${id}: ${error.message}`);
   }
 }
-
 exports.deleteOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -315,7 +309,6 @@ exports.deleteOrder = async (req, res, next) => {
     });
   }
 };
-
 exports.totalOrders = async (req, res, next) => {
   const totalOrders = await Order.aggregate([
     {
@@ -335,7 +328,6 @@ exports.totalOrders = async (req, res, next) => {
     totalOrders,
   });
 };
-
 exports.totalSales = async (req, res, next) => {
   const totalSales = await Order.aggregate([
     {
@@ -355,7 +347,6 @@ exports.totalSales = async (req, res, next) => {
     totalSales,
   });
 };
-
 exports.customerSales = async (req, res, next) => {
   const customerSales = await Order.aggregate([
     {

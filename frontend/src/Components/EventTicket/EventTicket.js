@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Link } from "react-router-dom";
+import { Chip } from "@mui/material";
 
 const EventTicket = ({ event }) => {
   return (
@@ -27,10 +28,14 @@ const EventTicket = ({ event }) => {
           />
         )}
         <div className="card-body d-flex flex-column">
+        
           <h5 className="card-title" style={{ margin: "0.1rem 0" }}>
             <b>{event.name}</b>
           </h5>
-          <p id="product_id" style={{ margin: "0.1rem 0" }}>
+          <p id="product_id" style={{ margin: "-0.3rem 0" }}>
+            {event.category}
+          </p>
+          <p id="product_id" style={{ margin: "-0.1rem 0" }}>
             {event.location}
           </p>
           <p id="eventDate" style={{ margin: "0.1rem" }}>

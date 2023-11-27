@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../Layout/MetaData";
 import { getToken } from "../../utils/helpers";
@@ -7,12 +7,15 @@ import { getUser } from "../../utils/helpers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EmailIcon from "@mui/icons-material/Email";
+import emailjs from "@emailjs/browser";
 
 const InquiryForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [subject, setSubject] = useState("");
+  const [images, setImages] = useState([]);
+  const [imagesPreview, setImagesPreview] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,8 @@ const InquiryForm = () => {
 
   let navigate = useNavigate();
 
+  const form = useRef();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -32,10 +37,47 @@ const InquiryForm = () => {
     formData.set("email", email);
     formData.set("subject", subject);
     formData.set("content", content);
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     newComment(formData);
+
+    emailjs
+      .sendForm(
+        "service_rmf4fjc",
+        "template_0jh272o",
+        form.current,
+        "ZhHO9W2UQjGXKpmjY"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImagesPreview([]);
+    setImages([]);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+      // console.log(reader)
+    });
+  };
+  
   const newComment = async (formData) => {
     try {
       const config = {
@@ -84,6 +126,7 @@ const InquiryForm = () => {
         <Fragment>
           <div className="wrapper my-3">
             <form
+              ref={form}
               className=""
               onSubmit={submitHandler}
               encType="multipart/form-data"
@@ -92,10 +135,12 @@ const InquiryForm = () => {
                 <label htmlFor="name_field">Name</label>
                 <input
                   type="text"
+                  name="from_name"
                   id="name_field"
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </div>
 
@@ -103,15 +148,18 @@ const InquiryForm = () => {
                 <label htmlFor="email_field">Email Address</label>
                 <input
                   type="text"
+                  name="from_email"
                   id="email_field"
                   className="form-control"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="subject_field">Subject</label>
                 <select
+                  name="email_subject"
                   className="form-control"
                   id="subject_field"
                   value={subject}
@@ -131,13 +179,44 @@ const InquiryForm = () => {
               <div className="form-group">
                 <label htmlFor="content_field">Message</label>
                 <textarea
+                  name="message"
                   type="text"
                   id="content_field"
                   className="form-control"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
+                  required
                 />
               </div>
+
+              <div className="form-group">
+                  <label>Images</label>
+
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="images"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={onChange}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Choose Images
+                    </label>
+                  </div>
+
+                  {imagesPreview.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Images Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  ))}
+                </div>
 
               <div className="form-group">
                 <label>

@@ -136,6 +136,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -147,6 +148,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -158,6 +160,7 @@ const NewEvent = () => {
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                   ></textarea>
                 </div>
 
@@ -184,6 +187,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -195,6 +199,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={organizer}
                     onChange={(e) => setOrganizer(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -206,6 +211,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -217,6 +223,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -227,6 +234,7 @@ const NewEvent = () => {
                     className="form-control"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="form-group">
