@@ -4,12 +4,11 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import Event from "./EventTicket/EventTicket";
 import Loader from "./Layout/Loader";
-// import Slider from 'rc-slider';
-// import 'rc-slider/assets/index.css';
 import { useParams, useNavigate } from "react-router-dom";
 import Carousel from "./Layout/Carousel";
-import CloseIcon from '@mui/icons-material/Close';
-
+import CloseIcon from "@mui/icons-material/Close";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 const categories = ["Convention", "Expo", "Music"];
 
@@ -35,7 +34,7 @@ const Home = () => {
     link = `${process.env.REACT_APP_API}/api/v1/events/?page=${page}&keyword=${keyword}`;
 
     if (category) {
-      navigate('/')
+      navigate("/");
       link = `${process.env.REACT_APP_API}/api/v1/events?keyword=${keyword}&page=${currentPage}&category=${category}`;
     }
 
@@ -70,33 +69,39 @@ const Home = () => {
             <Carousel events={events} />
           </div>
           <div className="container" style={{ marginBottom: "5%" }}>
-            <h1 className="my-4 text-left">Latest Events</h1>
+            <h1 className="my-4 text-left" id="titlePage">
+              Latest Events
+            </h1>
             <hr />
             <div>
-        <ul
-          className="pl-0"
-          style={{ display: "flex", listStyle: "none", padding: 0 }}
-        >
-          {categories.map((cat) => (
-            <li
-              key={cat}
-              className={`category_btn ${category === cat ? "active" : ""}`}
-              style={{
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
-              onClick={() => setCategory(cat)}
-            >
-              {cat}
-            </li>
-          ))}
-          {category && (
-            <li className="clear_btn" onClick={clearCategory}>
-              <CloseIcon/> Clear
-            </li>
-          )}
-        </ul>
-      </div>
+              <ul
+                className="pl-0"
+                style={{ display: "flex", listStyle: "none", padding: 0 }}
+              >
+                <Stack direction="row" spacing={1}></Stack>
+                {categories.map((cat) => (
+                  <Chip
+                    key={cat}
+                    label={cat}
+                    className={`category_btn ${
+                      category === cat ? "active" : ""
+                    }`}
+                    onClick={() => setCategory(cat)}
+                    style={{
+                      marginRight: "10px",
+                    }}
+                  />
+                ))}
+                {category && (
+                  <Chip
+                    className="clear_btn"
+                    color="error"
+                    onDelete={clearCategory}
+                    label="Clear"
+                  />
+                )}
+              </ul>
+            </div>
             <hr />
 
             <section id="events" className="mt-5">

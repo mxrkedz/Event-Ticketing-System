@@ -22,6 +22,8 @@ const CarouselFP = ({ events }) => {
         overflow: "hidden",
         WebkitBoxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
         boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+        borderBottom: "8px solid #252627",
+        borderRadius: "0px 0px 40px 40px",
       }}
       controls={true}
       indicators={false}

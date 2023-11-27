@@ -70,6 +70,9 @@ const PostDetails = () => {
         <Loader />
       ) : (
         <div className="container my-5" style={{ maxHeight: "100%" }}>
+                  <h1 className="my-4 text-left" id="titlePage">{post.title}</h1>
+            <hr style={{ marginBottom: "5%" }}/>
+
           <div className="container mt-5">
             <Card
               sx={{

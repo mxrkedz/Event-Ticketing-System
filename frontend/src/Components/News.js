@@ -80,9 +80,11 @@ const News = () => {
     <Fragment>
       <Fragment>
         <MetaData title={"News"} />
-        <div className="container p-5">
+        <div className="container">
+        <h1 className="my-4 text-left" id="titlePage">Latest News</h1>
+            <hr style={{ marginBottom: "5%" }}/>
         {posts.map((post) => (
-          <div className="card mb-5">
+          <div className="mb-5">
             <ListPost key={post._id} post={post} col={1} />
           </div>
         ))}

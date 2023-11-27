@@ -98,6 +98,14 @@ body {
   text-transform: lowercase;
   font-weight: bold;
 }
+#titlePage {
+  color: auto;
+  font-family: calibri;
+  font-size: 5rem;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-weight: bold;
+}
 #cart_count {
   background-color: #904e55;
   padding: 0.2rem 0.5rem;
@@ -113,6 +121,15 @@ body {
 .card {
   height: 100%;
   background-color: #f2efe9;
+}
+.card-title {
+  border-radius: 0.2rem;
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-family: calibri;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 .card-title a {
   color: #2e2e2e;
