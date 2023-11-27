@@ -73,6 +73,7 @@ const UpdatePassword = () => {
                 className="form-control"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
+                required
               />
             </div>
 
@@ -84,6 +85,7 @@ const UpdatePassword = () => {
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
 

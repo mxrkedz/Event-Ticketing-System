@@ -126,6 +126,7 @@ const UpdateProfile = () => {
                                 name='name'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -139,6 +140,7 @@ const UpdateProfile = () => {
                                 name='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
 

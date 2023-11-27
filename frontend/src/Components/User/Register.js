@@ -5,6 +5,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OAuth from "./OAuth";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -40,7 +42,7 @@ const Register = () => {
     }
   }, [error, isAuthenticated]);
 
-  const submitHandler = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
     // Validation checks
@@ -74,18 +76,66 @@ const Register = () => {
     register(formData);
   };
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      formData.set("name", values.name);
+      formData.set("email", values.email);
+      formData.set("password", values.password);
+      formData.set("avatar", values.avatar);
+
+      try {
+        setLoading(true);
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        const { data } = await axios.post(
+          "http://localhost:4001/api/v1/register",
+          formData,
+          config
+        );
+
+        setLoading(false);
+        navigate("/");
+        notify("Registration successful", "success");
+      } catch (error) {
+        setLoading(false);
+        notify(
+          error.response?.data?.message || "An error occurred",
+          "error"
+        );
+      }
+    },
+  });
+
   const onChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
-          setAvatar(reader.result);
+          formik.setFieldValue("avatar", reader.result);
         }
       };
       reader.readAsDataURL(e.target.files[0]);
     } else {
-      setUser({ ...user, [e.target.name]: e.target.value });
+      formik.handleChange(e);
     }
   };
 
@@ -126,49 +176,58 @@ const Register = () => {
         <div className="col-10 col-lg-5">
           <form
             className="shadow-lg"
-            onSubmit={submitHandler}
+            onSubmit={formik.handleSubmit}
             encType="multipart/form-data"
           >
             <h1 className="mb-3">Register</h1>
 
             <div className="form-group">
-              <label htmlFor="email_field">Name</label>
+              <label htmlFor="name">Name</label>
               <input
-                type="name"
-                id="name_field"
+                type="text"
+                id="name"
                 className="form-control"
                 name="name"
-                value={name}
-                onChange={onChange}
+                value={formik.values.name}
+                onChange={formik.handleChange}
               />
+              {formik.touched.name && formik.errors.name ? (
+                <div style={{ color: "red" }}>{formik.errors.name}</div>
+              ) : null}
             </div>
 
             <div className="form-group">
-              <label htmlFor="email_field">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
-                id="email_field"
+                id="email"
                 className="form-control"
                 name="email"
-                value={email}
-                onChange={onChange}
+                value={formik.values.email}
+                onChange={formik.handleChange}
               />
+              {formik.touched.email && formik.errors.email ? (
+                <div style={{ color: "red" }}>{formik.errors.email}</div>
+              ) : null}
             </div>
 
             <div className="form-group">
-              <label htmlFor="password_field">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
-                id="password_field"
+                id="password"
                 className="form-control"
                 name="password"
-                value={password}
-                onChange={onChange}
+                value={formik.values.password}
+                onChange={formik.handleChange}
               />
+              {formik.touched.password && formik.errors.password ? (
+                <div style={{ color: "red" }}>{formik.errors.password}</div>
+              ) : null}
             </div>
 
             <div className="form-group">
-              <label htmlFor="avatar_upload">Avatar</label>
+              <label htmlFor="avatar">Avatar</label>
               <div className="d-flex align-items-center">
                 <div>
                   <figure className="avatar mr-3 item-rtl">
@@ -184,17 +243,18 @@ const Register = () => {
                     type="file"
                     name="avatar"
                     className="custom-file-input"
-                    id="customFile"
+                    id="avatar"
                     accept="images/*"
                     onChange={onChange}
                   />
-                  <label className="custom-file-label" htmlFor="customFile">
+                  <label className="custom-file-label" htmlFor="avatar">
                     Choose Avatar
                   </label>
                 </div>
               </div>
             </div>
 
+            
             <button
               id="register_button"
               type="submit"

@@ -117,6 +117,7 @@ const InquiryForm = () => {
                   className="form-control"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </div>
 
@@ -129,6 +130,7 @@ const InquiryForm = () => {
                   className="form-control"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -160,6 +162,7 @@ const InquiryForm = () => {
                   className="form-control"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
+                  required
                 />
               </div>
 

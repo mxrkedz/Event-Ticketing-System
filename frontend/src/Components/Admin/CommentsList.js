@@ -144,7 +144,7 @@ const CommentsList = () => {
 
     return (
         <Fragment>
-            <MetaData title={'All posts'} />
+            <MetaData title={'All feedbacks'} />
             <div className="row">
                 <div className="col-12 col-md-2">
                     <Sidebar />
@@ -152,7 +152,7 @@ const CommentsList = () => {
 
                 <div className="col-12 col-md-10">
                     <Fragment>
-                        <h1 className="my-5">All posts</h1>
+                        <h1 className="my-5">All Feedbacks</h1>
 
                         {loading ? <Loader /> : (
                             <MDBDataTable
