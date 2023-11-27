@@ -10,11 +10,30 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
   const countriesList = Object.values(countries);
   const [phoneNo, setPhoneNo] = useState(shipping.phoneNo);
   const [country, setCountry] = useState(shipping.country);
-  const [user, setUser] = useState(getUser() ? getUser() : {})
+  const [user, setUser] = useState(getUser() ? getUser() : {});
+  const [errors, setErrors] = useState({});
   let navigate = useNavigate();
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!phoneNo.trim()) {
+      errors.phoneNo = "Phone number is required";
+    } else if (!/^\+?\d+$/.test(phoneNo.trim())) {
+      errors.phoneNo = "Please enter a valid phone number";
+    }
+
+    return errors;
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length !== 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
     saveShippingInfo({ phoneNo, country });
     navigate("/confirm");
@@ -45,11 +64,13 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
               <input
                 type="phone"
                 id="phone_field"
-                className="form-control"
+                className={`form-control ${errors.phoneNo && "is-invalid"}`}
                 value={phoneNo}
                 onChange={(e) => setPhoneNo(e.target.value)}
-                required
-              />
+
+              />{errors.phoneNo && (
+                <div className="invalid-feedback">{errors.phoneNo}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="country_field">Country</label>
