@@ -793,12 +793,13 @@ ul.CTAs a {
 /* ChartContainer.css */
 .chart-container {
   margin-bottom: 20px;
+  color: white;
 }
 .chart-wrapper {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 20px;
-  background-color: #fff;
+  padding: 10px;
+  background-color: #252627;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .order-container {

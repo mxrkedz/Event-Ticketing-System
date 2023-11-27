@@ -88,7 +88,7 @@ const UpdateUser = () => {
                 <div className="col-12 col-md-2">
                     <Sidebar />
                 </div>
-                <div className="col-12 col-md-10">
+                <div className="col-12 col-md-10" >
                     <div className="row wrapper">
                         <div className="col-10 col-lg-5">
                             <form className="shadow-lg" onSubmit={submitHandler}>

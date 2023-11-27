@@ -14,6 +14,8 @@ const InquiryForm = () => {
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [subject, setSubject] = useState("");
+  const [images, setImages] = useState([]);
+  const [imagesPreview, setImagesPreview] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,6 +37,9 @@ const InquiryForm = () => {
     formData.set("email", email);
     formData.set("subject", subject);
     formData.set("content", content);
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     newComment(formData);
 
@@ -55,6 +60,24 @@ const InquiryForm = () => {
       );
   };
 
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImagesPreview([]);
+    setImages([]);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+      // console.log(reader)
+    });
+  };
+  
   const newComment = async (formData) => {
     try {
       const config = {
@@ -162,6 +185,35 @@ const InquiryForm = () => {
                   onChange={(e) => setContent(e.target.value)}
                 />
               </div>
+
+              <div className="form-group">
+                  <label>Images</label>
+
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="images"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={onChange}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Choose Images
+                    </label>
+                  </div>
+
+                  {imagesPreview.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Images Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  ))}
+                </div>
 
               <div className="form-group">
                 <label>

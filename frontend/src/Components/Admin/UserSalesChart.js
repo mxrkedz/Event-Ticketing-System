@@ -45,19 +45,19 @@ const UserSalesChart = ({ data }) => {
 
   return (
     <div>
-      <h2>User Sales Chart</h2>
-      <ResponsiveContainer width="90%" height={600}>
+      <h2 style={{color: "white"}}>User Sales Chart</h2>
+      <ResponsiveContainer width="100%" height={600}>
         {loading ? (
           <Loader />
         ) : (
           <BarChart data={sales}>
-            <CartesianGrid strokeDasharray="2 2" />
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="userDetails.name" />
             <YAxis />
             <Tooltip />
             <Legend />
 
-            <Bar dataKey="total" stroke="#000000" strokeWidth={5}>
+            <Bar dataKey="total">
               {sales.map((item, index) => (
                 <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
               ))}

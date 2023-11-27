@@ -80,6 +80,7 @@ const PostDetails = () => {
                 position: "relative",
                 WebkitBoxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
                 boxShadow: "0px 22px 22px 0px rgba(0,0,0,0.55)",
+                
               }}
             >
               {post.images.map((image, index) => (
@@ -89,6 +90,7 @@ const PostDetails = () => {
                   height="600"
                   image={image.url}
                   alt={post.title}
+                  sx={{backgroundColor: "#333333 "}}
                 />
               ))}
 

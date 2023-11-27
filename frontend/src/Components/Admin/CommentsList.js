@@ -18,7 +18,7 @@ const CommentsList = () => {
     const [isDeleted, setIsDeleted] = useState(false)
 
     let navigate = useNavigate()
-    const getAdminPosts = async () => {
+    const getAdminComments = async () => {
         try {
 
             const config = {
@@ -39,7 +39,7 @@ const CommentsList = () => {
         }
     }
     useEffect(() => {
-        getAdminPosts()
+        getAdminComments()
 
         if (error) {
             toast.error(error, {
@@ -54,7 +54,7 @@ const CommentsList = () => {
         }
 
         if (isDeleted) {
-            toast.success('Post Deleted Successfully', {
+            toast.success('Comment Deleted Successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
             navigate('/admin/inquiries');
@@ -84,7 +84,7 @@ const CommentsList = () => {
         }
     }
     
-    const postsList = () => {
+    const commentsList = () => {
         const data = {
             columns: [
                 {
@@ -144,7 +144,7 @@ const CommentsList = () => {
 
     return (
         <Fragment>
-            <MetaData title={'All posts'} />
+            <MetaData title={'All Comments'} />
             <div className="row">
                 <div className="col-12 col-md-2">
                     <Sidebar />
@@ -152,11 +152,11 @@ const CommentsList = () => {
 
                 <div className="col-12 col-md-10">
                     <Fragment>
-                        <h1 className="my-5">All posts</h1>
+                        <h1 className="my-4" id="titlePage">All Inquiries</h1>
 
                         {loading ? <Loader /> : (
                             <MDBDataTable
-                                data={postsList()}
+                                data={commentsList()}
                                 className="px-3"
                                 bordered
                                 striped
