@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../Layout/MetaData";
 import CheckoutSteps from "./CheckoutSteps";
@@ -11,8 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
 const Payment = ({ cartItems, shippingInfo }) => {
-  const [loading, setLoading] = useState(true);
-  let navigate = useNavigate();
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCVC, setCardCVC] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const navigate = useNavigate();
+
   const order = {
     orderItems: cartItems,
     shippingInfo,
@@ -39,13 +43,10 @@ const Payment = ({ cartItems, shippingInfo }) => {
         order,
         config
       );
-      // setIsUpdated(data.success)
-      setLoading(false);
-      toast.success("order created", {
+      toast.success("Order created", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       window.location.reload();
-
       navigate("/success");
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -54,15 +55,36 @@ const Payment = ({ cartItems, shippingInfo }) => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!cardNumber || !/^[0-9]{16}$/.test(cardNumber)) {
+      errors.cardNumber = "Please enter a valid 16-digit card number";
+    }
+
+    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+      errors.cardExpiry = "Please enter a valid expiration date (MM/YY)";
+    }
+
+    if (!cardCVC || !/^[0-9]{3}$/.test(cardCVC)) {
+      errors.cardCVC = "Please enter a valid 3-digit CVC code";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    document.querySelector("#pay_btn").disabled = true;
-    order.paymentInfo = {
-      id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
-      status: "succeeded",
-    };
-    createOrder(order);
-    navigate("/success");
+
+    if (validateForm()) {
+      document.querySelector("#pay_btn").disabled = true;
+      order.paymentInfo = {
+        id: "pi_1DpdYh2eZvKYlo2CYIynhU32",
+        status: "succeeded",
+      };
+      createOrder(order);
+    }
   };
 
   return (
@@ -78,15 +100,20 @@ const Payment = ({ cartItems, shippingInfo }) => {
               <input
                 type="text"
                 id="card_num_field"
-                className="form-control"
-                pattern="[0-9]*" // Use the pattern attribute to restrict input to numeric characters
-                inputMode="numeric" // Use the inputMode attribute for better mobile support
+                className={`form-control ${formErrors.cardNumber ? 'is-invalid' : ''}`}
+                pattern="[0-9]*"
+                inputMode="numeric"
                 placeholder="XXXX XXXXXX XXXXX"
                 onInput={(e) =>
                   (e.target.value = e.target.value.replace(/\D/, ""))
-                } // JavaScript to remove non-numeric characters
-                required
+                }
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+                
               />
+              {formErrors.cardNumber && (
+                <div className="invalid-feedback">{formErrors.cardNumber}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -94,12 +121,17 @@ const Payment = ({ cartItems, shippingInfo }) => {
               <input
                 type="text"
                 id="card_exp_field"
-                className="form-control"
-                pattern="\d{2}/\d{2}" // Allow two digits, followed by "/", and then two more digits
+                className={`form-control ${formErrors.cardExpiry ? 'is-invalid' : ''}`}
+                pattern="\d{2}/\d{2}"
                 inputMode="numeric"
                 placeholder="MM/YY"
-                required
+                value={cardExpiry}
+                onChange={(e) => setCardExpiry(e.target.value)}
+                
               />
+              {formErrors.cardExpiry && (
+                <div className="invalid-feedback">{formErrors.cardExpiry}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -108,14 +140,16 @@ const Payment = ({ cartItems, shippingInfo }) => {
                 <input
                   type="text"
                   id="card_cvc_field"
-                  className="form-control"
+                  className={`form-control ${formErrors.cardCVC ? 'is-invalid' : ''}`}
                   pattern="[0-9]*"
                   inputMode="numeric"
                   placeholder="***"
                   onInput={(e) =>
                     (e.target.value = e.target.value.replace(/\D/, ""))
                   }
-                  required
+                  value={cardCVC}
+                  onChange={(e) => setCardCVC(e.target.value)}
+                  
                 />
                 <div className="delete-icon-container">
                   <Tooltip title="Please copy your CVV/CVC code from the back of your card and continue with your payment.">
@@ -125,6 +159,9 @@ const Payment = ({ cartItems, shippingInfo }) => {
                   </Tooltip>
                 </div>
               </div>
+              {formErrors.cardCVC && (
+                <div className="invalid-feedback">{formErrors.cardCVC}</div>
+              )}
             </div>
 
             <button id="pay_btn" type="submit" className="btn btn-block py-3">
