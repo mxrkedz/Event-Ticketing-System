@@ -9,8 +9,10 @@ import { getToken } from "../../utils/helpers";
 const UpdatePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
-  const [oldPasswordError, setOldPasswordError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [formErrors, setFormErrors] = useState({
+    oldPassword: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [isUpdated, setIsUpdated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -50,25 +52,20 @@ const UpdatePassword = () => {
   }, [error]);
 
   const validateForm = () => {
-    let isValid = true;
+    const errors = {};
 
     // Validate old password
     if (oldPassword.trim() === "") {
-      setOldPasswordError("Old password is required");
-      isValid = false;
-    } else {
-      setOldPasswordError("");
+      errors.oldPassword = "Old password is required";
     }
 
     // Validate new password
     if (password.trim() === "") {
-      setPasswordError("New password is required");
-      isValid = false;
-    } else {
-      setPasswordError("");
+      errors.password = "New password is required";
     }
 
-    return isValid;
+    setFormErrors(errors); // Update form errors state
+    return Object.keys(errors).length === 0; // Return true if there are no errors
   };
 
   const submitHandler = (e) => {
@@ -97,12 +94,14 @@ const UpdatePassword = () => {
               <input
                 type="password"
                 id="old_password_field"
-                className="form-control"
+                className={`form-control ${formErrors.oldPassword ? 'is-invalid' : ''}`}
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
-                required
+                
               />
-              <p className="text-danger">{oldPasswordError}</p>
+              {formErrors.oldPassword && (
+                <div className="invalid-feedback">{formErrors.oldPassword}</div>
+              )}
             </div>
 
             <div className="form-group">
@@ -110,12 +109,14 @@ const UpdatePassword = () => {
               <input
                 type="password"
                 id="new_password_field"
-                className="form-control"
+                className={`form-control ${formErrors.password ? 'is-invalid' : ''}`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                
               />
-              <p className="text-danger">{passwordError}</p>
+              {formErrors.password && (
+                <div className="invalid-feedback">{formErrors.password}</div>
+              )}
             </div>
 
             <button
