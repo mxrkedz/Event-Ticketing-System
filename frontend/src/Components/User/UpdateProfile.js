@@ -144,7 +144,7 @@ const UpdateProfile = () => {
             <div className="row wrapper">
                 <div className="col-10 col-lg-5">
                     <form className="shadow-lg" onSubmit={submitHandler} encType='multipart/form-data'>
-                        {/* ... existing code ... */}
+                    <h1 className="mt-2 mb-5">Update Profile</h1>
 
                         <div className="form-group">
                             <label htmlFor="email_field">Name</label>
@@ -155,7 +155,7 @@ const UpdateProfile = () => {
                                 name='name'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                required
+                                
                             />
                             {nameError && <div className="invalid-feedback">{nameError}</div>}
                         </div>
@@ -169,7 +169,7 @@ const UpdateProfile = () => {
                                 name='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
+                                
                             />
                             {emailError && <div className="invalid-feedback">{emailError}</div>}
                         </div>
