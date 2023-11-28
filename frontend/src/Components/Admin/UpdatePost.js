@@ -20,6 +20,7 @@ const UpdatePost = () => {
   const [oldImages, setOldImages] = useState([]);
   const [updateError, setUpdateError] = useState("");
   const [isUpdated, setIsUpdated] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   let { id } = useParams();
   let navigate = useNavigate();
@@ -107,6 +108,7 @@ const UpdatePost = () => {
       errors.content = 'Content is required';
     }
 
+    setFormErrors(errors); // Update form errors state
     return errors;
   };
 
@@ -114,7 +116,7 @@ const UpdatePost = () => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length !== 0) {
-      setErrors(validationErrors);
+      // If there are validation errors, set them in the state and return
       return;
     }
 
@@ -161,40 +163,41 @@ const UpdatePost = () => {
                 <h1 className="mb-4">Update Post</h1>
 
                 <div className="form-group">
-                  <label htmlFor="title_field">Title</label>
-                  <input
-                    type="text"
-                    id="title_field"
-                    className="form-control"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
-                </div>
+            <label htmlFor="title_field">Title</label>
+            <input
+              type="text"
+              id="title_field"
+              className={`form-control ${formErrors.title ? 'is-invalid' : ''}`}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {formErrors.title && <div className="invalid-feedback">{formErrors.title}</div>}
+          </div>
 
-                <div className="form-group">
-                  <label htmlFor="location_field">Location</label>
-                  <input
-                    type="text"
-                    id="location_field"
-                    className="form-control"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                  />
-                  {errors.location && <div className="invalid-feedback">{errors.location}</div>}
-                </div>
 
-                <div className="form-group">
-                  <label htmlFor="content_field">Content</label>
-                  <input
-                    type="text"
-                    id="content_field"
-                    className="form-control"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                  />
-                  {errors.content && <div className="invalid-feedback">{errors.content}</div>}
-                </div>
+          <div className="form-group">
+            <label htmlFor="location_field">Location</label>
+            <input
+              type="text"
+              id="location_field"
+              className={`form-control ${formErrors.location ? 'is-invalid' : ''}`}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+            {formErrors.location && <div className="invalid-feedback">{formErrors.location}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="content_field">Content</label>
+            <input
+              type="text"
+              id="content_field"
+              className={`form-control ${formErrors.content ? 'is-invalid' : ''}`}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            {formErrors.content && <div className="invalid-feedback">{formErrors.content}</div>}
+          </div>
 
                 <div className="form-group">
                   <label>Images</label>
