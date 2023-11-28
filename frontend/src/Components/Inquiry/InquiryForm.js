@@ -29,8 +29,46 @@ const InquiryForm = () => {
 
   const form = useRef();
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email.trim())) {
+      errors.email = "Email address is invalid";
+    }
+
+    if (!subject) {
+      errors.subject = "Please select a subject";
+    }
+
+    if (!content.trim()) {
+      errors.content = "Message is required";
+    }
+
+    if (images.length === 0) {
+      errors.images = "Please upload at least one image";
+    }
+
+    if (!isChecked) {
+      errors.isChecked = "Please agree to the data privacy policy";
+    }
+
+    setError(errors);
+    return Object.keys(errors).length === 0;
+    // return errors;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const isFormValid = validateForm();
+
+    if (isFormValid) {
 
     const formData = new FormData();
     formData.set("name", name);
@@ -41,8 +79,18 @@ const InquiryForm = () => {
       formData.append("images", image);
     });
 
-    newComment(formData);
+    // const validationErrors = validateForm();
+    // if (Object.keys(validationErrors).length !== 0) {
+    //   setError("Please fill in the required fields");
+    //   return;
+    // }
 
+    newComment(formData);
+  } else {
+    toast.error('Please fill in all required fields.', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }
     emailjs
       .sendForm(
         "service_rmf4fjc",
@@ -137,11 +185,13 @@ const InquiryForm = () => {
                   type="text"
                   name="from_name"
                   id="name_field"
-                  className="form-control"
+                  className={`form-control ${error && error.name && "is-invalid"}`}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
                 />
+                {error.name && (
+            <div className="invalid-feedback">{error.name}</div>
+          )}
               </div>
 
               <div className="form-group">
@@ -150,11 +200,13 @@ const InquiryForm = () => {
                   type="text"
                   name="from_email"
                   id="email_field"
-                  className="form-control"
+                  className={`form-control ${error && error.email && "is-invalid"}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
+                {error && error.email && (
+                  <div className="invalid-feedback">{error.email}</div>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="subject_field">Subject</label>
@@ -182,11 +234,12 @@ const InquiryForm = () => {
                   name="message"
                   type="text"
                   id="content_field"
-                  className="form-control"
+                  className={`form-control ${error && error.content && "is-invalid"}`}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  required
-                />
+                />{error && error.content && (
+                  <div className="invalid-feedback">{error.content}</div>
+                )}
               </div>
 
               <div className="form-group">
@@ -228,6 +281,9 @@ const InquiryForm = () => {
                   handling of your data by this website in accordance with our
                   Data Privacy Policy
                 </label>
+                {error && error.isChecked && (
+                  <div className="invalid-feedback">{error.isChecked}</div>
+                )}
               </div>
 
               <button

@@ -27,6 +27,36 @@ const UpdateComment = () => {
   let { id } = useParams();
   let navigate = useNavigate();
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email.trim())) {
+      errors.email = "Email address is invalid";
+    }
+
+    if (!subject) {
+      errors.subject = "Please select a subject";
+    }
+
+    if (!content.trim()) {
+      errors.content = "Message is required";
+    }
+
+    if (images.length === 0) {
+      errors.images = "Please upload at least one image";
+    }
+
+    setError(errors);
+    return Object.keys(errors).length === 0;
+    // return errors;
+  };
+
   const errMsg = (message = "") =>
     toast.error(message, {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -97,12 +127,26 @@ const UpdateComment = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const isFormValid = validateForm();
+
+    if (isFormValid) {
     const formData = new FormData();
     formData.set("name", name);
     formData.set("email", email);
     formData.set("content", content);
 
     updatePost(comment._id, formData);
+  } else {
+    toast.error('Please fill in all required fields.', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }
+  const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length !== 0) {
+      setError(validationErrors);
+      return;
+    }
+
   };
 
   const onChange = (e) => {
@@ -146,10 +190,13 @@ const UpdateComment = () => {
                   <input
                     type="text"
                     id="title_field"
-                    className="form-control"
+                    className={`form-control ${error && error.name && "is-invalid"}`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
+                  {error.name && (
+            <div className="invalid-feedback">{error.name}</div>
+          )}
                 </div>
 
                 <div className="form-group">
@@ -157,10 +204,13 @@ const UpdateComment = () => {
                   <input
                     type="text"
                     id="location_field"
-                    className="form-control"
+                    className={`form-control ${error && error.email && "is-invalid"}`}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
+                  {error && error.email && (
+                  <div className="invalid-feedback">{error.email}</div>
+                )}
                 </div>
                 <div className="form-group">
                 <label htmlFor="subject_field">Subject</label>
@@ -186,10 +236,13 @@ const UpdateComment = () => {
                   <textarea
                     type="text"
                     id="content_field"
-                    className="form-control"
+                    className={`form-control ${error && error.content && "is-invalid"}`}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
+                  {error && error.content && (
+                  <div className="invalid-feedback">{error.content}</div>
+                )}
                 </div>
                 <div className="form-group">
                   <label>Images</label>
